@@ -1,0 +1,146 @@
+Stamina gasta quando o jogador determina a ação do personagem, mais stamina, mais ações de uma só vez, e mais staregen pode usar aão mais rapido
+SP = Spirtual Points no lugar de mana
+
+Em cada combate pode mudar a "classe" de um personagem 1 vez, para adaptar aos inimigos
+
+Mais atack speed   menos regeneração de stamina
+stamina usado para habilidades especiais
+
+mana usada para magias (recupera quando medita em combate, achar explicação para isso, pega SP dos espirotos na regiao, só pode meditar quanbdo alguma criatura tiver morrido)
+
+criaturas resistentes a ataque normal e criaturas resistentes a ataque especial, precisa adaptar a estrategia
+armas com mais dano contraaa criaturas com mais vida e outras com menos vida, (arma ssassina)
+
+Vida temporária, a cada combate primeiro perde a vida temporária e depois perde vida de vdd, guerreiros tem mais vida temporária
+
+Pode diminuir velocidade de ataque para ganhar mais parry ou mais evade (parry da contra ataque de 1 ataque) e algumas armas sao melhores para parry e outras pra evade (media / pequena) grande é ruim pros 2
+Escudo da +8 evade e counterrating + 5
+arma de duas maos da ataque ( +8)
+Arma pequena e media da mais para counterrating
+Duas armas  da o dobre de ataque mas divide o dano vindo do atributo pela metade 
+
+usar uma arma sem nada na outra mao potencializa  ATAQUE ESPECIAL
+Arma de duas mãos da mais Ataque especial tambem
+
+Todos a baixo recebem um bonus aleatório da tabela 1
+
+Luva + Crit e AE
+Bota + Stamin Recovery +  AS
+Armadura + Prot e Evade
+Élmo + Resilience e resistencia
+amuleto + Defesa (ou físico, ou AE ou magia) + resistencia (enfraquecimento, lentidão, atordoamento,cegueira, maldição) + atr(max +5)
+capa = amuleto sem atr
+
+Tabela 1
+Crit
+Resiliencia
+Parry
+Stamin Rec
+AS
+Resistencia
+Defesa
+
+
+armas recebem bônus aleatório da tabela 2
+
+tabela 2
+ataque
+dano
+AS
+parry
+evade
+
+aneis tecebem tabela 3
+Anel + mana / stamina / vida + atr (max +5)
+
+
+Arma Rara
+Assassina = mais dano contra criaturas com menos da metade da vida
+Sádica = mais dano contra criaturas com mais da metade da vida
+Congelamento = reduz o AS da criatura
+Vento = aumenta AS do atacante
+
+
+enfraquecimento    - dano e resilience
+lentidão  - AS e 
+atordoamento - evade
+cegueira - ataque
+maldição   efeito diverso (diminui recovery, diminui defesas, resistencias e etc)
+
+usar efeito certo no inimigo certo,  ver stats do inimigo (teste resistido de percepção x alguma coisa)
+
+
+Recebe talento a cada 10 atributos
+Referente ao atributo
+
+
+
+str + dano (corte e concussao e arremesso) e + AT (Concussão) 
+agi + dano (perfuração e projéteis) e +AT (corte e perfuração e distancia)
+vit + PV e Stamina e +1 damagered every 5
+Sabdoria + AT e Dano Magia
+Intuioção + + Mana e AE (AE x Resistencias) + 1 damagered every 5
+
+Swordmanship + acerto e +1 danobonus cada 5
+Fencing
+Heavyweaponship
+Archery
+Magery (dano e acerto)
+Tactics (Evasion )
+Parry (+ resilience-1 de dano_b do inimigo)
+
+Arcanery
+Thievery
+Military
+Necromancy (da pontos de vida pra uma criatura morta, e controla ela no lugar no personagem)
+
+
+
+
+lore  (mais AE)
+
+healing (cura fora de combate, aumenta com anatomy)
+anatomy (+ crit)
+
+armslore (identifica armas, da bônus no bonusdano +2 para cada 10)
+
+
+tracking : escolhe no NV e a criatura que esta procurando (NV sao descritos em palavras like: agressive, monstruous, magnifcent, powerfull) e acha tesouros durante viagem
+Escalar = usado para pegar tesouros achados com tracking
+swimming = igual escalar
+saltar = escalar
+
+stealth = aumenta chance de ataque surpresa (criaturas com mt stealth da mt ataque supresa, luta dificil)
+awareness = diminui a chance de ataque surpresa, podendo causar um ataque surpresa reverso
+
+Mecantilism = Aumenta o preço de venda dos itens craftados pelo personagem
+
+mining
+lumberjacking
+gathering
+skinning
+
+animaltaming = doma certo animal que é usado para coletar materiais como 1 personagem extra e é usado para dar exp para o animal
+weapongcraft
+armorcraft
+bowcraft
+jewcrafting
+leatherworking
+tailoring
+alchemy
+carpentery (faz moveis e casas que dao bonus para determinadas coisas quando personagem descansa)
+
+Bonus temporários = AS, damage, damagered, at, ae, evade
+
+Armaduras
+Leve Prot = Prot bonus *1 
+media prot = prot bonus * 6 - 5 evasion
+pesada prot = prot bonus * 11 - 10 evasion
+
+chain mail = fraco contra smashing
+studed leather armor = fraco contra piercing
+
+
+1 - coward lesser inferior common superior excepcional brave agressive expert major glorious magnifcent powerful tremendous monstruous gigantic gargantuan titanic abyssal colossal
+
+Experiencia eh calculada com base no tempo de combate e total de dano desferido e sofrido
