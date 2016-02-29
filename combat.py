@@ -17,7 +17,7 @@ import char_creator as CC
 
 '''roda um teste, para verificar a igualdade entre as armas e armaduras'''
 if __name__ == "__main__":
-    yes = 'yes'
+    yes = 'no'
     if yes == 'yes':
         change = ['light','medium','heavy']
         t1 = {}
