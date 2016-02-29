@@ -9,7 +9,13 @@ def create_combat():
         y = Chars.Monster.brute(x,1)
         config.monsters.append(y)
 if __name__ == "__main__":
-    for x in range(5):
+    class Char_Creator(C.Player):
+        def __init__(self):
+            self.points = 
+            def str(self):
+                
+    points = 30
+    while points != 0:
         str = raw_input('strengh')
         agi = raw_input('agility')
         vit = raw_input('vitality')
@@ -21,13 +27,21 @@ if __name__ == "__main__":
             skill1 = raw_input('What is your main skill')
             if skill1 in C.skills_list:
                 awsr = True
+            else:
+                print 'Thats not a skill'
         while awsr == False:
             skill2 = raw_input('What is your secondary skill')
             if skill2 in C.skills_list:
                 awsr = True
+            else:
+                print 'Thats not a skill'
         while awsr == False:
             skill3 = raw_input('What is your tertiary skill')
             if skill3 in C.skills_list:
-                awsr = True        
+                awsr = True
+            else:
+                print 'Thats not a skill'
+        
         player = Char.Player(str,agi,vit,wis,int,skill1,30,skill2,20,skill3,10)
         config.players.append(player)
+        
