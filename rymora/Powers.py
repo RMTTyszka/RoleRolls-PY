@@ -1,5 +1,12 @@
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+'''
+Rymora Land of Heroes
+
+Coyright © 2016 - Ramiro Tyzkza - ramiro.tyszka@gmail.com
+'''
 import random
-import const as C
+from conf import const as C
 import Functions as F
 class Power:
     def __init__(self,atr,skill,caster):
@@ -7,7 +14,7 @@ class Power:
         self.CT = 1
     def use(self):
         pass
-    
+
     @classmethod
     def Dual_Heal(cls,caster,targets):
         heal = cls('wis','magery',caster)
@@ -48,7 +55,7 @@ class Power:
             print caster.name, 'healed', heallife, 'lifes', target.name , 'has', target.LIFE,'\n'
         heal.use = use
         return heal
-        
+
     @classmethod
     def Power_Attack(cls,caster,targets):
         poweratk = cls('str',caster.equipament['mainhand'].wep_skills['atkskill'],caster)
@@ -66,7 +73,7 @@ class Power:
                     dam = 15+ caster.mod('str')*5 - target.FORTITUDE
                     dam /= 5
                     target.LIFE -= dam
-                    print 'Power Attack',caster.name, 'caused',dam,'of phisical damage on ', target.name,'\n'    
+                    print 'Power Attack',caster.name, 'caused',dam,'of phisical damage on ', target.name,'\n'
         poweratk.use = use
         return poweratk
     @classmethod

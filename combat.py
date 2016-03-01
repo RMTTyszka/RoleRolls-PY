@@ -1,26 +1,30 @@
-#!/usr/bin/env python2                                                                                                                                                                                                               
-# -*- coding: utf-8 -*-                                                                                                                                                                                                              
-                                                                                                                                                                                                                                     
-import const as C
-import Powers as P
-from Powers import Power
-import Functions as F                                                                                                                                                                                                                                      
-import random                                                                                                                                                                                                                        
-import time                                                                                                                                                                                                                          
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+'''
+Rymora Land of Heroes
+
+Coyright © 2016 - Ramiro Tyzkza - ramiro.tyszka@gmail.com
+'''
+from rymora.conf import const as C
+from rymora.conf import config
+from rymora import Powers as P
+from rymora.Powers import Power
+from rymora import Functions as F
+from rymora import itens as I
+from rymora import Chars
+from rymora import char_creator as CC
+import random
+import time
 import numbers
-import itens as I
-import Chars
-import config
-import char_creator as CC
 #Globals0
-                                                                                                                                                                                             
+
 
 '''roda um teste, para verificar a igualdade entre as armas e armaduras'''
 if __name__ == "__main__":
     yes = 'no'
     if yes == 'yes':
         change = ['light','medium','heavy']
-        t1 = {}
+        t1 = {}8
         t2 = {}
         media = {'light':[],'medium':[],'heavy':[]}
         media_armor = []
@@ -32,7 +36,7 @@ if __name__ == "__main__":
                 total3[w] = []
                 while nv < 21:
                     num = 0
-                    a = Chars.Testchar(nv,w,w)                                                                                                                                                                                                                      
+                    a = Chars.Testchar(nv,w,w)
                     d = Chars.Testchar(nv,x,x)
                     total = []
                     while num < 6000/a.AS('mainhand'):
@@ -129,8 +133,6 @@ if __name__ == "__main__":
             #aba =  min(comparar, key = lambda x:x[1])
             #print aba[0]
             #time.sleep(0.01)
-            
+
         print config.monsters[0].LIFE
         print config.players[0].LIFE
-        
-    

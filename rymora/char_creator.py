@@ -1,6 +1,14 @@
-import const as C
-import config
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+'''
+Rymora Land of Heroes
+
+Coyright © 2016 - Ramiro Tyzkza - ramiro.tyszka@gmail.com
+'''
+from conf import const as C
+from conf import config
 import Chars
+
 def create_combat():
     for x in ['roggar','miggah','kaifro','ziltan','potrak']:
         y = Chars.Monster.t_play(x,1)
@@ -8,13 +16,14 @@ def create_combat():
     for x in ['goblin warrior','goblin mage','goblin cleric','goblin assassin','goblin shaman']:
         y = Chars.Monster.brute(x,1)
         config.monsters.append(y)
+
 if __name__ == "__main__":
     class Char_Creator(C.Player):
         def __init__(self):
-            self.points = 
-            def str(self):
-                
-    points = 30
+            self.points = 2
+            # def str(self):
+
+    # points = 30
     while points != 0:
         str = raw_input('strengh')
         agi = raw_input('agility')
@@ -41,7 +50,6 @@ if __name__ == "__main__":
                 awsr = True
             else:
                 print 'Thats not a skill'
-        
+
         player = Char.Player(str,agi,vit,wis,int,skill1,30,skill2,20,skill3,10)
         config.players.append(player)
-        
