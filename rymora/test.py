@@ -1,9 +1,14 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-import config
+'''
+Rymora Land of Heroes
+
+Coyright © 2016 - Ramiro Tyzkza - ramiro.tyszka@gmail.com
+'''
+from conf import config
 import random
 class Test:
-    def __init__(self,caster,stat,cond,value,target,numtar,skill): 
+    def __init__(self,caster,stat,cond,value,target,numtar,skill):
         self.value = value
         self.cond = cond
         self.target = {}
@@ -20,15 +25,15 @@ class Test:
         random_tar = cls(caster,stat,cond,value,target,numtar,skill)
         true_target = [random.choice(random_tar.target)]
         return True, true_target
-        
+
     @classmethod
     def life(cls,caster,stat,cond,value,target,numtar,skill):
         life = cls(caster,stat,cond,value,target,numtar,skill)
         true_target = []
         sum = 0
-        
+
         if life.cond == '<=':
-            
+
             for x in life.target:
                 if x.LIFE_PERCENT <= life.value and x.ALIVE:
                     sum +=1
@@ -37,9 +42,9 @@ class Test:
                 return True, true_target
             else:
                 return False
-                
+
         if life.cond == '>=':
-            
+
             for x in life.target:
                 if x.LIFE_PERCENT >= life.value and x.ALIVE:
                     sum +=1
@@ -53,7 +58,7 @@ class Test:
         SP = cls(caster,stat,cond,value,target,numtar,skill)
         true_target = []
         sum = 0
-        
+
         if SP.cond == '<=':
             for x in SP.target:
                 if x.SP_PERCENT <= SP.value:
@@ -63,9 +68,9 @@ class Test:
                 return True, true_target
             else:
                 return False
-                
+
         if life.cond == '>=':
-            
+
             for x in SP.target:
                 if x.SP_PERCENT >= SP.value:
                     sum +=1
@@ -79,7 +84,7 @@ class Test:
         armor = cls(caster,stat,cond,value,target,numtar,skill)
         true_target = []
         sum = 0
-        
+
         for x in armor.target:
             if x.equipament['armor'].type == armor.value and x.ALIVE:
                 sum +=1
@@ -93,7 +98,7 @@ class Test:
     def effect(cls,caster,stat,cond,value,target,numtar,skill):
         effect = cls(caster,stat,cond,value,target,numtar,skill)
         sum = 0
-        
+
         for x in effect.target:
             for cat in effect.target.effects.keys():
                 if x.effects[cat].has_key(effect.value)and x.ALIVE:
@@ -102,13 +107,13 @@ class Test:
         if sum >= numtar:
             return True, true_target
         else:
-            return False    
+            return False
     @classmethod
     def stamina(cls,caster,cond,comparer,target,numtar):
         stamina = cls(caster,cond,comparer,target,numtar)
         sum = 0
         if cond == '<=':
-            
+
             for x in stamina.target:
                 if x.life_percent < percent and x.ALIVE:
                     sum +=1
@@ -128,4 +133,4 @@ class Test:
             if sum >= numtar:
                 return True, true_target
             else:
-                return False 
+                return False
