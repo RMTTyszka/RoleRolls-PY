@@ -20,17 +20,10 @@ def create_combat():
 if __name__ == "__main__":
     class Char_Creator(C.Player):
         def __init__(self):
-<<<<<<< HEAD:char_creator.py
             self.points = 30
             def str(self):
                 pass
     points = 30
-=======
-            self.points = 2
-            # def str(self):
-
-    # points = 30
->>>>>>> fd9a3c5ae567443ec9525c8494ac0b18cd606c01:rymora/char_creator.py
     while points != 0:
         str = raw_input('strengh')
         agi = raw_input('agility')
