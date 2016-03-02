@@ -11,9 +11,9 @@ def create_combat():
 if __name__ == "__main__":
     class Char_Creator(C.Player):
         def __init__(self):
-            self.points = 
+            self.points = 30
             def str(self):
-                
+                pass
     points = 30
     while points != 0:
         str = raw_input('strengh')
