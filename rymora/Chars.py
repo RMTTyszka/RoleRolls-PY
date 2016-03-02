@@ -1,30 +1,35 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-import const as C
+'''
+Rymora Land of Heroes
+
+Coyright © 2016 - Ramiro Tyzkza - ramiro.tyszka@gmail.com
+'''
+from conf import const as C
 import Powers as P
 from Powers import Power
-import Functions as F                                                                                                                                                                                                                                      
-import random                                                                                                                                                                                                                        
+import Functions as F
+import random
 import itens as I
 from test import Test
 import time
 
-class Char(object):                                                                                                                                                                                                                                
-    def __init__(self,nv):    
-        self.nv = nv                                                                                                                                                                                                                       
+class Char(object):
+    def __init__(self, nv):
+        self.nv = nv
         self.main = {}
-        #main atributes 
+        #main atributes
         for atr in C.atr_list:
-            setattr(self,atr,0)                                                                                                                                                                                                 
+            setattr(self,atr,0)
 
-        #Skills                                                                                                                                                                                                                   
+        #Skills
         for skill in C.skills_list:
             setattr(self,skill,0)
         self.at_e = 0
         self.at = 0
-        #about defense                                                                                                                                                                                                                          
-        self.defenses = {}                                                                                                                                                                                                                  
-        self.resists = {}                                                                                                                                                                                                                   
+        #about defense
+        self.defenses = {}
+        self.resists = {}
         self.equipament = {}
         self.equipament['offhand'] = 'empty'
         self.weaponpower = 'x'
@@ -32,8 +37,8 @@ class Char(object):
             self.defenses[defe] = self.defenses.get(defe,0)
         for res in C.resist_list:
             self.resists[res] = self.resists.get(res,0)
-        self.bonus_E = {} 
-        self.bonus_T = {} 
+        self.bonus_E = {}
+        self.bonus_T = {}
         self._life = None
         self._lifeMAX = 0
         self._sp = None
@@ -59,7 +64,7 @@ class Char(object):
     def LIFE(self):
         return self._life
     @LIFE.setter
-    def LIFE(self,value):
+    def LIFE(self, value):
         self._life = value
         if self._life >= self.LIFEMAX:
             self._life = self.LIFEMAX
@@ -73,13 +78,13 @@ class Char(object):
             return True
         else:
             return False
-    @property    
+    @property
     def LIFE_PERCENT(self):
         return round(self.LIFE/self.LIFEMAX*100,2)
     @LIFE_PERCENT.setter
     def LIFE_PERCENT(self,value):
         self._life = self.LIFEMAX*value/100
-        
+
     @property
     def SPMAX(self):
         a = 50
@@ -92,29 +97,29 @@ class Char(object):
     def SP(self):
         return self._sp
     @SP.setter
-    def SP(self,value):
+    def SP(self, value):
         self._sp = value
         if self._sp > self.SPMAX:
             self._sp = self.SPMAX
-    @property    
+    @property
     def SP_PERCENT(self):
         return round(self.SP/self.SPMAX*100,2)
     @SP_PERCENT.setter
-    def SP_PERCENT(self,value):
+    def SP_PERCENT(self, value):
         self._sp = self.SPMAX*value/100
-        
+
     @property
     def STAMINMAX(self):
         self._stamax = 25+ self.mod('vit')/2+self.mod('meditating')/2
         return self._stamax
-        
-        
-    def AS(self,weaponhand):
+
+
+    def AS(self, weaponhand):
         a = self.equipament[weaponhand].wep_atr['ASbase']
         b = self.mod('as')
         return round(a * (100-b)/100,2)
     @property
-    def EVD(self):                                                                                                                                                                                                                   
+    def EVD(self):
         a = self.mod('reflex')
         b = self.mod('agi')
         c = self.mod('evade')
@@ -166,7 +171,7 @@ class Char(object):
         b = self.mod('vit')/5
         c = self.mod('fortitude')
         return a + b + c
-    def DAMAGE_AE(self,atr):
+    def DAMAGE_AE(self, atr):
         a = self.mod('lore')/5
         b = self.mod('ae_damage')
         c = self.mod(atr)/5
@@ -186,10 +191,10 @@ class Char(object):
         a = self.equipament['mainhand'].wep_atr['counterrating']
         b = self.mod('counterrating')
         return a + b
-    
+
     #[0,1,'string',5]
     #[0,1,'string',5,'string2',1]
-    def mod(self,str,value = None):
+    def mod(self, str, value = None):
         if value != None:
             setattr(self,str,getattr(self,str)+value)
         else:
@@ -204,22 +209,22 @@ class Char(object):
             for enc in self.bonus_T:
                 if enc.has_key(str):
                     c += enc[str]
-            
+
             return  a+ b + c
-            
+
     class Unarmed:
         def __init__(self,skillnv,enchant):
             self.enchant = enchant
             for bon in self.enchant.keys():
                 if bon == 'damage' or bon == 'AT':
-                  
+
                     continue
                 self.enchant[bon] *= 2
             self.enchant['damage'] = skillnv * 12
             self.wep_atr = {}
-            for key, atr in wep_size_info['unarmed'].items():                                                                                                                                                                     
+            for key, atr in wep_size_info['unarmed'].items():
                 self.wep_atr[key] = atr
-            self.wep_skills = {'atkskill':'wrestling','atkatr':'str','danoatr':'str'} 
+            self.wep_skills = {'atkskill':'wrestling','atkatr':'str','danoatr':'str'}
     @property
     def def_AT(self):
         conds = []
@@ -243,7 +248,7 @@ class Char(object):
     #[life, '<', 50, allies, 1 target,skill]
         conds = []
         for arg in self.AI:
-            conds.append(arg)        
+            conds.append(arg)
         for x in conds:
             #teste = Test(*conds[h:h+6])
             call = getattr(Test,x[1])
@@ -254,14 +259,14 @@ class Char(object):
         self.useskill = 'Wait'
         self.AE_target = []
         return 0
-    @property    
+    @property
     def active_checker(self):
         if self.LIFE <= 0 or self.effects.has_key('stunned') or self.effects.has_key('sleeping'):
             return False
         else:
             return True
     def order(self,value = None):
-        if self.active_checker:  
+        if self.active_checker:
             if value == None:
                 '''define the Power, the target and the casting time'''
                 self._attack_spec_order = self.defpower
@@ -271,11 +276,11 @@ class Char(object):
                 if hasattr(self.equipament['offhand'],'weapons'):
                     self._attack_order.append(self.AS('offhand'))
             else:
-                '''faz passar o tempo para esse personagem, e 
+                '''faz passar o tempo para esse personagem, e
                 vefirica se esta na hora de atacar ou nao'''
                 for atk in range(len(self._attack_order)):
                     self._attack_order[atk] = round(self._attack_order[atk]-value,2)
-                    
+
                     #print atk
                 self._attack_spec_order = round(self._attack_spec_order - value,2)
                 #time.sleep(0.1)
@@ -326,19 +331,19 @@ class Char(object):
             print target.name, 'has', target.LIFE, 'of life', target.LIFE_PERCENT,'%','\n'
         if hit == False:
             print self.name, 'Missed'
-    def main_damage(self,target):                                                                                                                                                                                                                      
-        wep = self.equipament['mainhand']                                                                                                                                                                                                
-        a = random.randint(wep.wep_atr['danomin'],wep.wep_atr['danomax']) 
+    def main_damage(self,target):
+        wep = self.equipament['mainhand']
+        a = random.randint(wep.wep_atr['danomin'],wep.wep_atr['danomax'])
         a = (wep.wep_atr['danomin']+wep.wep_atr['danomax'])/2
-        b = wep.wep_atr['dano_mult']*(self.mod(wep.wep_skills['atkskill'])/5+self.DAMAGE_AT-target.FORTITUDE)                                                                       
-        c = wep.wep_atr['atr_mult']*self.mod(wep.wep_skills['danoatr'])/5*2                                                                                                                                               
+        b = wep.wep_atr['dano_mult']*(self.mod(wep.wep_skills['atkskill'])/5+self.DAMAGE_AT-target.FORTITUDE)
+        c = wep.wep_atr['atr_mult']*self.mod(wep.wep_skills['danoatr'])/5*2
         d = target.mod('prot')-wep.wep_atr['armor_pen']-self.mod('armor_pen')
         if d < 0: d = 0
         f = a+b+c-d
         if f < 0:
             return 0
-        return f                                                                                                                                                                                                                    
-            
+        return f
+
 
 class Testchar(Char):
     def __init__(self,nv,sizeweapon,armortype, weapontype = None):
@@ -355,13 +360,13 @@ class Testchar(Char):
         armor.equip(self)
         self.LIFEMAX
     def main_damage(self,target):
-        wep = self.equipament['mainhand']                                                                                                                                                                                                
-        a = random.randint(wep.wep_atr['danomin'],wep.wep_atr['danomax']) 
+        wep = self.equipament['mainhand']
+        a = random.randint(wep.wep_atr['danomin'],wep.wep_atr['danomax'])
         a = (wep.wep_atr['danomin']+wep.wep_atr['danomax'])/2
-        b = wep.wep_atr['dano_mult']*(self.mod(wep.wep_skills['atkskill'])/5+self.DAMAGE_AT-target.FORTITUDE)                                                                       
-        c = wep.wep_atr['atr_mult']*(self.mod(wep.wep_skills['danoatr'])/5*2)                                                                                                                                               
+        b = wep.wep_atr['dano_mult']*(self.mod(wep.wep_skills['atkskill'])/5+self.DAMAGE_AT-target.FORTITUDE)
+        c = wep.wep_atr['atr_mult']*(self.mod(wep.wep_skills['danoatr'])/5*2)
         d = target.mod('prot')-wep.wep_atr['armor_pen']-self.mod('armor_pen')
-        if d < 0: d = 0                                                                                                                                             
+        if d < 0: d = 0
         return (a+b+c-d)
         #/(60/self.equipament['mainhand'].wep_atr['ASbase'])
 
@@ -370,8 +375,8 @@ class Player(Char):
         Char.__init__(self,nv)
         #Atributes
         for atr in C.atr_list:
-            setattr(self,atr,0)                                                                                                                                                                                                 
-        #Skills                                                                                                                                                                                                                   
+            setattr(self,atr,0)
+        #Skills
         for skill in C.skills_list:
             setattr(self,skill,0)
         self.str += str
@@ -386,7 +391,7 @@ class Player(Char):
             self.target = None
         else:
             self.target = target
-        
+
 class Monster(Char):
     def __init__(self,name,nv):
         #Char.__init__(self,nv)
@@ -396,20 +401,20 @@ class Monster(Char):
             self.mod(atr,1+5*self.nv)
         for skill in C.skills_list:
             self.mod(skill,1+5*self.nv)
-    @classmethod                                                                                                                                                                                                                           
-    def brute(cls,name,nv):                                                                                                                                                                                                               
+    @classmethod
+    def brute(cls,name,nv):
         brute = cls(name,nv)
         best_atr = ['vit','str']
         best_skill = ['swordmanship','heavyweaponship','fencing','anatomy','armslore','military']
-        for x in C.atr_list:                                                                                                                                                                                                         
-            if x in best_atr:                                                                                                                                                                                                  
-                brute.mod(x,F.randATR(brute.nv))                                                                                                                                                                                           
-            else:                                                                                                                                                                                                                          
-                brute.mod(x,F.randatr(brute.nv))                                                                                                                                                                                          
-        for x in C.skills_list:                                                                                                                                                                                                            
+        for x in C.atr_list:
+            if x in best_atr:
+                brute.mod(x,F.randATR(brute.nv))
+            else:
+                brute.mod(x,F.randatr(brute.nv))
+        for x in C.skills_list:
             if x in best_skill:
-                brute.mod(x,F.randSKILL(brute.nv))                                                                                                                                                                                            
-            else:                                                                                                                                                                                                                          
+                brute.mod(x,F.randSKILL(brute.nv))
+            else:
                 brute.mod(x,F.randskill(brute.nv))
         brute.SPMAX
         brute.LIFEMAX
@@ -417,10 +422,10 @@ class Monster(Char):
         #criar arma principal
         categoria = random.choice(['cutting','smashing','piercing'])
         size = 'heavy'
-        arma = random.choice(C.weapons[categoria][size].keys())        
-        mainhand = I.Weapon(nv,categoria,size,arma)                                                                                                                                      
-        offhand = '2handed'                                                                                                                                                                                                            
-         
+        arma = random.choice(C.weapons[categoria][size].keys())
+        mainhand = I.Weapon(nv,categoria,size,arma)
+        offhand = '2handed'
+
         #criar armadura
         armor = I.Armor(nv,'medium')
         armor.equip(brute)
@@ -429,20 +434,20 @@ class Monster(Char):
         brute.AI = [[brute,'SP','<=',20,'self',1,'Meditation'],[brute,'life', '<=', 80, 'monsters', 1, 'Heal'],[brute,'life', '<=',100,'allies',1,'Power_Attack']]
         brute.AI_AT = [[brute,'armor','','heavy','allies',1,'AT'],[brute,'life','<=',100,'allies',1,'AT']]
         return brute
-    @classmethod                                                                                                                                                                                                                           
-    def t_play(cls,name,nv):                                                                                                                                                                                                               
+    @classmethod
+    def t_play(cls,name,nv):
         t_play = cls(name,nv)
         best_atr = ['vit','str']
         best_skill = ['swordmanship','heavyweaponship','fencing','anatomy','armslore','military']
-        for x in C.atr_list:                                                                                                                                                                                                         
-            if x in best_atr:                                                                                                                                                                                                  
-                t_play.mod(x,F.randATR(t_play.nv))                                                                                                                                                                                           
-            else:                                                                                                                                                                                                                          
-                t_play.mod(x,F.randatr(t_play.nv))                                                                                                                                                                                          
-        for x in C.skills_list:                                                                                                                                                                                                            
+        for x in C.atr_list:
+            if x in best_atr:
+                t_play.mod(x,F.randATR(t_play.nv))
+            else:
+                t_play.mod(x,F.randatr(t_play.nv))
+        for x in C.skills_list:
             if x in best_skill:
-                t_play.mod(x,F.randSKILL(t_play.nv))                                                                                                                                                                                            
-            else:                                                                                                                                                                                                                          
+                t_play.mod(x,F.randSKILL(t_play.nv))
+            else:
                 t_play.mod(x,F.randskill(t_play.nv))
         t_play.SPMAX
         t_play.LIFEMAX
@@ -450,10 +455,10 @@ class Monster(Char):
         #criar arma principal
         categoria = random.choice(['cutting','smashing','piercing'])
         size = 'heavy'
-        arma = random.choice(C.weapons[categoria][size].keys())        
-        mainhand = I.Weapon(nv,categoria,size,arma)                                                                                                                                      
-        offhand = '2handed'                                                                                                                                                                                                            
-         
+        arma = random.choice(C.weapons[categoria][size].keys())
+        mainhand = I.Weapon(nv,categoria,size,arma)
+        offhand = '2handed'
+
         #criar armadura
         armor = I.Armor(nv,'medium')
         armor.equip(t_play)
