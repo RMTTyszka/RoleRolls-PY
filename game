@@ -1,0 +1,63 @@
+. import pygame, sys
+ 2. from pygame.locals import *
+ 3.
+ 4. # set up pygame
+ 5. pygame.init()
+ 6.
+ 7. # set up the window
+ 8. windowSurface = pygame.display.set_mode((500, 400), 0, 32)
+ 9. pygame.display.set_caption('Hello world!')
+10.
+11. # set up the colors
+12. BLACK = (0, 0, 0)
+13. WHITE = (255, 255, 255)
+14. RED = (255, 0, 0)
+15. GREEN = (0, 255, 0)
+16. BLUE = (0, 0, 255)
+17.
+18. # set up fonts
+19. basicFont = pygame.font.SysFont(None, 48)
+20.
+21. # set up the text
+22. text = basicFont.render('Hello world!', True, WHITE, BLUE)
+23. textRect = text.get_rect()
+24. textRect.centerx = windowSurface.get_rect().centerx
+25. textRect.centery = windowSurface.get_rect().centery
+26.
+27. # draw the white background onto the surface
+28. windowSurface.fill(WHITE)
+29.
+30. # draw a green polygon onto the surface
+31. pygame.draw.polygon(windowSurface, GREEN, ((146, 0), (291, 106), (236, 277), (56, 277), (0, 106)))
+32.
+33. # draw some blue lines onto the surface
+34. pygame.draw.line(windowSurface, BLUE, (60, 60), (120, 60), 4)
+35. pygame.draw.line(windowSurface, BLUE, (120, 60), (60, 120))
+36. pygame.draw.line(windowSurface, BLUE, (60, 120), (120, 120), 4)
+37.
+38. # draw a blue circle onto the surface
+39. pygame.draw.circle(windowSurface, BLUE, (300, 50), 20, 0)
+40.
+41. # draw a red ellipse onto the surface
+42. pygame.draw.ellipse(windowSurface, RED, (300, 250, 40, 80), 1)
+43.
+44. # draw the text's background rectangle onto the surface
+45. pygame.draw.rect(windowSurface, RED, (textRect.left - 20, textRect.top - 20, textRect.width + 40, textRect.height + 40))
+46.
+47. # get a pixel array of the surface
+48. pixArray = pygame.PixelArray(windowSurface)
+49. pixArray[480][380] = BLACK
+50. del pixArray
+51.
+52. # draw the text onto the surface
+53. windowSurface.blit(text, textRect)
+54.
+55. # draw the window onto the screen
+56. pygame.display.update()
+57.
+58. # run the game loop
+59. while True:
+60.     for event in pygame.event.get():
+61.         if event.type == QUIT:
+62.             pygame.quit()
+63.             sys.exit()
