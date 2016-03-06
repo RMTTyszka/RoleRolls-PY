@@ -1,5 +1,7 @@
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
 import pygame
-from rymora.conf import const as C
+from rymora import conf as C
 from rymora.conf import config
 from rymora import Powers as P
 from rymora.Powers import Power
@@ -73,5 +75,5 @@ while not done:
     for mons in config.monsters:
         print mons.name, mons.LIFE
     print 'time is',t
-    
+
     clock.tick(60)

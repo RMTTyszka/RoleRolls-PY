@@ -6,38 +6,38 @@ Rymora Land of Heroes
 Coyright © 2016 - Ramiro Tyzkza - ramiro.tyszka@gmail.com
 '''
 import random
-from conf import const as C
 
 def randATR(nv):
     b = 0
     for j in range(15):
         b += random.randint(1,1) #(0,1)
     return b
+
 def randatr(nv):
     b = 0
     for j in range(5):
         b += random.randint(1,1)  #(-1,1)
     return b
+
 def randSKILL(nv):
     b = 0
     for j in range(15):
         b += random.randint(1,1)
     return b
+
 def randskill(nv):
     b = 0
     for j in range(10):
         b += random.randint(1,1)
     return b
 
-def rand_bonus_equip(nv,x):
-    b = nv/2*x
-    for j in range(b):
+def rand_bonus_equip(nv, x):
+    b = 0
+    for j in range(nv/2*x):
         b += random.randint(-1,1)
     return b
 
-
-
-def autoattack(attacker,target = None):
+def autoattack(attacker, target=None):
     if target == None:
         comparare = [[char, char.risk_lv] for char in attacker.AT_target]
         compare =  max(comparare, key=lambda x:x[1])
@@ -75,6 +75,7 @@ def autoattack(attacker,target = None):
         print attacker.name, 'Missed'
     attacker.AT_target = None
     #{'AT':,'evade':,'AE':,'resist':,'AS':,'crit':,'resil':,'defense':,'atr':,'status':,'stagen':,'damage':,'fortitude':,'prot':,'skills':}
+
 def t_autoattack(AT,DEF):
     a = random.randint(1,100)
     t = a + AT.AT(AT.equipament['mainhand']) - DEF.EVD
@@ -82,13 +83,7 @@ def t_autoattack(AT,DEF):
         return AT.main_damage(DEF)
     else:
         return 0
-def def_targets(targets,numtar):
-    newlist = []
 
-    newlist = sorted([[tar.risk_lv,tar] for tar in targets],reverse=True)[:numtar]
-    newlist = [tar[1] for tar in newlist]
-
-    return newlist
 def risk_lv(players,monsters):
     for char in players:
         char.risk_lv = round((100 - char.LIFE_PERCENT)/10,2)
@@ -98,9 +93,21 @@ def risk_lv(players,monsters):
         char.risk_lv = round((100 - char.LIFE_PERCENT)/10,2)
         char.risk_lv += len(char.effects['harmfull'])
         char.risk_lv -= len(char.effects['helpfull'])
+
 def det_end(list):
     y = False
     for x in list:
         if x._live == True:
             y = True
     return y
+
+if __name__ == '__main__':
+    # stress test random to check if they're in range
+    for i in range(100):
+        assert 0 <= randATR(0) <= 15
+        assert -5 <= randatr(0) <= 5
+        assert 0 <= randSKILL(0) <= 15
+        assert 0 <= randskill(0) <= 10
+        assert -10 <= rand_bonus_equip(10, 2) <= 10
+    # ... add all the tests
+    print 'All tests ok!'

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 '''
 Rymora Land of Heroes
+Char Creator
 
 Coyright © 2016 - Ramiro Tyzkza - ramiro.tyszka@gmail.com
 '''

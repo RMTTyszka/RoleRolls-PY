@@ -6,8 +6,14 @@ Rymora Land of Heroes
 Coyright © 2016 - Ramiro Tyzkza - ramiro.tyszka@gmail.com
 '''
 import random
-from conf import const as C
-import Functions as F
+
+def def_targets(targets,numtar):
+    newlist = []
+    newlist = sorted([[tar.risk_lv,tar] for tar in targets],reverse=True)[:numtar]
+    newlist = [tar[1] for tar in newlist]
+
+    return newlist
+
 class Power:
     def __init__(self,atr,skill,caster):
         self.AE = caster.AE(atr,skill)
@@ -21,7 +27,7 @@ class Power:
         heal.CT = 15.0
         heal.spiritpower = 22
         def use():
-            targets = F.def_targets(targets,2)
+            targets = def_targets(targets,2)
             for target in targets:
                 if caster.SP - heal.spiritpower*len(targets) < 0:
                     print 'not enough spiritpower'
@@ -42,7 +48,7 @@ class Power:
         heal.CT = 10.0
         heal.spiritpower = 15
         def use():
-            heal.targets = F.def_targets(targets,1)
+            heal.targets = def_targets(targets,1)
             if caster.SP - heal.spiritpower*len(heal.targets) < 0:
                 print 'not enough spiritpower'
                 caster.useskill = 'Wait'
@@ -62,7 +68,7 @@ class Power:
         poweratk.CT = 10.0
         poweratk.spiritpower = 15
         def use():
-            poweratk.targets = F.def_targets(targets,1)
+            poweratk.targets = def_targets(targets,1)
             if caster.SP - poweratk.spiritpower*len(poweratk.targets) < 0:
                     print 'not enough spiritpower'
                     caster.useskill = 'Wait'
