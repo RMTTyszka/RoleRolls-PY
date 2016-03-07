@@ -5,7 +5,7 @@ Rymora Land of Heroes
 
 Coyright © 2016 - Ramiro Tyzkza - ramiro.tyszka@gmail.com
 '''
-from rymora.conf import const as C
+from rymora import conf as C
 from rymora.conf import config
 from rymora import Powers as P
 from rymora.Powers import Power
