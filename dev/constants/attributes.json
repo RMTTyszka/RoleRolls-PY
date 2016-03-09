@@ -1,0 +1,5 @@
+{
+  "attributes_list": ["strength", "agility", "vitality", "wisdom", "inteligence",
+    "charisma"],
+  "base_attr_conf": "insira sua configuração aqui"
+}
