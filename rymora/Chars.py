@@ -13,11 +13,22 @@ import random
 import itens as I
 from test import Test
 import time
-
-class Char(object):
-    def __init__(self, nv):
+import pygame
+BLACK = ( 0,0,0)
+BLUE    = (   0,   0,   255)
+WHITE    = ( 255, 255, 255)
+GREEN    = (   0, 255,   0)
+RED      = ( 255,   0,   0)
+XCOLOR   = ( 100, 100, 100)
+rangecolor = [BLUE, WHITE, GREEN, RED, XCOLOR]
+class Char(pygame.sprite.Sprite):
+    def __init__(self, nv,color):
+        pygame.sprite.Sprite.__init__(self)
         self.nv = nv
-        self.main = {}
+        self.color = color
+        self.image = pygame.Surface([64,64])
+        self.image.fill(self.color)
+        self.rect = self.image.get_rect()
         #main atributes
         for atr in C.atr_list:
             setattr(self,atr,0)
@@ -59,6 +70,8 @@ class Char(object):
         self._lifeMAX = a + b + c
         if self._life == None:
             self._life = self._lifeMAX
+        if self._life > self._lifeMAX:
+                self._life = self._lifeMAX
         return self._lifeMAX
     @property
     def LIFE(self):
@@ -125,6 +138,12 @@ class Char(object):
         c = self.mod('evade')
         d = a + b + c
         return d
+    @property
+    def PROT(self):
+        a = self.mod('prot')
+        if a < 0:
+            a = 0
+        return a
     def AT(self,weapon):
         a = self.mod('at') + weapon.wep_atr['modataque']
         b = self.mod(weapon.wep_skills['atkskill'])
@@ -265,37 +284,8 @@ class Char(object):
             return False
         else:
             return True
-    def order(self,value = None):
-        if self.active_checker:
-            if value == None:
-                '''define the Power, the target and the casting time'''
-                self._attack_spec_order = self.defpower
-                '''define the attack order'''
-                self._attack_order = []
-                self._attack_order.append(self.AS('mainhand'))
-                if hasattr(self.equipament['offhand'],'weapons'):
-                    self._attack_order.append(self.AS('offhand'))
-            else:
-                '''faz passar o tempo para esse personagem, e
-                vefirica se esta na hora de atacar ou nao'''
-                for atk in range(len(self._attack_order)):
-                    self._attack_order[atk] = round(self._attack_order[atk]-value,2)
 
-                    #print atk
-                self._attack_spec_order = round(self._attack_spec_order - value,2)
-                #time.sleep(0.1)
-                if self._attack_order[0] <= 0:
-                    self.attack('mainhand')
-                    self._attack_order[0] += self.AS('mainhand')
-                if hasattr(self.equipament['offhand'],'weapons'):
-                    if self._attack_order[1] <= 0:
-                        self.attack('offhand')
-                        self._attack_order[1] += self.AS('offhand')
-                if self._attack_spec_order <= 0:
-                    self.cast
-                    self._attack_spec_order += self.defpower
     def attack(self,hand):
-        time.sleep(1)
         if self.target == None:
             self.def_AT
             comparare = [[char, char.risk_lv] for char in self.AT_target]
@@ -337,7 +327,7 @@ class Char(object):
         a = (wep.wep_atr['danomin']+wep.wep_atr['danomax'])/2
         b = wep.wep_atr['dano_mult']*(self.mod(wep.wep_skills['atkskill'])/5+self.DAMAGE_AT-target.FORTITUDE)
         c = wep.wep_atr['atr_mult']*self.mod(wep.wep_skills['danoatr'])/5*2
-        d = target.mod('prot')-wep.wep_atr['armor_pen']-self.mod('armor_pen')
+        d = target.PROT-wep.wep_atr['armor_pen']-self.mod('armor_pen')
         if d < 0: d = 0
         f = a+b+c-d
         if f < 0:
@@ -393,17 +383,17 @@ class Player(Char):
             self.target = target
 
 class Monster(Char):
-    def __init__(self,name,nv):
+    def __init__(self,name,nv,color):
         #Char.__init__(self,nv)
-        super(Monster,self).__init__(nv)
+        super(Monster,self).__init__(nv,color)
         self.name = name
         for atr in C.atr_list:
             self.mod(atr,1+5*self.nv)
         for skill in C.skills_list:
             self.mod(skill,1+5*self.nv)
     @classmethod
-    def brute(cls,name,nv):
-        brute = cls(name,nv)
+    def brute(cls,name,nv,color):
+        brute = cls(name,nv,color)
         best_atr = ['vit','str']
         best_skill = ['swordmanship','heavyweaponship','fencing','anatomy','armslore','military']
         for x in C.atr_list:
@@ -435,8 +425,8 @@ class Monster(Char):
         brute.AI_AT = [[brute,'armor','','heavy','allies',1,'AT'],[brute,'life','<=',100,'allies',1,'AT']]
         return brute
     @classmethod
-    def t_play(cls,name,nv):
-        t_play = cls(name,nv)
+    def t_play(cls,name,nv,color):
+        t_play = cls(name,nv,color)
         best_atr = ['vit','str']
         best_skill = ['swordmanship','heavyweaponship','fencing','anatomy','armslore','military']
         for x in C.atr_list:

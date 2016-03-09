@@ -37,6 +37,7 @@ def rand_bonus_equip(nv, x):
         b += random.randint(-1,1)
     return b
 
+
 def autoattack(attacker, target=None):
     if target == None:
         comparare = [[char, char.risk_lv] for char in attacker.AT_target]
@@ -84,22 +85,7 @@ def t_autoattack(AT,DEF):
     else:
         return 0
 
-def risk_lv(players,monsters):
-    for char in players:
-        char.risk_lv = round((100 - char.LIFE_PERCENT)/10,2)
-        char.risk_lv += len(char.effects['harmfull'])
-        char.risk_lv -= len(char.effects['helpfull'])
-    for char in monsters:
-        char.risk_lv = round((100 - char.LIFE_PERCENT)/10,2)
-        char.risk_lv += len(char.effects['harmfull'])
-        char.risk_lv -= len(char.effects['helpfull'])
 
-def det_end(list):
-    y = False
-    for x in list:
-        if x._live == True:
-            y = True
-    return y
 
 if __name__ == '__main__':
     # stress test random to check if they're in range

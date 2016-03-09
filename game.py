@@ -16,16 +16,16 @@ import numbers
 def Start_Monsters():
     #Create Monsters
     for x in ['roggar','miggah','kaifro','ziltan','potrak']:
-        y = Chars.Monster.t_play(x,1)
+        y = Chars.Monster.t_play(x,1,BLUE)
         config.players.append(y)
         #Creator Players
         for x in ['goblin warrior','goblin mage','goblin cleric','goblin assassin','goblin shaman']:
-            y = Chars.Monster.brute(x,1)
+            y = Chars.Monster.brute(x,1,BLUE)
             config.monsters.append(y)
 def Draw_Monsters():
     for x in range (5):
-
-        config.monsters[x].image = pygame.draw.rect(screen,rangecolor[x],(x*100,64,64,64))
+        #pygame.draw.rect(screen,rangecolor[x],(x*100,64,64,64))
+        config.monsters[x].sprite = pygame.sprite.Sprite()
         font = pygame.font.SysFont('Calibri', 15, True, False)
         text = font.render(str(config.monsters[x].name),True,rangecolor[x-1])
         screen.blit(text,[x*100,64])
@@ -56,24 +56,6 @@ while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
                 done = True
-    t = 0
-    for player in config.players:
-        player.order()
-    for mons in config.monsters:
-        mons.order()
-    while F.det_end(config.players) == True and F.det_end(config.monsters) == True:
-        if t%1 == 0.0:  print 'time is',t
-        F.risk_lv(config.players,config.monsters)
-        for play in config.players:
-            play.order(0.1)
-        for mons in config.monsters:
-            mons.order(0.1)
-        #time.sleep(0.1)
-        t = round(t+0.1,2)
-    for play in config.players:
-        print play.name, play.LIFE
-    for mons in config.monsters:
-        print mons.name, mons.LIFE
-    print 'time is',t
+    
 
     clock.tick(60)

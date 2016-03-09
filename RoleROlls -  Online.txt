@@ -144,3 +144,7 @@ studed leather armor = fraco contra piercing
 1 - coward lesser inferior common superior excepcional brave agressive expert major glorious magnifcent powerful tremendous monstruous gigantic gargantuan titanic abyssal colossal
 
 Experiencia eh calculada com base no tempo de combate e total de dano desferido e sofrido
+
+
+http://stackoverflow.com/questions/14700889/pygame-level-menu-states
+https://www.youtube.com/watch?v=6DyRAmQ7HAE

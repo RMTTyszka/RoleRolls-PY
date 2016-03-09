@@ -13,12 +13,14 @@ magicoffhand = {'evade':1,'AE':1,'AS':1,'crit':1,'resil':1,}
 wep_enchant_range = {'well made':6,'masterpiece':5,'magic':4,'enhanced':3,'rare':2,'legendary':1}
 
 class Item(object):
-    item_cat = ['broken','half broken','deficient','poor','inferior','moderated',
+    item_cat = [
+                'broken','half broken','deficient','poor','inferior','moderated',
                 'acceptable','common','fine','good','useful','fency','superior',
                 'excelent','admirable','splendid','extraordinary','awesome','best','first-class']
-    item_value = [4,8,12,16,20,40,60,80,100,120,220,320,420,520,620,1120,1620,2120
-                    ,2620,3120,5620,8120,10620,13120,15620,28120,40620,53120,65620
-                    ,78120]
+    item_value = [
+                4,8,12,16,20,40,60,80,100,120,220,320,420,520,620,1120,1620,2120
+                ,2620,3120,5620,8120,10620,13120,15620,28120,40620,53120,65620
+                ,78120]
     def __init__(self,nv):
         self.nv = nv
         self.cat = self.item_cat[nv-1]
@@ -70,24 +72,63 @@ class Equipable(Item):
         self.enchant[list[0]] = self.enchant.get(list[0],0) - 5
         self.enchant[list[1]] = self.enchant.get(list[1],0) + 5
 class Weapon(Equipable):
-    wep_type = {'cutting':{'atkskill':'swordmanship','atkatr':'str','danoatr':'str'},
-            'smashing':{'atkskill':'heavyweaponship','atkatr':'str','danoatr':'str'},
-            'piercing':{'atkskill':'fencing','atkatr':'agi','danoatr':'agi'},
-            'ranged':{'atkskill':'archery','atkatr':'agi','danoatr':'agi'},
-            'thrown':{'atkskill':'archery','atkatr':'agi','danoatr':'str'},
-            'catalyst':{'atkskill':'magery','atkatr':'wis','danoatr':'wis'}}
-    weapons = {'catalyst':{'heavy':{'staff':'normal'},'medium':{'rod':'normal'},'light':{'wand':'normal','orb':'normal'}},
-            'cutting':{'medium':{'longsword':'normal'},'light':{'dagger':'normal'},'heavy':{'Great Axe':'normal'}},
-            'smashing':{'light':{'hammer': 'normal'},'medium':{'morningstar': 'normal'},'heavy':{'maul': 'normal'}}
-            ,'piercing':{'light':{'dagger':'normal'},'medium':{'rapier':'normal'},'heavy':{'war pickaxe':'normal'}}}
-    wep_size_info = {'light':{'ASbase':2.5,'danomin':8,'danomax':18,'modataque':0,
-            'dano_mult':1.0,'atr_mult':0.5,'counterrating':15,'armor_pen':0},
-        'medium':{'ASbase':5.0,'danomin':8,'danomax':18,'modataque':0,'dano_mult':1.5,
-            'atr_mult':1,'counterrating':10,'armor_pen':0},
-        'heavy':{'ASbase':15.0,'danomin':8,'danomax':18,'modataque':8,'dano_mult':2.0,
-           'atr_mult':3,'counterrating':5,'armor_pen':5}}
+    wep_type = {
+                'cutting':{
+                        'atkskill':'swordmanship','atkatr':'str','danoatr':'str'},
+                'smashing':{
+                        'atkskill':'heavyweaponship','atkatr':'str','danoatr':'str'},
+                'piercing':{
+                        'atkskill':'fencing','atkatr':'agi','danoatr':'agi'},
+                'ranged':{
+                        'atkskill':'archery','atkatr':'agi','danoatr':'agi'},
+                'thrown':{
+                        'atkskill':'archery','atkatr':'agi','danoatr':'str'},
+                'catalyst':{
+                        'atkskill':'magery','atkatr':'wis','danoatr':'wis'}}
+    weapons = {
+            'catalyst':{
+                        'heavy':{
+                                'staff':'normal'},
+                        'medium':{
+                                'rod':'normal'},
+                        'light':{
+                                'wand':'normal',
+                                'orb':'normal'}},
+            'cutting':{
+                        'medium':{
+                                'longsword':'normal'},
+                        'light':{
+                                'dagger':'normal'},
+                        'heavy':{
+                                'Great Axe':'normal'}},
+            'smashing':{
+                        'light':{
+                                'hammer': 'normal'},
+                        'medium':{
+                                'morningstar': 'normal'},
+                        'heavy':{
+                                'maul': 'normal'}}
+            ,'piercing':{
+                        'light':{
+                                'dagger':'normal'},
+                        'medium':{
+                                'rapier':'normal'},
+                        'heavy':{
+                                'war pickaxe':'normal'}}}
+    wep_size_info = {
+                    'light':{
+                            'ASbase':2.5,'danomin':8,'danomax':18,'modataque':0,
+                            'dano_mult':1.0,'atr_mult':0.5,'counterrating':15,'armor_pen':0},
+                    'medium':{
+                            'ASbase':5.0,'danomin':8,'danomax':18,'modataque':0,'dano_mult':1.5,
+                            'atr_mult':1,'counterrating':10,'armor_pen':0},
+                    'heavy':{
+                            'ASbase':15.0,'danomin':8,'danomax':18,'modataque':8,'dano_mult':2.0,
+                            'atr_mult':3,'counterrating':5,'armor_pen':5}}
     wep_enchants = {'as':1,'resil':1,'crit':1,'AE':1,'evade':1,'damage':8,'AT':1}
+
     equipable_slot = ['mainhand','offhand']
+
     def __init__(self,nv,type = None,size = None,weapon = None, mf = 0):
         super(Weapon,self).__init__(nv)
         if type == None:
@@ -139,14 +180,44 @@ class Weapon(Equipable):
         else:
             print 'This weapon is too heavy to be equipped on your offhand'
 class Armor(Equipable):
-    armors = {'light':{'cloth':['smashing','piercing'],'robe':['cutting','smashing'], 'leather':['piercing','cutting']},
-            'medium': {'studded leather':['cutting','smashing'],'chain mail':['smashing','piercing'],'half plate':['piercing','cutting']},
-            'heavy':{'scale armor':['cutting','smashing'],'fullplate':['smashing','piercing'],'splint mail':['piercing','cutting']}}
-    armorstype = {'None': {'prot':0,'evade':5},'light': {'prot':1,'evade':0},'medium':{'prot':6,'evade':-6},'heavy':{'prot':11,'evade':-19}}
-    armor_enchants = {'bonus':{'evade':1,'resil':1,'fortitude':1,'magicred':5},
-                'resist':{'stun':2,'weakness':2,
-                    'slow':2,'blindness':2,'curse':2},
-                'defense':{'cutting':1,'smashing':1,'piercing':1,'spell':1}}
+    armors = {
+            'light':{
+                'cloth':[
+                        'smashing','piercing'],
+                'robe':[
+                        'cutting','smashing'],
+                'leather':[
+                        'piercing','cutting']},
+            'medium': {
+                'studded leather':[
+                            'cutting','smashing'],
+                'chain mail':[
+                            'smashing','piercing'],
+                'half plate':[
+                            'piercing','cutting']},
+            'heavy':{
+                'scale armor':[
+                            'cutting','smashing'],
+                'fullplate':[
+                            'smashing','piercing'],
+                'splint mail':[
+                            'piercing','cutting']}}
+    armorstype = {
+                'None': {
+                        'prot':0,'evade':5},
+                'light': {
+                        'prot':1,'evade':0},
+                'medium':{
+                        'prot':6,'evade':-6},
+                'heavy':{
+                        'prot':11,'evade':-19}}
+    armor_enchants = {
+                    'bonus':{
+                            'evade':1,'resil':1,'fortitude':1,'magicred':5},
+                    'resist':{
+                            'stun':2,'weakness':2,'slow':2,'blindness':2,'curse':2},
+                    'defense':{
+                            'cutting':1,'smashing':1,'piercing':1,'spell':1}}
     equipable_slot = ['armor']
     def __init__(self,nv,type = None,armor = None, mf = 0):
         super(Armor,self).__init__(nv)
@@ -192,8 +263,15 @@ class Armor(Equipable):
     def equip(self,char):
         self.selfequip(char,'armor')
 class Glove(Equipable):
-    gloves_enchants = {'AT':1,'AE':1,'AS':1,'crit':1,'stareg':1}
-    gloves_type = {'cloth':['cutting','smashing'],'leather':['smashing','piercing'],'metal':['piercing','cutting']}
+    gloves_enchants = {
+                        'AT':1,'AE':1,'AS':1,'crit':1,'stareg':1}
+    gloves_type = {
+                'cloth':[
+                        'cutting','smashing'],
+                'leather':[
+                        'smashing','piercing'],
+                'metal':[
+                        'piercing','cutting']}
     equipable_slot = ['gloves']
     def __init__(self,nv,type = None,mf = 0):
         super(Glove,self).__init__(nv)
@@ -217,10 +295,20 @@ class Glove(Equipable):
         self.det_weak(self.gloves_type[self.type])
 
 class Head(Equipable):
-    heads_enchants = {'bonus':{'evade':1,'resil':1,'fortitude':1},
-                        'defense':{'cutting':1,'smashing':1,'piercing':1,'spell':1},
-                        'resist':{'stun':2,'weakness':2,'slow':2,'blindness':2,'curse':2}}
-    heads_type = {'cloth':['cutting','smashing'],'leather':['smashing','piercing'],'metal':['piercing','cutting']}
+    heads_enchants = {
+                    'bonus':{
+                            'evade':1,'resil':1,'fortitude':1},
+                    'defense':{
+                            'cutting':1,'smashing':1,'piercing':1,'spell':1},
+                    'resist':{
+                            'stun':2,'weakness':2,'slow':2,'blindness':2,'curse':2}}
+    heads_type = {
+                'cloth':[
+                        'cutting','smashing'],
+                'leather':[
+                        'smashing','piercing'],
+                'metal':[
+                        'piercing','cutting']}
     equipable_slot = ['head']
     def __init__(self,nv,type = None,mf = 0):
         super(Head,self).__init__(nv)
@@ -255,8 +343,15 @@ class Head(Equipable):
             self.enchant[x] += self.rand_bonus_equip(nv,self.enchant[x])
         self.det_weak(self.heads_type[self.type])
 class Boots(Equipable):
-    boots_enchants = {'AT':1,'AE':1,'AS':1,'crit':1,'stareg':1,'counterrating':1}
-    boots_type = {'cloth':['cutting','smashing'],'leather':['smashing','piercing'],'metal':['piercing','cutting']}
+    boots_enchants = {
+                    'AT':1,'AE':1,'AS':1,'crit':1,'stareg':1,'counterrating':1}
+    boots_type = {
+            'cloth':[
+                    'cutting','smashing'],
+            'leather':[
+                    'smashing','piercing'],
+            'metal':[
+                    'piercing','cutting']}
     equipable_slot = ['boots']
     def __init__(self,nv,type = None,mf = 0):
         super(Boots,self).__init__(nv)

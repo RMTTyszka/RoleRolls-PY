@@ -16,9 +16,202 @@ from rymora import char_creator as CC
 import random
 import time
 import numbers
+import pygame
 #Globals0
+BLACK = ( 0,0,0)
+BLUE    = (   0,   0,   255)
+WHITE    = ( 255, 255, 255)
+GREEN    = (   0, 255,   0)
+RED      = ( 255,   0,   0)
+GRAY   = ( 100, 100, 100)
+rangecolor = [BLUE, WHITE, GREEN, RED, GRAY]
+class Battle():
+    def __init__(self,Players, Monsters,Enviroment = None):
+        pygame.init()
+        self.basicFont = pygame.font.Font(None, 20)
+        self.Players = Players
+        self.Monsters = Monsters
+        self.screen = pygame.display.set_mode((640,640))
+        self.background = pygame.Surface(self.screen.get_size())
+        self.background.fill(BLACK)
+        self.frame = 30
+        self.fpstime = pygame.time.Clock()
+        self.pl = pygame.sprite.RenderPlain()
+
+    def Normal_Battle(self):
+            self.screen.fill(BLACK)
+            offset = 0
+            for play in self.Players:
+                play.sprite.image, play.sprite.rect = CC.load_image("Green_Goblin.png",-1)
+
+                play.sprite.rect.topleft = (64+offset,640-128)
+                self.pl.add(play.sprite)
+                offset += 100
+            offset = 0
+            for mons in self.Monsters:
+                mons.sprite.image, mons.sprite.rect = CC.load_image("Green_Goblin.png",-1)
+
+                #self.screen.blit(play.image,(-64+offset,640))
+                mons.sprite.rect.topleft = (64+offset,128)
+                self.pl.add(mons.sprite)
+                offset += 100
+            self.pl.draw(self.screen)
+            pygame.display.flip()
+
+            self.t = 0
+            tick = 0.1
+            for player in self.Players:
+                self.order(player)
+            for mons in self.Monsters:
+                self.order(mons)
+            while 1:
+                if self.t%1 == 0.0:  print 'time is',self.t
+                for play in self.Players:
+                    self.det_end
+                    self.risk_lv
+                    self.order(play,tick)
+                for mons in self.Monsters:
+                    self.det_end
+                    self.risk_lv
+                    self.order(mons,tick)
+                #time.sleep(0.1)
+                self.t = round(self.t+0.1,2)
+            pygame.display.update()
+            self.fpstime.tick(self.fps)
+    @property
+    def risk_lv(self):
+        for char in self.Players:
+            char.risk_lv = round((100 - char.LIFE_PERCENT)/10,2)
+            char.risk_lv += len(char.effects['harmfull'])
+            char.risk_lv -= len(char.effects['helpfull'])
+        for char in self.Monsters:
+            char.risk_lv = round((100 - char.LIFE_PERCENT)/10,2)
+            char.risk_lv += len(char.effects['harmfull'])
+            char.risk_lv -= len(char.effects['helpfull'])
+    @property
+    def det_end(self):
+        y = False
+        for x in self.Players:
+            if x.ALIVE:
+                y = True
+        z = False
+        for h in self.Monsters:
+            if h.ALIVE:
+                z = True
+        if z == False or y == False:
+            self.end_battle
+    @property
+    def end_battle(self):
+        for play in self.Players:
+            print play.name,play.LIFE
+        for mons in self.Monsters:
+            print mons.name,mons.LIFE
+        print 'time is',self.t
+        quit()
+    def anima_evd(self,creature):
 
 
+        text = self.basicFont.render('Evade', 1, BLUE)
+        self.screen.blit(text,(creature.sprite.rect.left,creature.sprite.rect.top-30))
+        pygame.display.flip()
+
+    def anima_dam(self,creature,damage):
+        text = self.basicFont.render(str(damage), 1, RED)
+        textrect = creature.sprite.rect.move(0,64)
+        self.screen.blit(text,(textrect))
+        pygame.display.flip()
+        for x in range(3):
+            self.screen.blit(self.background,creature.sprite.rect,creature.sprite.rect)
+            creature.sprite.rect.centerx += 3
+            self.screen.blit(creature.sprite.image,creature.sprite.rect)
+            pygame.display.flip()
+            pygame.time.delay(50)
+            self.screen.blit(self.background,creature.sprite.rect,creature.sprite.rect)
+            creature.sprite.rect.centerx -= 3
+            self.screen.blit(creature.sprite.image,creature.sprite.rect)
+            pygame.display.flip()
+            pygame.time.delay(50)
+            self.screen.blit(self.background,creature.sprite.rect,creature.sprite.rect)
+            creature.sprite.rect.centerx -= 3
+            self.screen.blit(creature.sprite.image,creature.sprite.rect)
+            pygame.display.flip()
+            pygame.time.delay(50)
+            self.screen.blit(self.background,creature.sprite.rect,creature.sprite.rect)
+            creature.sprite.rect.centerx += 3
+            pygame.time.delay(50)
+            self.screen.blit(creature.sprite.image,creature.sprite.rect)
+            pygame.display.flip()
+            pygame.time.delay(50)
+        self.screen.blit(self.background,textrect,textrect)
+    def anima_at(self,creature):
+        for x in range(1):
+            self.screen.blit(self.background,creature.sprite.rect,creature.sprite.rect)
+            creature.sprite.rect.centery += 6
+            self.screen.blit(creature.sprite.image,creature.sprite.rect)
+            pygame.display.flip()
+            pygame.time.delay(50)
+            self.screen.blit(self.background,creature.sprite.rect,creature.sprite.rect)
+            creature.sprite.rect.centery -= 6
+            self.screen.blit(creature.sprite.image,creature.sprite.rect)
+            pygame.display.flip()
+            pygame.time.delay(50)
+            self.screen.blit(self.background,creature.sprite.rect,creature.sprite.rect)
+            creature.sprite.rect.centery -= 6
+            self.screen.blit(creature.sprite.image,creature.sprite.rect)
+            pygame.display.flip()
+            pygame.time.delay(50)
+            self.screen.blit(self.background,creature.sprite.rect,creature.sprite.rect)
+            creature.sprite.rect.centery += 6
+            pygame.time.delay(50)
+            self.screen.blit(creature.sprite.image,creature.sprite.rect)
+            pygame.display.flip()
+            pygame.time.delay(50)
+    def anima_counter(self,creature):
+        return 0
+    def anima_crit(self,creature):
+        return 0
+    def order(self,creature,value = 0):
+        if creature.active_checker:
+            if value == 0:
+                '''define the Power, the target and the casting time'''
+                creature._attack_spec_order = creature.defpower
+                '''define the attack order'''
+                creature._attack_order = []
+                creature._attack_order.append(creature.AS('mainhand'))
+                if hasattr(creature.equipament['offhand'],'weapons'):
+                    creature._attack_order.append(creature.AS('offhand'))
+            else:
+                '''faz passar o tempo para esse personagem, e
+                vefirica se esta na hora de atacar ou nao'''
+                for atk in range(len(creature._attack_order)):
+                    creature._attack_order[atk] = round(creature._attack_order[atk]-value,2)
+
+                    #print atk
+                creature._attack_spec_order = round(creature._attack_spec_order - value,2)
+                #time.sleep(0.1)
+                if creature._attack_order[0] <= 0:
+                    damage, atk, target = creature.attack('mainhand')
+                    if atk == "Hit":
+                        self.anima_at(creature)
+                        self.anima_dam(target,damage)
+                    if atk == "Crit":
+                        self.anima_crit(creature)
+                        self.anima_dam(creature,damage)
+                    if atk == "Miss":
+                        self.anima_at(creature)
+                        self.anima_evd(target)
+                    if atk == "Counter":
+                        self.anima_at(creature)
+                        self.anima_counter(target)
+                        self.anima_dam(creature,damage)
+                    creature._attack_order[0] += creature.AS('mainhand')
+                if hasattr(creature.equipament['offhand'],'weapons'):
+                    if creature._attack_order[1] <= 0:
+                        creature.attack('offhand')
+                        creature._attack_order[1] += creature.AS('offhand')
+                if creature._attack_spec_order <= 0:
+                    creature.cast
+                    creature._attack_spec_order += creature.defpower
 '''roda um teste, para verificar a igualdade entre as armas e armaduras'''
 if __name__ == "__main__":
     yes = 'no'
@@ -63,76 +256,6 @@ if __name__ == "__main__":
         quit()
     else:
         '''cria um combate 5x5 entre monstros e players'''
-        CC.create_combat()
-        t = 0
-        for player in config.players:
-            player.order()
-        for mons in config.monsters:
-            mons.order()
-        while F.det_end(config.players) == True and F.det_end(config.monsters) == True:
-            if t%1 == 0.0:  print 'time is',t
-            F.risk_lv(config.players,config.monsters)
-            for play in config.players:
-                play.order(0.1)
-            for mons in config.monsters:
-                mons.order(0.1)
-            #time.sleep(0.1)
-            t = round(t+0.1,2)
-        for play in config.players:
-            print play.name, play.LIFE
-        for mons in config.monsters:
-            print mons.name, mons.LIFE
-        print 'time is',t
-        quit()
-        '''combate entre duas criaturas, tudo desconfigurado'''
-        config.monsters.append(Chars.Monster.brute('Goblin Mage',1))
-        config.players.append(Chars.Monster.brute('Human Cleric',1))
-        #config.players['4'] = Monster.brute('Human Cleric',10)
-        #for x in range(len(config.players)):
-         #   attack[x] = config.players[x].AS
-        config.monsters[0].def_AT()
-        config.players[0].def_AT()
-        attack1 = config.monsters[0].AS('mainhand')
-        attack2 = config.players[0].AS('mainhand')
-        AE1 = config.monsters[0].defpower
-        AE2 = config.players[0].defpower
-        print config.monsters[0].LIFE,config.players[0].LIFE
-        print config.monsters[0].LIFE_PERCENT,config.players[0].LIFE_PERCENT
-        print config.monsters[0].SP,config.players[0].SP
-        print config.monsters[0].SP_PERCENT,config.players[0].SP_PERCENT
-        #quit()
-        t = 1
-        F.risk_lv(config.players,config.monsters)
-        while config.monsters[0].LIFE > 0 and config.players[0].LIFE > 0:
-            if t%1 == 0.0:
-                print 'time ==', t
-               #for cat in chars.keys():
-               #    for char in chars[cat].values():
-               #        print char.name,char.life,'lifes'  ,char.risk_lv
-            if attack1 <= 0:
-                F.autoattack(config.monsters[0])
-                attack1 += config.monsters[0].AS('mainhand')
-                config.monsters[0].def_AT()
-            if attack2 <= 0:
-                F.autoattack(config.players[0])
-                attack2 += config.players[0].AS('mainhand')
-                config.players[0].def_AT()
-            if AE1 <= 0:
-                config.monsters[0].cast()
-                AE1 = config.monsters[0].defpower
-            if AE2 <= 0:
-                config.players[0].cast()
-                AE2 = config.players[0].defpower
-            attack1 -= 0.1
-            attack2 -= 0.1
-            AE1 -= 0.1
-            AE2 -= 0.1
-            t = round(t+0.1,2)
-            #comparar = [(char[0], char[1].life) for char in config.players.items()]
-            F.risk_lv(config.players,config.monsters)
-            #aba =  min(comparar, key = lambda x:x[1])
-            #print aba[0]
-            #time.sleep(0.01)
-
-        print config.monsters[0].LIFE
-        print config.players[0].LIFE
+        Players, Monsters = CC.create_combat()
+        Combat = Battle(Players,Monsters)
+        Combat.Normal_Battle()
