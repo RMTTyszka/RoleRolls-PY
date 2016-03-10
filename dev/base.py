@@ -146,3 +146,4 @@ if __name__ == '__main__':
     assert Base('test').HP_percent is 0
     assert Base('test', HP=10).HP is 10
     assert Base('test', HP=10).HP_percent is 1
+    print 'All tests ok!'
