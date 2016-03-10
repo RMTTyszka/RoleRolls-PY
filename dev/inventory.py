@@ -8,11 +8,11 @@ Coyright © 2016 - Ramiro Tyzkza - ramiro.tyszka@gmail.com
 '''
 from constants import inventory as C
 
-class InventroyError(Exception):
+class InventoryError(Exception):
     pass
 
-class Inventroy(object):
-    ''' Base Inventroy for any item in the game '''
+class Inventory(object):
+    ''' Base Inventory for any item in the game '''
 
     def __init__(self, size, *args):
         '''
@@ -26,7 +26,7 @@ class Inventroy(object):
         self.items = list(args)
 
         if len(args) > size:
-            raise InventroyError('Cannot create inventory with more items than it\'s capacity')
+            raise InventoryError('Cannot create inventory with more items than it\'s capacity')
 
     @property
     def num_items(self):
@@ -65,7 +65,7 @@ class Inventroy(object):
 
 
 if __name__ == '__main__':
-    Inv1 = Inventroy(2, 'gato')
+    Inv1 = Inventory(2, 'gato')
     assert type(Inv1.size) is int
     assert Inv1.size is 2
     assert Inv1.num_items is 1

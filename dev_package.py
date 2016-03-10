@@ -2,10 +2,8 @@
 # -*- coding: utf-8 -*-
 '''
 Rymora Land of Heroes
-__init__ file
 
 Coyright © 2016 - Ramiro Tyzkza - ramiro.tyszka@gmail.com
 '''
-import char
-
-print dir(char)
+import dev
+print dir(dev)

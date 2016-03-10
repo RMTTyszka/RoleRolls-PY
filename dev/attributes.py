@@ -11,8 +11,8 @@ from constants import attributes as C
 class Attributes(object):
     ''' Base Atributes for any item in the game '''
 
-    def __init__(self, strength=10, agility=10, vitality=10, wisdom=10, inteligence=10,
-        charisma=10):
+    def __init__(self, strength=0, agility=0, vitality=0, wisdom=0, inteligence=0,
+        charisma=0):
         '''
         Initializes the attributes.
             "strength": char strength,
