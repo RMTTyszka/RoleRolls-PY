@@ -49,6 +49,9 @@ class Skills(object):
                 setattr(self, skill, kwargs[skill])
             else:
                 setattr(self, skill, 0)
+            # prop = property(lambda x: getattr(self, skill))
+            # setattr(self, skill+'_mod', prop)
+
 
         # fazer properties
 

@@ -58,7 +58,6 @@ class Char(base.Base):
             ST: char ST - if not specified it's set with char's attributes
         '''
         super(Char, self).__init__(name, **kwargs)
-
         if 'skills' in kwargs:
             self.skills = kwargs['skills']
         else:
@@ -67,9 +66,9 @@ class Char(base.Base):
         if 'equipment' in kwargs:
             self.equipment = kwargs['equipment']
         else:
-            self.equipment = equipment
+            self.equipment = 0
 
-        self.calculate_data()
+        self.calculate_stats()
         self._HP = self.HP if self.HP is not None else self.maxHP
         self._SP = self.SP if self.SP is not None else self.maxSP
         self._ST = self.ST if self.ST is not None else self.maxST
@@ -80,18 +79,77 @@ class Char(base.Base):
             string += '\neffects: {0}'.format(self.effects.keys())
         return string
 
-    def calculate_data(self):
+    def calculate_stats(self):
         self.maxHP = C.HP_BASE + self.attributes.vit_mod*10
         self.maxSP = C.SP_BASE + self.attributes.int_mod
         self.maxST = C.ST_BASE + self.attributes.vit_mod/2+self.skills.meditating/2
 
     def run_effects(self):
-        print self.effects
-        for effect_name, effect in self.effects.items():
+        for effect in self.effects.values():
             effect(self)
-            # if not hasattr(self, effect_name):
-                # setattr(self, effect_name, effect)
-            # getattr(self, effect_name).run(self)
+
+    def attack(self, enemy):
+        '''
+        Attacks the enemy, returning the damage and any other penalty
+        '''
+        pass
+
+    @property
+    def EVD(self):
+        return self.skills.reflex +self.equipment.evade +self.attributes.agility
+
+    @property
+    def PROT(self):
+        return self.equipment.prot
+
+    def AT(self,weapon):
+        return self.equipament.attk # add bonus do char
+
+    def AE(self,atr,skill):
+        return self.equipament.attk # add bonus do char
+
+    # def CT(self):
+    #     call = getattr(Power, str(self.useskill))
+    #     a = self.mod('ct')
+    #     c = self.mod('int')/5
+    #     d = a + c
+    #     b = call(self, self.target).CT
+    #     return round(b * (1-d/100),2)
+
+    @property
+    def CRIT(self):
+        return C.CRIT_BASE + self.skills.anatomy + self.stats.crit
+
+    @property
+    def RESILIENCE(self):
+        return C.RESILIENCE_BASE + self.skills.parry #mod resilience? +
+
+    @property
+    def DAMAGE_AT(self):
+        return self.skills.armslore # + where is the damage?
+
+    @property
+    def FORTITUDE(self):
+        return self.skills.parry + self.attributes.vitality + self.equipment.fortitude
+
+    def DAMAGE_AE(self, atr):
+        return self.skills.lore # what is atr?+
+
+    @property
+    def REFLEX(self):
+        return self.attributes.inteligence + self.skills.tactics # + resistspells
+
+    @property
+    def cast(self):
+        call = getattr(Power,str(self.useskill))
+        call(self, self.AE_target).use()
+
+    @property
+    def COUNTER_RATING(self):
+
+        a = self.equipament['mainhand'].wep_atr['counterrating']
+        b = self.mod('counterrating')
+        return a + b
 
     @classmethod
     def blank(cls, name):

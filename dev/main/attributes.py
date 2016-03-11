@@ -22,55 +22,55 @@ class Attributes(object):
             "inteligence": char inteligence}
             # "charisma": char charisma} - not implemented so far
         '''
-        self.str = strength
-        self.agi = agility
-        self.vit = vitality
-        self.wis = wisdom
-        self.int = inteligence
-        self.cha = charisma
+        self.strength = strength
+        self.agility = agility
+        self.vitality = vitality
+        self.wisdom = wisdom
+        self.inteligence = inteligence
+        self.charisma = charisma
 
     @property
     def str_mod(self):
-        return self.str/2 - 5
+        return self.strength/2 - 5
 
     @property
     def agi_mod(self):
-        return self.agi/2 - 5
+        return self.agility/2 - 5
 
     @property
     def vit_mod(self):
-        return self.vit/2 - 5
+        return self.vitality/2 - 5
 
     @property
     def wis_mod(self):
-        return self.wis/2 - 5
+        return self.wisdom/2 - 5
 
     @property
     def int_mod(self):
-        return self.int/2 - 5
+        return self.inteligence/2 - 5
 
     @property
     def cha_mod(self):
-        return self.cha/2 - 5
+        return self.charisma/2 - 5
 
 
 if __name__ == '__main__':
     Attr1 = Attributes()
-    assert type(Attr1.str) is int
+    assert type(Attr1.strength) is int
     assert type(Attr1.str_mod) is int
 
-    assert type(Attr1.agi) is int
+    assert type(Attr1.agility) is int
     assert type(Attr1.agi_mod) is int
 
-    assert type(Attr1.vit) is int
+    assert type(Attr1.vitality) is int
     assert type(Attr1.vit_mod) is int
 
-    assert type(Attr1.wis) is int
+    assert type(Attr1.wisdom) is int
     assert type(Attr1.wis_mod) is int
 
-    assert type(Attr1.int) is int
+    assert type(Attr1.inteligence) is int
     assert type(Attr1.int_mod) is int
 
-    assert type(Attr1.cha) is int
+    assert type(Attr1.charisma) is int
     assert type(Attr1.cha_mod) is int
     print 'All tests ok!'

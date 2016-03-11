@@ -1,5 +1,7 @@
 {
   "HP_BASE": 50,
   "SP_BASE": 50,
-  "ST_BASE": 25
+  "ST_BASE": 25,
+  "CRIT_BASE": 15,
+  "RESILIENCE_BASE": 5
 }
