@@ -35,8 +35,10 @@ class Equipment(object):
     def __iter__(self):
         for equipment in C.equipment_list:
             yield equipment, getattr(self, equipment)
-        print 'oi'
 
+    @property
+    def evade(self):
+        return sum(equipment.evade for equipment in self if hasattr(equipment, 'evade'))
 
 if __name__ == '__main__':
     Equi1 = Equipment()
