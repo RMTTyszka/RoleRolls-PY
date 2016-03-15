@@ -84,10 +84,6 @@ class Char(base.Base):
         self.maxSP = C.SP_BASE + self.attributes.int_mod
         self.maxST = C.ST_BASE + self.attributes.vit_mod/2+self.skills.meditating/2
 
-    def run_effects(self):
-        for effect in self.effects.values():
-            effect(self)
-
     def attack(self, enemy):
         '''
         Attacks the enemy, returning the damage and any other penalty
@@ -152,7 +148,7 @@ class Char(base.Base):
         return a + b
 
     @classmethod
-    def blank(cls, name):
+    def blank(cls, name, **kwargs):
         '''
         Creates a blank char with 0 in all stats
         '''
