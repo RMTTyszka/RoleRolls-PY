@@ -7,12 +7,12 @@ attributes file
 Coyright © 2016 - Ramiro Tyzkza - ramiro.tyszka@gmail.com
 '''
 from constants import attributes as C
+import dice
 
 class Attributes(object):
     ''' Base Atributes for any item in the game '''
 
-    def __init__(self, strength=0, agility=0, vitality=0, wisdom=0, inteligence=0,
-        charisma=0):
+    def __init__(self, **kwargs):
         '''
         Initializes the attributes.
             "strength": char strength,
@@ -22,36 +22,45 @@ class Attributes(object):
             "inteligence": char inteligence}
             # "charisma": char charisma} - not implemented so far
         '''
-        self.strength = strength
-        self.agility = agility
-        self.vitality = vitality
-        self.wisdom = wisdom
-        self.inteligence = inteligence
-        self.charisma = charisma
+        for attr in C.attributes_list:
+            if attr in kwargs:
+                setattr(self, attr, kwargs[attr])
+            else:
+                setattr(self, attr, 0)
 
+    # mod properties
     @property
     def str_mod(self):
         return self.strength/2 - 5
-
     @property
     def agi_mod(self):
         return self.agility/2 - 5
-
     @property
     def vit_mod(self):
         return self.vitality/2 - 5
-
     @property
     def wis_mod(self):
         return self.wisdom/2 - 5
-
     @property
     def int_mod(self):
         return self.inteligence/2 - 5
-
     @property
     def cha_mod(self):
         return self.charisma/2 - 5
+
+    # roll
+    def roll_str(self):
+        return dice.roll_01(self.strength)
+    def roll_agi(self):
+        return dice.roll_01(self.agility)
+    def roll_vit(self):
+        return dice.roll_01(self.vitality)
+    def roll_wis(self):
+        return dice.roll_01(self.wisdom)
+    def roll_int(self):
+        return dice.roll_01(self.inteligence)
+    def roll_cha(self):
+        return dice.roll_01(self.charisma)
 
 
 if __name__ == '__main__':
