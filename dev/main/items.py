@@ -15,11 +15,30 @@ class Item(base.Base):
         super(Item, self).__init__(name, **kwargs)
         self.category = C.item_cat[self.lvl]
         self.value = C.item_value[self.lvl]
-        self.equipable = kwargs['equipable'] if 'equipable' in kwargs else False
 
+class Equipable(Item):
+    ''' Base class for any equipable in the game '''
+
+    def __init__(self, name, **kwargs):
+        super(Equipable, self).__init__(name, **kwargs)
+
+    @classmethod
+    def Armor(cls, name, **kwargs):
+        instance = cls(name, **kwargs)
+        return instance
+
+    @classmethod
+    def Weapon(cls, name, **kwargs):
+        instance = cls(name, **kwargs)
+        return instance
+
+    @classmethod
+    def Ring(cls, name, **kwargs):
+        instance = cls(name, **kwargs)
+        return instance
 
 if __name__ == '__main__':
-    item1 = Item('candle', equipable='helmet')
+    item1 = Item('candle')
     print item1.category
     print item1.value
     print item1.equipable

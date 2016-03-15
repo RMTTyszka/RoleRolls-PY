@@ -38,7 +38,19 @@ class Equipment(object):
 
     @property
     def evade(self):
-        return sum(equipment.evade for equipment in self if hasattr(equipment, 'evade'))
+        return sum(equipment.evade for name, equipment in self if hasattr(equipment, 'evade'))
+
+    def put(self, item,  slot):
+        '''
+        Puts the item in the slot.
+        Returns the item if the slot doesn't exists or the old item if the slot is
+        occupied
+        '''
+        if item in C.equipment_list:
+            old_item = getattr(self, slot) if hasattr(self, slot) else False
+            setattr(self, slot, item)
+            return old_item
+        return item
 
 if __name__ == '__main__':
     Equi1 = Equipment()
