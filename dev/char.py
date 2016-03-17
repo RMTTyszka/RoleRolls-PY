@@ -8,16 +8,12 @@ Coyright © 2016 - Ramiro Tyzkza - ramiro.tyszka@gmail.com
 '''
 from constants import char as C
 import base
-import attributes
-import skills
-import defenses
-import resists
+import auxiliary
 import effects
-import equipment
 import items
 import powers
 import spells
-import inventory
+import dice
 
 
 class Char(base.Base):
@@ -154,12 +150,12 @@ class Char(base.Base):
         '''
         blank = {
             'lvl': 0,
-            'attributes': attributes.Attributes(),
-            'skills': skills.Skills(),
-            'defenses': defenses.Defenses(),
-            'resists': resists.Resists(),
-            'equipment': equipment.Equipment(),
-            'inventory': inventory.Inventory(0),
+            'attributes': auxiliary.Attributes(),
+            'skills': auxiliary.Skills(),
+            'defenses': auxiliary.Defenses(),
+            'resists': auxiliary.Resists(),
+            'equipment': auxiliary.Equipment(),
+            'inventory': auxiliary.Inventory(0),
             'effects': {},
             'powers': {},
             'spells': {},
@@ -172,11 +168,11 @@ class Char(base.Base):
 
 if __name__ == '__main__':
 
-    Attr1 = attributes.Attributes(vitality=10)
-    Skill1 = skills.Skills()
-    Def1 = defenses.Defenses()
-    Res1 = resists.Resists()
-    Equ1 = equipment.Equipment()
+    Attr1 = auxiliary.Attributes(vitality=10)
+    Skill1 = auxiliary.Skills()
+    Def1 = auxiliary.Defenses()
+    Res1 = auxiliary.Resists()
+    Equ1 = auxiliary.Equipment()
     Eff1 = {'poisoned': effects.Effects.poisoned}
 
     char1 = Char(name='bob', lvl=1, attributes=Attr1, skills=Skill1, defenses=Def1, resists=Res1, effects=Eff1, equipment=Equ1) #... inserir o resto aqui

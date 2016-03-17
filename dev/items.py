@@ -19,26 +19,30 @@ class Item(base.Base):
 class Equipable(Item):
     ''' Base class for any equipable in the game '''
 
-    def __init__(self, name, **kwargs):
+    def __init__(self, name, slots, **kwargs):
         super(Equipable, self).__init__(name, **kwargs)
+        self.slots = slots
 
     @classmethod
     def Armor(cls, name, **kwargs):
-        instance = cls(name, **kwargs)
+        instance = cls(name, slots=['armor'], **kwargs)
         return instance
 
     @classmethod
     def Weapon(cls, name, **kwargs):
-        instance = cls(name, **kwargs)
+        instance = cls(name, slots=['weapon'], **kwargs)
         return instance
 
     @classmethod
     def Ring(cls, name, **kwargs):
-        instance = cls(name, **kwargs)
+        instance = cls(name, slots=['ring'], **kwargs)
         return instance
 
 if __name__ == '__main__':
     item1 = Item('candle')
     print item1.category
     print item1.value
-    print item1.equipable
+    print isinstance(item1, Item)
+    print isinstance(item1, Equipable)
+    item2 = Equipable.Armor('red chainmail')
+    print isinstance(item2, Equipable)
