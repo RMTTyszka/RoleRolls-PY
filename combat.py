@@ -31,31 +31,19 @@ class Battle():
         self.basicFont = pygame.font.Font(None, 20)
         self.Players = Players
         self.Monsters = Monsters
-        self.screen = pygame.display.set_mode((640,640))
+        self.screen = pygame.display.set_mode((1280,720))
         self.background = pygame.Surface(self.screen.get_size())
         self.background.fill(BLACK)
-        self.frame = 30
+        self.frame = 60
         self.fpstime = pygame.time.Clock()
         self.pl = pygame.sprite.RenderPlain()
-
+        if True in [play.ALIVE for play in self.Players]:
+            print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
     def Normal_Battle(self):
             self.screen.fill(BLACK)
-            offset = 0
-            for play in self.Players:
-                play.sprite.image, play.sprite.rect = CC.load_image("Green_Goblin.png",-1)
-
-                play.sprite.rect.topleft = (64+offset,640-128)
-                self.pl.add(play.sprite)
-                offset += 100
-            offset = 0
-            for mons in self.Monsters:
-                mons.sprite.image, mons.sprite.rect = CC.load_image("Green_Goblin.png",-1)
-
-                #self.screen.blit(play.image,(-64+offset,640))
-                mons.sprite.rect.topleft = (64+offset,128)
-                self.pl.add(mons.sprite)
-                offset += 100
-            self.pl.draw(self.screen)
+            self.organize()
+            self.allSprites.update()
+            self.allSprites.draw(self.screen)
             pygame.display.flip()
 
             self.t = 0
@@ -70,10 +58,16 @@ class Battle():
                     self.det_end
                     self.risk_lv
                     self.order(play,tick)
+                    self.allSprites.clear(self.screen,self.screen)
+                    self.allSprites.update()
+                    self.allSprites.draw(self.screen)
+                    self.check_alive()
                 for mons in self.Monsters:
                     self.det_end
                     self.risk_lv
                     self.order(mons,tick)
+                    self.check_alive()
+
                 #time.sleep(0.1)
                 self.t = round(self.t+0.1,2)
             pygame.display.update()
@@ -108,68 +102,36 @@ class Battle():
             print mons.name,mons.LIFE
         print 'time is',self.t
         quit()
-    def anima_evd(self,creature):
 
 
-        text = self.basicFont.render('Evade', 1, BLUE)
-        self.screen.blit(text,(creature.sprite.rect.left,creature.sprite.rect.top-30))
-        pygame.display.flip()
 
-    def anima_dam(self,creature,damage):
-        text = self.basicFont.render(str(damage), 1, RED)
-        textrect = creature.sprite.rect.move(0,64)
-        self.screen.blit(text,(textrect))
-        pygame.display.flip()
-        for x in range(3):
-            self.screen.blit(self.background,creature.sprite.rect,creature.sprite.rect)
-            creature.sprite.rect.centerx += 3
-            self.screen.blit(creature.sprite.image,creature.sprite.rect)
-            pygame.display.flip()
-            pygame.time.delay(50)
-            self.screen.blit(self.background,creature.sprite.rect,creature.sprite.rect)
-            creature.sprite.rect.centerx -= 3
-            self.screen.blit(creature.sprite.image,creature.sprite.rect)
-            pygame.display.flip()
-            pygame.time.delay(50)
-            self.screen.blit(self.background,creature.sprite.rect,creature.sprite.rect)
-            creature.sprite.rect.centerx -= 3
-            self.screen.blit(creature.sprite.image,creature.sprite.rect)
-            pygame.display.flip()
-            pygame.time.delay(50)
-            self.screen.blit(self.background,creature.sprite.rect,creature.sprite.rect)
-            creature.sprite.rect.centerx += 3
-            pygame.time.delay(50)
-            self.screen.blit(creature.sprite.image,creature.sprite.rect)
-            pygame.display.flip()
-            pygame.time.delay(50)
-        self.screen.blit(self.background,textrect,textrect)
-    def anima_at(self,creature):
-        for x in range(1):
-            self.screen.blit(self.background,creature.sprite.rect,creature.sprite.rect)
-            creature.sprite.rect.centery += 6
-            self.screen.blit(creature.sprite.image,creature.sprite.rect)
-            pygame.display.flip()
-            pygame.time.delay(50)
-            self.screen.blit(self.background,creature.sprite.rect,creature.sprite.rect)
-            creature.sprite.rect.centery -= 6
-            self.screen.blit(creature.sprite.image,creature.sprite.rect)
-            pygame.display.flip()
-            pygame.time.delay(50)
-            self.screen.blit(self.background,creature.sprite.rect,creature.sprite.rect)
-            creature.sprite.rect.centery -= 6
-            self.screen.blit(creature.sprite.image,creature.sprite.rect)
-            pygame.display.flip()
-            pygame.time.delay(50)
-            self.screen.blit(self.background,creature.sprite.rect,creature.sprite.rect)
-            creature.sprite.rect.centery += 6
-            pygame.time.delay(50)
-            self.screen.blit(creature.sprite.image,creature.sprite.rect)
-            pygame.display.flip()
-            pygame.time.delay(50)
-    def anima_counter(self,creature):
-        return 0
-    def anima_crit(self,creature):
-        return 0
+    def check_alive(self):
+        for p in self.Players:
+            if not p.ALIVE:
+                pygame.draw.line(self.screen,RED,p.combat_gra._char.rect.topleft,p.combat_gra._char.rect.bottomright,3)
+                pygame.draw.line(self.screen,RED,p.combat_gra._char.rect.topright,p.combat_gra._char.rect.bottomleft,3)
+                pygame.display.update()
+        for m in self.Monsters:
+            if not m.ALIVE:
+                pygame.draw.line(self.screen,RED,m.combat_gra._char.rect.topleft,m.combat_gra._char.rect.bottomright,3)
+                pygame.draw.line(self.screen,RED,m.combat_gra._char.rect.topright,m.combat_gra._char.rect.bottomleft,3)
+                pygame.display.update()
+
+    def organize(self):
+        self.allSprites = pygame.sprite.LayeredUpdates()
+        x = 10
+        xoffset = 210
+        for p in self.Players:
+            self.allSprites.add(p.combat_gra._background,p.combat_gra._life_bar,p.combat_gra._SP_bar,p.combat_gra._char,p.combat_gra._life_bar)
+            p.combat_gra.screen = self.screen
+            p.combat_gra.update(x,450)
+            x += xoffset
+        x = 10
+        for m in self.Monsters:
+            self.allSprites.add(m.combat_gra._background,m.combat_gra._life_bar,m.combat_gra._SP_bar,m.combat_gra._char,m.combat_gra._life_bar)
+            m.combat_gra.screen = self.screen
+            m.combat_gra.update(x,10)
+            x += xoffset
     def order(self,creature,value = 0):
         if creature.active_checker:
             if value == 0:
@@ -192,22 +154,36 @@ class Battle():
                 if creature._attack_order[0] <= 0:
                     damage, atk, target = creature.attack('mainhand')
                     if atk == "Hit":
-                        self.anima_at(creature)
-                        self.anima_dam(target,damage)
+                        creature.combat_gra.anima_at()
+                        target.combat_gra.anima_dam(damage)
                     if atk == "Crit":
-                        self.anima_crit(creature)
-                        self.anima_dam(creature,damage)
+                        creature.combat_gra.anima_crit()
+                        target.combat_gra.anima_dam(damage)
                     if atk == "Miss":
-                        self.anima_at(creature)
-                        self.anima_evd(target)
+                        creature.combat_gra.anima_at()
+                        target.combat_gra.anima_evd()
                     if atk == "Counter":
-                        self.anima_at(creature)
-                        self.anima_counter(target)
-                        self.anima_dam(creature,damage)
+                        creature.combat_gra.anima_at()
+                        target.combat_gra.anima_counter()
+                        creature.combat_gra.anima_dam(damage)
                     creature._attack_order[0] += creature.AS('mainhand')
                 if hasattr(creature.equipament['offhand'],'weapons'):
                     if creature._attack_order[1] <= 0:
-                        creature.attack('offhand')
+                        damage, atk, target = creature.attack('offhand')
+                        if atk == "Hit":
+                            creature.combat_gra.anima_at()
+                            target.combat_gra.anima_dam(damage)
+                        if atk == "Crit":
+                            creature.combat_gra.anima_crit()
+                            target.combat_gra.anima_dam(damage)
+                        if atk == "Miss":
+                            creature.combat_gra.anima_at()
+                            target.combat_gra.anima_evd()
+                        if atk == "Counter":
+                            creature.combat_gra.anima_at()
+                            target.combat_gra.evade()
+                            target.combat_gra.anima_counter()
+                            target.combat_gra.anima_dam(damage)
                         creature._attack_order[1] += creature.AS('offhand')
                 if creature._attack_spec_order <= 0:
                     creature.cast

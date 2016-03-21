@@ -52,6 +52,7 @@ class Char(pygame.sprite.Sprite):
         self.bonus_T = {}
         self._life = None
         self._lifeMAX = 0
+        #self.LIFEMAX
         self._sp = None
         self.effects = {}
         self.effects['harmfull'] = {}
@@ -64,7 +65,7 @@ class Char(pygame.sprite.Sprite):
         self._live = True
     @property
     def LIFEMAX(self):
-        a = 50
+        a = 50.0
         b = self.mod('vit')*10
         c = self.mod('life')
         self._lifeMAX = a + b + c
@@ -96,7 +97,7 @@ class Char(pygame.sprite.Sprite):
         return round(self.LIFE/self.LIFEMAX*100,2)
     @LIFE_PERCENT.setter
     def LIFE_PERCENT(self,value):
-        self._life = self.LIFEMAX*value/100
+        self._life = round(self.LIFEMAX*value/100,2)
 
     @property
     def SPMAX(self):
@@ -280,7 +281,7 @@ class Char(pygame.sprite.Sprite):
         return 0
     @property
     def active_checker(self):
-        if self.LIFE <= 0 or self.effects.has_key('stunned') or self.effects.has_key('sleeping'):
+        if not self.ALIVE or self.effects.has_key('stunned') or self.effects.has_key('sleeping'):
             return False
         else:
             return True

@@ -9,7 +9,7 @@ import random
 
 def def_targets(targets,numtar):
     newlist = []
-    newlist = sorted([[tar.risk_lv,tar] for tar in targets],reverse=True)[:numtar]
+    newlist = sorted([[tar.risk_lv,tar] for tar in targets if tar.ALIVE],reverse=True)[:numtar]
     newlist = [tar[1] for tar in newlist]
 
     return newlist
@@ -49,6 +49,10 @@ class Power:
         heal.spiritpower = 15
         def use():
             heal.targets = def_targets(targets,1)
+            if len(heal.targets) == 0:
+                print 'target not avaiable'
+                caster.usekill = "Wait"
+                return heal
             if caster.SP - heal.spiritpower*len(heal.targets) < 0:
                 print 'not enough spiritpower'
                 caster.useskill = 'Wait'

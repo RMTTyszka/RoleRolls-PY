@@ -13,6 +13,7 @@ import pygame
 import os
 import time
 import random
+import Graph_Char
 BLACK = ( 0,0,0)
 BLUE    = (   0,   0,   255)
 WHITE    = ( 255, 255, 255)
@@ -29,7 +30,8 @@ def load_image(name, colorkey=None):
     except pygame.error, message:
         print 'Cannot load image:', name
         raise SystemExit, message
-    image = image.convert()
+    #image = image.convert()
+    image = image.convert_alpha()
     #if colorkey is not None:
     #    if colorkey is -1:
     #        colorkey = image.get_at((0,0))
@@ -40,11 +42,12 @@ def create_combat():
     col2 = 0
     for x in ['roggar','miggah','kaifro','ziltan','potrak']:
         y = Mons_Pygame.t_play(x,1,rangecolor[len(config.players)])
-
+        y.combat_gra = Graph_Char.Graph_Player(y)
         config.players.append(y)
 
     for x in ['goblin warrior','goblin mage','goblin cleric','goblin assassin','goblin shaman']:
         y = Mons_Pygame.brute(x,1,rangecolor[len(config.monsters)])
+        y.combat_gra = Graph_Char.Graph_Player(y)
         config.monsters.append(y)
     return config.players, config.monsters
 class Mons_Pygame(Chars.Monster):

@@ -1,3 +1,11 @@
+*************
+IMPORTANTE
+************
+
+PVP, existe algo chamado interrupt,  que precisa usar a skill certa contra a skill certa! Gata pouca stamina, e precisa escolher o personagem certo rapido e escolher o alvo que esta castando rápido
+Skill que usam stamina tem casting time curto, 5 segundos +-. da tempo de interrupt. Alguns monstros dao interrupt e precisam de CC pra vencer!!!! (UHUULLLL)
+
+
 Stamina gasta quando o jogador determina a ação do personagem, mais stamina, mais ações de uma só vez, e mais staregen pode usar aão mais rapido
 SP = Spirtual Points no lugar de mana
 
@@ -144,7 +152,11 @@ studed leather armor = fraco contra piercing
 1 - coward lesser inferior common superior excepcional brave agressive expert major glorious magnifcent powerful tremendous monstruous gigantic gargantuan titanic abyssal colossal
 
 Experiencia eh calculada com base no tempo de combate e total de dano desferido e sofrido
+Algumas criaturas tem skills que invocam mais bixos, precisa usar interrupt (skill q gasta stamina) pra cancelar
 
+ANIMA STONES = stones with the soul of monsters and persons, give new skills
+SHAPE/Corpus/core STONE = stone that give new strategies
 
 http://stackoverflow.com/questions/14700889/pygame-level-menu-states
 https://www.youtube.com/watch?v=6DyRAmQ7HAE
+http://thepythongamebook.com/en:pygame:step015

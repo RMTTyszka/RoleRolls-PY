@@ -31,7 +31,7 @@ class Test:
         life = cls(caster,stat,cond,value,target,numtar,skill)
         true_target = []
         sum = 0
-
+    
         if life.cond == '<=':
 
             for x in life.target:
