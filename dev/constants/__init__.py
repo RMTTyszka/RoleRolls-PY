@@ -18,6 +18,10 @@ DEFAULT_DEFENSES = FOLDER_PATH+'defenses.json'
 DEFAULT_RESISTS = FOLDER_PATH+'resists.json'
 DEFAULT_EFFECTS = FOLDER_PATH+'effects.json'
 DEFAULT_INVENTORY = FOLDER_PATH+'inventory.json'
+DEFAULT_EQUIPMENT = FOLDER_PATH+'equipment.json'
+DEFAULT_POWERS = FOLDER_PATH+'powers.json'
+DEFAULT_SPELLS = FOLDER_PATH+'spells.json'
+DEFAULT_ITEMS = FOLDER_PATH+'items.json'
 
 class AttributeDict(dict):
     def __getattr__(self, attr):
@@ -49,6 +53,18 @@ with open(DEFAULT_EFFECTS, 'r') as text:
 with open(DEFAULT_INVENTORY, 'r') as text:
     inventory = AttributeDict(json.loads(text.read()))
 
+with open(DEFAULT_EQUIPMENT, 'r') as text:
+    equipment = AttributeDict(json.loads(text.read()))
+
+with open(DEFAULT_POWERS, 'r') as text:
+    powers = AttributeDict(json.loads(text.read()))
+
+with open(DEFAULT_SPELLS, 'r') as text:
+    spells = AttributeDict(json.loads(text.read()))
+
+with open(DEFAULT_ITEMS, 'r') as text:
+    items = AttributeDict(json.loads(text.read()))
+
 if __name__ == '__main__':
     assert char
     assert attributes
@@ -57,4 +73,8 @@ if __name__ == '__main__':
     assert resists
     assert effects
     assert base
+    assert equipment
+    assert powers
+    assert spells
+    assert items
     print 'All tests ok!'

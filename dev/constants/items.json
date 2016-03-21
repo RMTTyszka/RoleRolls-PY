@@ -1,0 +1,11 @@
+{
+  "args_list": ["name", "lvl", "attributes", "skills", "defenses", "resists",
+    "equipment", "inventory", "effects", "powers", "spells",  "bonuses",  "HP",
+    "SP",  "ST"],
+  "item_cat": ["broken", "half broken", "deficient", "poor", "inferior", "moderated",
+    "acceptable", "common", "fine", "good", "useful", "fency", "superior", "excelent",
+    "admirable", "splendid", "extraordinary", "awesome", "best", "first-class"],
+    "item_value": [4, 8, 12, 16, 20, 40, 60, 80, 100, 120, 220, 320, 420, 520, 620, 1120,
+      1620, 2120, 2620, 3120, 5620, 8120, 10620, 13120, 15620, 28120, 40620, 53120,
+      65620, 78120]
+}

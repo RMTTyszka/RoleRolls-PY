@@ -62,6 +62,7 @@ class Base(object):
                     setattr(self, '_'+arg_name, None)
                 else:
                     setattr(self, arg_name, None)
+        self.lvl = self.lvl or 0
 
     def __repr__(self):
         string = 'base\nname: {} lvl: {}\nHP: {} MP: {}'.format(self.name, self.lvl,
@@ -146,3 +147,4 @@ if __name__ == '__main__':
     assert Base('test').HP_percent is 0
     assert Base('test', HP=10).HP is 10
     assert Base('test', HP=10).HP_percent is 1
+    print 'All tests ok!'
