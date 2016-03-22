@@ -15,7 +15,6 @@ import powers
 import spells
 import dice
 
-
 class Char(base.Base):
     ''' Base class for any item in the game '''
 
@@ -45,7 +44,7 @@ class Char(base.Base):
 
             spells: char spells (dict, values are 'Spells' objects)
 
-            bonuses: char bonuses (dict, values are 'Bonus' objects)
+            bonuses: char bonuses (dict, 'keys' are bonus type, values are the bonus)
 
             HP: char HP - if not specified it's set with char's attributes
 
@@ -68,6 +67,7 @@ class Char(base.Base):
         self._HP = self.HP if self.HP is not None else self.maxHP
         self._SP = self.SP if self.SP is not None else self.maxSP
         self._ST = self.ST if self.ST is not None else self.maxST
+        self._update_bonus()
 
     def __repr__(self):
         string = 'char: {0}\nHP: {1} MP: {2}'.format(self.name, self.HP, self.SP)
@@ -85,6 +85,66 @@ class Char(base.Base):
         Attacks the enemy, returning the damage and any other penalty
         '''
         pass
+
+    def equip(self, item, slot):
+        '''
+        Equips the item in the slot
+        '''
+        self.equipment.equip(item, slot)
+        self._update_bonus()
+
+    # def update_bonus(self, ):
+
+    def roll_attr(self, attribute):
+        '''
+        Makes a roll of the attribute in the argument
+        '''
+        return dice.roll_01(getattr(self.attributes, attribute))
+
+    def roll_skill(self, skill):
+        '''
+        Makes a roll of the skill in the argument
+        '''
+        return dice.roll_01(getattr(self.skills, skill))
+
+    def roll_defense(self, defense):
+        '''
+        Makes a roll of the defense in the argument
+        '''
+        return dice.roll_01(getattr(self.defenses, defense))
+
+    def roll_resist(self, resist):
+        '''
+        Makes a roll of the resist in the argument
+        '''
+        return dice.roll_01(getattr(self.resists, resist))
+
+    def _update_bonus(self):
+        '''
+        Method for updating all the bonuses an adding them to their current instances
+        '''
+        bonus_dict = {}
+        for bonus_name, bonus_value in self.bonuses.items():
+            if bonus in bonus_dict:
+                bonus_dict[bonus] += bonus_value
+            else:
+                bonus_dict[bonus] = bonus_value
+        for equipment_slot, equipment in self.equipment:
+            if equipment is not None:
+                for bonus_name, bonus_value in equipment.bonuses.items():
+                    if bonus_name in bonus_dict:
+                        bonus_dict[bonus] += bonus_value
+                    else:
+                        bonus_dict[bonus_name] = bonus_value
+        for bonus_name, bonus_value in bonus_dict.items():
+            if bonus_name in auxiliary.A.attributes_list:
+                setattr(self.attributes, bonus_name+'_bonus', bonus_value)
+            elif bonus_name in auxiliary.S.skills_list:
+                setattr(self.skills, bonus_name+'_bonus', bonus_value)
+            elif bonus_name in auxiliary.D.defenses_list:
+                setattr(self.defenses, bonus_name+'_bonus', bonus_value)
+            elif bonus_name in auxiliary.R.resists_list:
+                setattr(self.resists, bonus_name+'_bonus', bonus_value)
 
     @property
     def EVD(self):
@@ -144,7 +204,7 @@ class Char(base.Base):
         return a + b
 
     @classmethod
-    def blank(cls, name, **kwargs):
+    def blank(cls, name, *args, **kwargs):
         '''
         Creates a blank char with 0 in all stats
         '''
@@ -163,19 +223,31 @@ class Char(base.Base):
             'HP': 0,
             'SP': 0,
             'ST': 0}
-        return cls(name, **blank)
+        for key, value in kwargs:
+            if key in blank:
+                blank[key] = value
+        return cls(name, *args, **blank)
 
+def wrap_bonus(self, *args, **kwargs):
+    '''
+    Wrapper for updating bonuses when equipping items
+    '''
 
 if __name__ == '__main__':
+    import items
 
     Attr1 = auxiliary.Attributes(vitality=10)
-    Skill1 = auxiliary.Skills()
-    Def1 = auxiliary.Defenses()
-    Res1 = auxiliary.Resists()
+    Skill1 = auxiliary.Skills(alchemy=10)
+    Def1 = auxiliary.Defenses(cutting=10)
+    Res1 = auxiliary.Resists(weakness=10)
+    Armor1 = items.Equipable.Armor('red_chainmail', bonuses={'strength': 10})
     Equ1 = auxiliary.Equipment()
     Eff1 = {'poisoned': effects.Effects.poisoned}
+    Pow1 = {}
+    Spell1 = {}
+    Bonus1 = {}
 
-    char1 = Char(name='bob', lvl=1, attributes=Attr1, skills=Skill1, defenses=Def1, resists=Res1, effects=Eff1, equipment=Equ1) #... inserir o resto aqui
+    char1 = Char(name='bob', lvl=1, attributes=Attr1, skills=Skill1, defenses=Def1, resists=Res1, effects=Eff1, equipment=Equ1, powers=Pow1, spells=Spell1, bonuses=Bonus1)
 
     # run poison effect
     print char1, 'before poison'
@@ -183,3 +255,21 @@ if __name__ == '__main__':
     print char1, 'after poison'
     blank_char = Char.blank('boris')
     print blank_char
+    blank_char
+    print char1.roll_attr('vitality'), 'roll vit'
+    print char1.roll_skill('alchemy'), 'roll alchemy'
+    print char1.roll_defense('cutting'), 'roll cutting'
+    print char1.roll_resist('weakness'), 'roll weakness'
+    print
+    print 'Roll without bonus'
+    print char1.roll_attr('strength'), 'roll str'
+    print 'Equip armor with bonus and roll again'
+    char1.equip(Armor1, 'armor')
+    # print char1.equipment.armor.bonuses
+    # print char1.equipment
+    print char1.roll_attr('strength'), 'roll str'
+
+
+    # print blank_char.attributes
+    # print blank_char.attributes._vitality
+    # print blank_char.attributes.vitality
