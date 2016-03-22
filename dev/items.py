@@ -6,6 +6,7 @@ Rymora Land of Heroes
 Coyright © 2016 - Ramiro Tyzkza - ramiro.tyszka@gmail.com
 '''
 import base
+import auxiliary
 from constants import items as C
 
 class Item(base.Base):
@@ -16,6 +17,29 @@ class Item(base.Base):
         self.category = C.item_cat[self.lvl]
         self.value = C.item_value[self.lvl]
 
+    @classmethod
+    def blank(cls, name, *args, **kwargs):
+        '''
+        Creates a blank char with 0 in all stats
+        '''
+        blank = {
+            'lvl': 0,
+            'attributes': auxiliary.Attributes(),
+            'defenses': auxiliary.Defenses(),
+            'resists': auxiliary.Resists(),
+            'inventory': auxiliary.Inventory(0),
+            'effects': {},
+            'powers': {},
+            'spells': {},
+            'bonuses': {},
+            'HP': 0,
+            'SP': 0,
+            'ST': 0}
+        for key, value in kwargs.items():
+            if key in blank:
+                blank[key] = value
+        return cls(name, *args, **blank)
+
 class Equipable(Item):
     ''' Base class for any equipable in the game '''
 
@@ -25,18 +49,15 @@ class Equipable(Item):
 
     @classmethod
     def Armor(cls, name, **kwargs):
-        instance = cls(name, slots=['armor'], **kwargs)
-        return instance
+        return cls.blank(name, ['armor'], **kwargs)
 
     @classmethod
     def Weapon(cls, name, **kwargs):
-        instance = cls(name, slots=['weapon'], **kwargs)
-        return instance
+        return cls.blank(name, ['weapon'], **kwargs)
 
     @classmethod
     def Ring(cls, name, **kwargs):
-        instance = cls(name, slots=['ring'], **kwargs)
-        return instance
+        return cls.blank(name, ['ring'], **kwargs)
 
 if __name__ == '__main__':
     item1 = Item('candle')
@@ -46,3 +67,4 @@ if __name__ == '__main__':
     print isinstance(item1, Equipable)
     item2 = Equipable.Armor('red chainmail')
     print isinstance(item2, Equipable)
+    print item2.slots

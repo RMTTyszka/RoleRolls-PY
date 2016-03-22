@@ -72,8 +72,16 @@ class Base(object):
         return string
 
     def run_effects(self):
+        '''
+        Runs the effects in the effects dict
+        '''
         for effect_name, effect in self.effects.items():
             effect(self)
+
+    def calculate_bonus(self):
+        '''
+        Calculates all the bonuses and add them to it's corresponding object
+        '''
 
     # HP property
     @property
@@ -141,6 +149,7 @@ class Base(object):
     @ST_percent.setter
     def ST_percent(self, value):
         self.ST = int(round(value*self.maxST))
+
 
 if __name__ == '__main__':
     assert Base('test')
