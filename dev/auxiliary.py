@@ -14,8 +14,7 @@ from constants import resists as R
 from constants import equipment as E
 from constants import inventory as I
 from constants import skills as S
-import random
-
+import dice
 class Attributes(object):
     ''' Base Atributes for any item in the game '''
 
@@ -32,6 +31,7 @@ class Attributes(object):
         for attr in A.attributes_list:
             if attr in kwargs:
                 setattr(self, '_'+attr, kwargs[attr])
+                setattr(self, '_'+attr, kwargs[attr])
             else:
                 setattr(self, '_'+attr, 0)
             setattr(self, attr+'_bonus', 0)
@@ -41,7 +41,8 @@ class Attributes(object):
         for attr in A.attributes_list:
             string += '{0}: {1}\tbonus: {2}\n'.format(attr, getattr(self, attr), getattr(self, attr+'_bonus'))
         return string
-
+    def T_attr(self,attr):
+        return getattr(self,'_'+attr) + getattr(self,attr+'_bonus')
     @property
     def strength(self):
         return self._strength + self.strength_bonus
@@ -63,22 +64,27 @@ class Attributes(object):
 
     @property
     def str_mod(self):
-        return self.strength/2 - 5
+        return int(self.strength/5)
     @property
     def agi_mod(self):
-        return self.agility/2 - 5
+        return int(self.agility/5)
     @property
     def vit_mod(self):
-        return self.vitality/2 - 5
+        return int(self.vitality/5)
     @property
     def wis_mod(self):
-        return self.wisdom/2 - 5
+        return int(self.wisdom/5)
     @property
     def int_mod(self):
-        return self.inteligence/2 - 5
+        return int(self.inteligence/5)
     @property
     def cha_mod(self):
-        return self.charisma/2 - 5
+        return int(self.charisma/5)
+    def roll(self, attribute):
+        '''
+        Makes a roll of the attribute in the argument
+        '''
+        return dice.roll_01(getattr(self, attribute))
 
 class Defenses(object):
     ''' Base Defenses for any item in the game '''
@@ -116,7 +122,11 @@ class Defenses(object):
     @property
     def magic(self):
         return self._magic + self.magic_bonus
-
+    def roll(self, defense):
+        '''
+        Makes a roll of the defense in the argument
+        '''
+        return dice.roll_01(getattr(self, defense))
 
 class Resists(object):
     ''' Base Resists for any item in the game '''
@@ -124,24 +134,30 @@ class Resists(object):
     def __init__(self, **kwargs):
         '''
         Initializes the resists.
-            "weakness": weakness,
-            "slow": slow,
-            "stun": stun,
-            "blind": blind,
-            "curse": curse
+        "weakness": weakness,
+        "slow": slow,
+        "stun": stun,
+        "blind": blind,
+        "curse": curse
         '''
         for resist in R.resists_list:
             if resist in kwargs:
                 setattr(self, '_'+resist, kwargs[resist])
             else:
                 setattr(self, '_'+resist, 0)
-            setattr(self, resist+'_bonus', 0)
+                setattr(self, resist+'_bonus', 0)
 
     def __repr__(self):
         string = ''
         for resist in R.resists_list:
             string += '{0}: {1}\tbonus: {2}\n'.format(resist, getattr(self, resist), getattr(self, resist+'_bonus'))
         return string
+    def roll(self, resist):
+        '''
+        Makes a roll of the resist in the argument
+        '''
+        return dice.roll_01(getattr(self, resist))
+
 
     @property
     def weakness(self):
@@ -158,26 +174,24 @@ class Resists(object):
     @property
     def curse(self):
         return self._curse + self.curse_bonus
-
-
 class Equipment(object):
     ''' Base Equipment for any item in the game '''
 
     def __init__(self, **kwargs):
         '''
         Initializes the equipment.
-            "mainhand": mainhand,
-            "offhand": offhand,
-            "helmet": helmet,
-            "neck": neck,
-            "armor": armor
-            "wrist": wrist
-            "gauntlet": gauntlet
-            "ring1": ring1
-            "ring2": ring2
-            "belt": belt
-            "boots": boots
-            "extra": extra
+        "mainhand": mainhand,
+        "offhand": offhand,
+        "helmet": helmet,
+        "neck": neck,
+        "armor": armor
+        "wrist": wrist
+        "gauntlet": gauntlet
+        "ring1": ring1
+        "ring2": ring2
+        "belt": belt
+        "boots": boots
+        "extra": extra
         '''
         for equipment in E.equipment_list:
             if equipment in kwargs:
@@ -209,7 +223,7 @@ class Equipment(object):
             old_item = self.unequip(slot)
             setattr(self, slot, item)
             return old_item
-        return item
+            return item
 
     def unequip(self, slot):
         '''
@@ -218,10 +232,8 @@ class Equipment(object):
         occupied
         '''
         return getattr(self, slot) if hasattr(self, slot) else None
-
 class InventoryError(Exception):
     pass
-
 class Inventory(object):
     ''' Base Inventory for any item in the game '''
 
@@ -239,12 +251,12 @@ class Inventory(object):
         if len(args) > size:
             raise InventoryError('Cannot create inventory with more items than it\'s capacity')
 
-        def __iter__(self):
-            for item in self.items:
-                yield item
+    def __iter__(self):
+        for item in self.items:
+            yield item
 
-        def __repr__(self):
-            return str(self.items)
+    def __repr__(self):
+        return str(self.items)
 
     @property
     def num_items(self):
@@ -280,56 +292,61 @@ class Inventory(object):
         Changes the size of the inventroy
         '''
         self.size = size
-
 class Skills(object):
     ''' Base Atributes for any item in the game '''
 
     def __init__(self, **kwargs):
         '''
         Initializes the skills.
-            "alchemy": alchemy,
-            "anatomy": anatomy,
-            "animaltaming": animaltaming,
-            "archery": archery,
-            "armorcrafting": armorcrafting,
-            "armslore": armslore,
-            "awareness": awareness,
-            "bowcrafting": bowcrafting,
-            "carpentery": carpentery,
-            "fencing": fencing,
-            "gathering": gathering,
-            "healing": healing,
-            "heavyweaponship": heavyweaponship,
-            "jewelcrafting": jewelcrafting,
-            "leatherworking": leatherworking,
-            "lore": lore,
-            "lumberjacking": lumberjacking,
-            "magery": magery,
-            "meditating": meditating,
-            "mercantilism": mercantilism,
-            "military": military,
-            "parry": parry,
-            "reflex": reflex,
-            "resistspells": resistspells,
-            "skinning": skinning,
-            "stealth": stealth,
-            "swordmanship": swordmanship,
-            "tactics": tactics,
-            "tailoring": tailoring,
-            "wrestling": wrestling
+        "alchemy": alchemy,
+        "anatomy": anatomy,
+        "animaltaming": animaltaming,
+        "archery": archery,
+        "armorcrafting": armorcrafting,
+        "armslore": armslore,
+        "awareness": awareness,
+        "bowcrafting": bowcrafting,
+        "carpentery": carpentery,
+        "fencing": fencing,
+        "gathering": gathering,
+        "healing": healing,
+        "heavyweaponship": heavyweaponship,
+        "jewelcrafting": jewelcrafting,
+        "leatherworking": leatherworking,
+        "lore": lore,
+        "lumberjacking": lumberjacking,
+        "magery": magery,
+        "meditating": meditating,
+        "mercantilism": mercantilism,
+        "military": military,
+        "parry": parry,
+        "reflex": reflex,
+        "resistspells": resistspells,
+        "skinning": skinning,
+        "stealth": stealth,
+        "swordmanship": swordmanship,
+        "tactics": tactics,
+        "tailoring": tailoring,
+        "wrestling": wrestling
         '''
         for skill in S.skills_list:
             if skill in kwargs:
                 setattr(self, '_'+skill, kwargs[skill])
             else:
                 setattr(self, '_'+skill, 0)
-            setattr(self, skill+'_bonus', 0)
+                setattr(self, skill+'_bonus', 0)
 
     def __repr__(self):
         string = ''
+        print S.skills_list
         for skill in S.skills_list:
             string += '{0}: {1}\tbonus: {2}\n'.format(skill, getattr(self, skill), getattr(self, skill+'_bonus'))
-        return string
+            return string
+    def roll(self, skill):
+        '''
+        Makes a roll of the skill in the argument
+        '''
+        return dice.roll_01(getattr(self, skill))
 
     @property
     def alchemy(self):
@@ -457,29 +474,32 @@ if __name__ == '__main__':
     Defense1 = Defenses()
     assert type(Defense1.cutting) is int
     Attr1 = Attributes()
+    Attr1._agility = 20
+    for attr in A.attributes_list:
+        print Attr1.T_attr(attr)
     assert type(Attr1.strength) is int
     assert type(Attr1.str_mod) is int
-    assert type(Attr1.str_bonus) is int
+    assert type(Attr1.strength_bonus) is int
 
     assert type(Attr1.agility) is int
     assert type(Attr1.agi_mod) is int
-    assert type(Attr1.agi_bonus) is int
+    assert type(Attr1.agility_bonus) is int
 
     assert type(Attr1.vitality) is int
     assert type(Attr1.vit_mod) is int
-    assert type(Attr1.vit_bonus) is int
+    assert type(Attr1.vitality_bonus) is int
 
     assert type(Attr1.wisdom) is int
     assert type(Attr1.wis_mod) is int
-    assert type(Attr1.wis_bonus) is int
+    assert type(Attr1.wisdom_bonus) is int
 
     assert type(Attr1.inteligence) is int
     assert type(Attr1.int_mod) is int
-    assert type(Attr1.int_bonus) is int
+    assert type(Attr1.inteligence_bonus) is int
 
     assert type(Attr1.charisma) is int
     assert type(Attr1.cha_mod) is int
-    assert type(Attr1.cha_bonus) is int
+    assert type(Attr1.charisma_bonus) is int
 
     Equi1 = Equipment()
     print dir(Equi1)
@@ -503,12 +523,13 @@ if __name__ == '__main__':
     assert Inv1.size == 3
 
     Skill1 = Skills()
+    print Skill1
     assert type(Skill1.meditating) is int
     print Attr1
     print Defense1
     print Resist1
     Attr1.str_bonus = 10
     print Attr1.strength
-    print (lambda: dice_01(getattr(Attr1, 'strength')))()
-    print Attr1.roll_str()
+    print (lambda: dice.roll_01(getattr(Attr1, 'strength')))()
+    print Attr1.roll('agility')
     print 'All tests ok!'

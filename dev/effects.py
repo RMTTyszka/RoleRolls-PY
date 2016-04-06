@@ -21,7 +21,7 @@ class Effects(object):
         Poisoned effect
         '''
         print 'coisas a fazer quando o char está poisoned'
-        char.HP -= 10
+        char.life -= 10
 
 
 # if __name__ == '__main__':

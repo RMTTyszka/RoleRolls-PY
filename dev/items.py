@@ -9,13 +9,15 @@ import base
 import auxiliary
 from constants import items as C
 
-class Item(base.Base):
+class Item(object):
     ''' Base class for any item in the game '''
 
     def __init__(self, name, **kwargs):
-        super(Item, self).__init__(name, **kwargs)
+        #super(Item, self).__init__(name, **kwargs)
+        self.lvl = kwargs['lvl'] if 'lvl' in kwargs else 0
         self.category = C.item_cat[self.lvl]
         self.value = C.item_value[self.lvl]
+        self.color = kwargs['color'] if 'color' in kwargs else C.default_color
 
     @classmethod
     def blank(cls, name, *args, **kwargs):
@@ -46,9 +48,10 @@ class Equipable(Item):
     def __init__(self, name, slots, **kwargs):
         super(Equipable, self).__init__(name, **kwargs)
         self.slots = slots
-
+        self.bonuses = kwargs['bonuses'] if 'bonuses' in kwargs else {}
     @classmethod
     def Armor(cls, name, **kwargs):
+
         return cls.blank(name, ['armor'], **kwargs)
 
     @classmethod

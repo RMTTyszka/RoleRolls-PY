@@ -1,7 +1,11 @@
 {
-  "HP_BASE": 50,
+  "args_list": ["name", "lvl", "attributes", "skills", "defenses", "resists",
+  "equipment", "inventory", "effects", "powers", "spells",  "bonuses",  "life",
+  "SP",  "ST"],
+  "LIFE_BASE": 50,
   "SP_BASE": 50,
   "ST_BASE": 25,
   "CRIT_BASE": 15,
-  "RESILIENCE_BASE": 5
+  "RESILIENCE_BASE": 5,
+  "properties": ["life", "SP",  "ST"]
 }

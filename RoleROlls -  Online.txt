@@ -1,10 +1,12 @@
 *************
 IMPORTANTE
 ************
+SKILL que faz algo com o ultimo dano ou cura que o alvo recebeu, coisa do tipo cancelar o dano ou repetir, cancelar o hbeal, roubar o heal, transferir o dano para outra criatura.
 
 PVP, existe algo chamado interrupt,  que precisa usar a skill certa contra a skill certa! Gata pouca stamina, e precisa escolher o personagem certo rapido e escolher o alvo que esta castando rápido
 Skill que usam stamina tem casting time curto, 5 segundos +-. da tempo de interrupt. Alguns monstros dao interrupt e precisam de CC pra vencer!!!! (UHUULLLL)
 
+Quando for viajar o jogador pode escolher uns perks ou algo parecido que aumenta velocidade da viagem ou diminui comida gasta ou aumenta capacidcade de carga, mas isso afeta max mana.life e essas coisas, detalhe isso só pdoe ser trocado quando descansa na casa
 
 Stamina gasta quando o jogador determina a ação do personagem, mais stamina, mais ações de uma só vez, e mais staregen pode usar aão mais rapido
 SP = Spirtual Points no lugar de mana
@@ -148,6 +150,7 @@ pesada prot = prot bonus * 11 - 10 evasion
 chain mail = fraco contra smashing
 studed leather armor = fraco contra piercing
 
+POISON causa dano a cada x segundos ou quandoa  criatura ataca? Mais forte contra criaturtas com bom AS??? Em contrapartida o que é bom contras quem tem pouco AS? Algo que de penalidade na defesa atpe a criatura atacar? ou por x ataques
 
 1 - coward lesser inferior common superior excepcional brave agressive expert major glorious magnifcent powerful tremendous monstruous gigantic gargantuan titanic abyssal colossal
 

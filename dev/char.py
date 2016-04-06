@@ -15,7 +15,7 @@ import powers
 import spells
 import dice
 
-class Char(base.Base):
+class Char(object):
     ''' Base class for any item in the game '''
 
     def __init__(self, name, **kwargs):
@@ -46,13 +46,31 @@ class Char(base.Base):
 
             bonuses: char bonuses (dict, 'keys' are bonus type, values are the bonus)
 
-            HP: char HP - if not specified it's set with char's attributes
+            life: char life - if not specified it's set with char's attributes
 
             SP: char SP - if not specified it's set with char's attributes
 
             ST: char ST - if not specified it's set with char's attributes
         '''
-        super(Char, self).__init__(name, **kwargs)
+        # handles positional
+        self.name = name
+        self.alive = True
+
+        # handles kwargs
+        for arg_name in C.args_list:
+            if arg_name in kwargs:
+                if arg_name in C.properties:
+                    setattr(self, 'max'+arg_name, kwargs[arg_name])
+                    setattr(self, '_'+arg_name, kwargs[arg_name])
+                else:
+                    setattr(self, arg_name, kwargs[arg_name])
+            else:
+                if arg_name in C.properties:
+                    setattr(self, 'max'+arg_name, None)
+                    setattr(self, '_'+arg_name, None)
+                else:
+                    setattr(self, arg_name, None)
+        self.lvl = self.lvl or 0
         if 'skills' in kwargs:
             self.skills = kwargs['skills']
         else:
@@ -64,21 +82,86 @@ class Char(base.Base):
             self.equipment = 0
 
         self.calculate_stats()
-        self._HP = self.HP if self.HP is not None else self.maxHP
+        self._life = self.life if self.life is not None else self.maxlife
         self._SP = self.SP if self.SP is not None else self.maxSP
         self._ST = self.ST if self.ST is not None else self.maxST
         self._update_bonus()
 
     def __repr__(self):
-        string = 'char: {0}\nHP: {1} MP: {2}'.format(self.name, self.HP, self.SP)
+        string = 'char: {0}\nlife: {1} MP: {2}'.format(self.name, self.life, self.SP)
         if self.effects:
             string += '\neffects: {0}'.format(self.effects.keys())
         return string
-
     def calculate_stats(self):
-        self.maxHP = C.HP_BASE + self.attributes.vit_mod*10
+        self.maxlife = C.LIFE_BASE + self.attributes.vit_mod*10
         self.maxSP = C.SP_BASE + self.attributes.int_mod
         self.maxST = C.ST_BASE + self.attributes.vit_mod/2+self.skills.meditating/2
+    @property
+    def life(self):
+        '''
+        base life
+        '''
+        return self._life
+    @life.setter
+    def life(self, value):
+        value = self.maxlife if (value+self._life) > self.maxlife else value
+        self._life = value
+        self._alive = True if self._life > 0 else False
+    @property
+    def life_percent(self):
+        '''
+        base life in percentage
+        interval: 0 - 1
+        '''
+        return self._life/self.maxlife if self.maxlife > 0 else 0
+    @life_percent.setter
+    def life_percent(self, value):
+        self.life = int(round(value*self.maxlife))
+
+    # SP property
+    @property
+    def SP(self):
+        '''
+        base SP
+        '''
+        return self._SP
+    @SP.setter
+    def SP(self, value):
+        value = self.maxSP if value > self.maxSP else value
+        self._SP = value
+    @property
+    def SP_percent(self):
+        '''
+        base SP in percentage
+        interval: 0 - 1
+        '''
+        return self._SP/self.maxSP if self.maxSP > 0 else 0
+    @SP_percent.setter
+    def SP_percent(self, value):
+        self.SP = int(round(value*self.maxSP))
+
+    # ST property
+    @property
+    def ST(self):
+        '''
+        base ST
+        '''
+        return self._ST
+    @ST.setter
+    def ST(self, value):
+        value = self.maxST if value > self.maxST else value
+        self._ST = value
+    @property
+    def ST_percent(self):
+        '''
+        base ST in percentage
+        interval: 0 - 1
+        '''
+        return self._ST/self.maxST if self.maxST > 0 else 0
+    @ST_percent.setter
+    def ST_percent(self, value):
+        self.ST = int(round(value*self.maxST))
+
 
     def attack(self, enemy):
         '''
@@ -95,29 +178,9 @@ class Char(base.Base):
 
     # def update_bonus(self, ):
 
-    def roll_attr(self, attribute):
-        '''
-        Makes a roll of the attribute in the argument
-        '''
-        return dice.roll_01(getattr(self.attributes, attribute))
 
-    def roll_skill(self, skill):
-        '''
-        Makes a roll of the skill in the argument
-        '''
-        return dice.roll_01(getattr(self.skills, skill))
 
-    def roll_defense(self, defense):
-        '''
-        Makes a roll of the defense in the argument
-        '''
-        return dice.roll_01(getattr(self.defenses, defense))
 
-    def roll_resist(self, resist):
-        '''
-        Makes a roll of the resist in the argument
-        '''
-        return dice.roll_01(getattr(self.resists, resist))
 
     def _update_bonus(self):
         '''
@@ -145,10 +208,21 @@ class Char(base.Base):
                 setattr(self.defenses, bonus_name+'_bonus', bonus_value)
             elif bonus_name in auxiliary.R.resists_list:
                 setattr(self.resists, bonus_name+'_bonus', bonus_value)
+    def run_effects(self):
+        '''
+        Runs the effects in the effects dict
+        '''
+        for effect_name, effect in self.effects.items():
+            effect(self)
+
+    def calculate_bonus(self):
+        '''
+        Calculates all the bonuses and add them to it's corresponding object
+        '''
 
     @property
     def EVD(self):
-        return self.skills.reflex +self.equipment.evade +self.attributes.agility
+        return self.skills.reflex +self.equipment.evade +self.attributes.agi_mod
 
     @property
     def PROT(self):
@@ -220,7 +294,7 @@ class Char(base.Base):
             'powers': {},
             'spells': {},
             'bonuses': {},
-            'HP': 0,
+            'life': 0,
             'SP': 0,
             'ST': 0}
         for key, value in kwargs:
@@ -256,10 +330,10 @@ if __name__ == '__main__':
     blank_char = Char.blank('boris')
     print blank_char
     blank_char
-    print char1.roll_attr('vitality'), 'roll vit'
-    print char1.roll_skill('alchemy'), 'roll alchemy'
-    print char1.roll_defense('cutting'), 'roll cutting'
-    print char1.roll_resist('weakness'), 'roll weakness'
+    print char1.attributes.roll('vitality'), 'roll vit'
+    print char1.skills.roll('alchemy'), 'roll alchemy'
+    print char1.defenses.roll('cutting'), 'roll cutting'
+    print char1.roll.resists('weakness'), 'roll weakness'
     print
     print 'Roll without bonus'
     print char1.roll_attr('strength'), 'roll str'
@@ -268,8 +342,16 @@ if __name__ == '__main__':
     # print char1.equipment.armor.bonuses
     # print char1.equipment
     print char1.roll_attr('strength'), 'roll str'
+    char1.attributes._strength = 200
+    total1 = []
+    for x in range(1000):
+        total1.append(char1.roll_attr('strength'))
+    print sum(total1)/len(total1)
+    total1.sort()
+    print total1
 
 
     # print blank_char.attributes
     # print blank_char.attributes._vitality
     # print blank_char.attributes.vitality
+3
