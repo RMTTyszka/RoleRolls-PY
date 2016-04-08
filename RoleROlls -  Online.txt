@@ -1,6 +1,7 @@
 *************
 IMPORTANTE
 ************
+TK inter
 SKILL que faz algo com o ultimo dano ou cura que o alvo recebeu, coisa do tipo cancelar o dano ou repetir, cancelar o hbeal, roubar o heal, transferir o dano para outra criatura.
 
 PVP, existe algo chamado interrupt,  que precisa usar a skill certa contra a skill certa! Gata pouca stamina, e precisa escolher o personagem certo rapido e escolher o alvo que esta castando rápido
@@ -100,10 +101,11 @@ Tactics (Evasion )
 Parry (+ resilience-1 de dano_b do inimigo)
 
 Arcanery
+Chivalry
 Thievery
 Military
 Necromancy (da pontos de vida pra uma criatura morta, e controla ela no lugar no personagem)
-
+Naturaly
 
 
 
@@ -151,14 +153,14 @@ chain mail = fraco contra smashing
 studed leather armor = fraco contra piercing
 
 POISON causa dano a cada x segundos ou quandoa  criatura ataca? Mais forte contra criaturtas com bom AS??? Em contrapartida o que é bom contras quem tem pouco AS? Algo que de penalidade na defesa atpe a criatura atacar? ou por x ataques
-
+weakness metade do dano no proxima ataque???
 1 - coward lesser inferior common superior excepcional brave agressive expert major glorious magnifcent powerful tremendous monstruous gigantic gargantuan titanic abyssal colossal
 
 Experiencia eh calculada com base no tempo de combate e total de dano desferido e sofrido
 Algumas criaturas tem skills que invocam mais bixos, precisa usar interrupt (skill q gasta stamina) pra cancelar
 
 ANIMA STONES = stones with the soul of monsters and persons, give new skills
-SHAPE/Corpus/core STONE = stone that give new strategies
+SHAPE/Corpus/core STONE/PRIMAL STONE = stone that give new strategies
 
 http://stackoverflow.com/questions/14700889/pygame-level-menu-states
 https://www.youtube.com/watch?v=6DyRAmQ7HAE

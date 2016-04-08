@@ -1,11 +1,20 @@
 {
-  "args_list": ["name", "lvl", "attributes", "skills", "defenses", "resists",
-  "equipment", "inventory", "effects", "powers", "spells",  "bonuses",  "life",
-  "SP",  "ST"],
+  "args_list": [
+                "name", "lvl", "attributes", "skills", "defenses", "resists",
+                "equipment", "inventory", "effects", "powers", "spells",
+                "bonuses","critical","resilience","attack","special_attack",
+                "evasion","SP", "life","ST","prot","fortitude","AT_damage",
+                "SA_damage","AS","CS","critical_damage","armor_penetration",
+                "intuition","moral","magic","innate"
+                ],
   "LIFE_BASE": 50,
   "SP_BASE": 50,
   "ST_BASE": 25,
   "CRIT_BASE": 15,
   "RESILIENCE_BASE": 5,
-  "properties": ["life", "SP",  "ST"]
+  "properties": ["life", "SP",  "ST"],
+  "bonuses": ["moral","magic","innate"],
+  "stats": ["critical","resilience","attack","special_attack","evasion","SP",
+            "life","ST","prot","fortitude","AT_damage","SA_damage","AS","CS",
+            "critical_damage","armor_penetration","intuition"]
 }

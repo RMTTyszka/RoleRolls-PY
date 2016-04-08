@@ -54,28 +54,29 @@ class Char(object):
         '''
         # handles positional
         self.name = name
-        self.alive = True
-
         # handles kwargs
         for arg_name in C.args_list:
             if arg_name in kwargs:
                 if arg_name in C.properties:
                     setattr(self, 'max'+arg_name, kwargs[arg_name])
                     setattr(self, '_'+arg_name, kwargs[arg_name])
-                else:
+                if arg_name in C.bonuses:
+                    setattr(self,arg_name, kwargs[arg_name])
+                if arg_name in C.stats:
+                    setattr(self,'_'+arg_name+'_bonus', kwargs[arg_name])
+                if arg_name not in list(set(C.properties) | set(C.bonuses) | set(C.stats)):
                     setattr(self, arg_name, kwargs[arg_name])
             else:
                 if arg_name in C.properties:
                     setattr(self, 'max'+arg_name, None)
                     setattr(self, '_'+arg_name, None)
-                else:
+                if arg_name in C.bonuses:
+                    setattr(self,arg_name, {})
+                if arg_name in C.stats:
+                    setattr(self,'_'+arg_name+'_bonus', 0)
+                if arg_name not in list(set(C.properties) | set(C.bonuses) | set(C.stats)):
                     setattr(self, arg_name, None)
         self.lvl = self.lvl or 0
-        if 'skills' in kwargs:
-            self.skills = kwargs['skills']
-        else:
-            self.skills = 0
-
         if 'equipment' in kwargs:
             self.equipment = kwargs['equipment']
         else:
@@ -93,7 +94,7 @@ class Char(object):
             string += '\neffects: {0}'.format(self.effects.keys())
         return string
     def calculate_stats(self):
-        self.maxlife = C.LIFE_BASE + self.attributes.vit_mod*10
+        self.maxlife = C.LIFE_BASE + self.attributes.vit_mod*10 + self._life_bonus
         self.maxSP = C.SP_BASE + self.attributes.int_mod
         self.maxST = C.ST_BASE + self.attributes.vit_mod/2+self.skills.meditating/2
     @property
@@ -117,6 +118,7 @@ class Char(object):
     @life_percent.setter
     def life_percent(self, value):
         self.life = int(round(value*self.maxlife))
+        self._alive = True if self._life > 0 else False
 
     # SP property
     @property
@@ -187,18 +189,19 @@ class Char(object):
         Method for updating all the bonuses an adding them to their current instances
         '''
         bonus_dict = {}
-        for bonus_name, bonus_value in self.bonuses.items():
-            if bonus in bonus_dict:
-                bonus_dict[bonus] += bonus_value
-            else:
-                bonus_dict[bonus] = bonus_value
-        for equipment_slot, equipment in self.equipment:
-            if equipment is not None:
-                for bonus_name, bonus_value in equipment.bonuses.items():
-                    if bonus_name in bonus_dict:
-                        bonus_dict[bonus] += bonus_value
-                    else:
-                        bonus_dict[bonus_name] = bonus_value
+        for bonus in self.bonuses.values():
+            for bonus_name, bonus_value in bonus.items():
+                if bonus_name in bonus_dict:
+                    bonus_dict[bonus_name] += bonus_value
+                else:
+                    bonus_dict[bonus_name] = bonus_value
+            for equipment_slot, equipment in self.equipment:
+                if equipment is not None:
+                    for bonus_name, bonus_value in equipment.bonuses.items():
+                        if bonus_name in bonus_dict:
+                            bonus_dict[bonus_name] += bonus_value
+                        else:
+                            bonus_dict[bonus_name] = bonus_value
         for bonus_name, bonus_value in bonus_dict.items():
             if bonus_name in auxiliary.A.attributes_list:
                 setattr(self.attributes, bonus_name+'_bonus', bonus_value)
@@ -262,7 +265,7 @@ class Char(object):
         return self.skills.lore # what is atr?+
 
     @property
-    def REFLEX(self):
+    def intuition(self):
         return self.attributes.inteligence + self.skills.tactics # + resistspells
 
     @property
@@ -275,6 +278,7 @@ class Char(object):
 
         a = self.equipament['mainhand'].wep_atr['counterrating']
         b = self.mod('counterrating')
+        #parry?
         return a + b
 
     @classmethod
@@ -319,9 +323,10 @@ if __name__ == '__main__':
     Eff1 = {'poisoned': effects.Effects.poisoned}
     Pow1 = {}
     Spell1 = {}
-    Bonus1 = {}
+    Bonus1 = {'innate':{'wisdom':50}}
 
-    char1 = Char(name='bob', lvl=1, attributes=Attr1, skills=Skill1, defenses=Def1, resists=Res1, effects=Eff1, equipment=Equ1, powers=Pow1, spells=Spell1, bonuses=Bonus1)
+    char1 = Char(name='bob', lvl=1, attributes=Attr1, skills=Skill1, defenses=Def1,
+                    resists=Res1, effects=Eff1, equipment=Equ1, powers=Pow1, spells=Spell1, bonuses=Bonus1)
 
     # run poison effect
     print char1, 'before poison'
@@ -333,24 +338,20 @@ if __name__ == '__main__':
     print char1.attributes.roll('vitality'), 'roll vit'
     print char1.skills.roll('alchemy'), 'roll alchemy'
     print char1.defenses.roll('cutting'), 'roll cutting'
-    print char1.roll.resists('weakness'), 'roll weakness'
+    print char1.resists.roll('weakness'), 'roll weakness'
     print
     print 'Roll without bonus'
-    print char1.roll_attr('strength'), 'roll str'
+    print char1.attributes.roll('strength'), 'roll str'
     print 'Equip armor with bonus and roll again'
     char1.equip(Armor1, 'armor')
     # print char1.equipment.armor.bonuses
     # print char1.equipment
-    print char1.roll_attr('strength'), 'roll str'
-    char1.attributes._strength = 200
-    total1 = []
-    for x in range(1000):
-        total1.append(char1.roll_attr('strength'))
-    print sum(total1)/len(total1)
-    total1.sort()
-    print total1
-
-
+    print char1.attributes.roll('strength'), 'roll str'
+    var = vars(char1)
+    for item in var.items():
+        print item
+    print '\n,\n,\n'
+    print char1.bonuses
     # print blank_char.attributes
     # print blank_char.attributes._vitality
     # print blank_char.attributes.vitality

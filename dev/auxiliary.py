@@ -34,7 +34,10 @@ class Attributes(object):
                 setattr(self, '_'+attr, kwargs[attr])
             else:
                 setattr(self, '_'+attr, 0)
-            setattr(self, attr+'_bonus', 0)
+            if attr+'_bonus' in kwargs:
+                setattr(self, attr+'_bonus', kwargs[attr+'_bonus'])
+            else:
+                setattr(self, attr+'_bonus', 0)
 
     def __repr__(self):
         string = ''
@@ -102,8 +105,10 @@ class Defenses(object):
                 setattr(self, '_'+defense, kwargs[defense])
             else:
                 setattr(self, '_'+defense, 0)
-            setattr(self, defense+'_bonus', 0)
-
+            if defense+'_bonus' in kwargs:
+                setattr(self, defense+'_bonus', kwargs[defense+'_bonus'])
+            else:
+                setattr(self, defense+'_bonus', 0)
     def __repr__(self):
         string = ''
         for defense in D.defenses_list:
@@ -145,7 +150,11 @@ class Resists(object):
                 setattr(self, '_'+resist, kwargs[resist])
             else:
                 setattr(self, '_'+resist, 0)
+            if resist+'_bonus' in kwargs:
+                setattr(self, resist+'_bonus', kwargs[resist+'_bonus'])
+            else:
                 setattr(self, resist+'_bonus', 0)
+
 
     def __repr__(self):
         string = ''
@@ -334,11 +343,13 @@ class Skills(object):
                 setattr(self, '_'+skill, kwargs[skill])
             else:
                 setattr(self, '_'+skill, 0)
+            if skill+'_bonus' in kwargs:
+                setattr(self, skill+'_bonus', kwargs[skill+'_bonus'])
+            else:
                 setattr(self, skill+'_bonus', 0)
 
     def __repr__(self):
         string = ''
-        print S.skills_list
         for skill in S.skills_list:
             string += '{0}: {1}\tbonus: {2}\n'.format(skill, getattr(self, skill), getattr(self, skill+'_bonus'))
             return string
@@ -523,7 +534,9 @@ if __name__ == '__main__':
     assert Inv1.size == 3
 
     Skill1 = Skills()
-    print Skill1
+    teste = vars(Skill1)
+    for x in teste.items():
+        print x
     assert type(Skill1.meditating) is int
     print Attr1
     print Defense1
