@@ -7,6 +7,7 @@ char file
 Coyright © 2016 - Ramiro Tyzkza - ramiro.tyszka@gmail.com
 '''
 from constants import char as C
+from constants import attributes as A
 import base
 import auxiliary
 import effects
@@ -52,6 +53,8 @@ class Char(object):
 
             ST: char ST - if not specified it's set with char's attributes
         '''
+        #start bonuses dict
+        self.bonuses = {}
         # handles positional
         self.name = name
         # handles kwargs
@@ -60,8 +63,10 @@ class Char(object):
                 if arg_name in C.properties:
                     setattr(self, 'max'+arg_name, kwargs[arg_name])
                     setattr(self, '_'+arg_name, kwargs[arg_name])
-                if arg_name in C.bonuses:
-                    setattr(self,arg_name, kwargs[arg_name])
+                if arg_name == 'bonuses':
+                    for bon in C.bonuses:
+                        if kwargs[arg_name].has_key(bon):
+                            self.bonuses[bon] = kwargs[arg_name][bon]
                 if arg_name in C.stats:
                     setattr(self,'_'+arg_name+'_bonus', kwargs[arg_name])
                 if arg_name not in list(set(C.properties) | set(C.bonuses) | set(C.stats)):
@@ -70,17 +75,19 @@ class Char(object):
                 if arg_name in C.properties:
                     setattr(self, 'max'+arg_name, None)
                     setattr(self, '_'+arg_name, None)
-                if arg_name in C.bonuses:
-                    setattr(self,arg_name, {})
                 if arg_name in C.stats:
                     setattr(self,'_'+arg_name+'_bonus', 0)
                 if arg_name not in list(set(C.properties) | set(C.bonuses) | set(C.stats)):
                     setattr(self, arg_name, None)
+        for bon in C.bonuses:
+            if not self.bonuses.has_key(bon):
+                self.bonuses[bon] = {}
         self.lvl = self.lvl or 0
+
         if 'equipment' in kwargs:
             self.equipment = kwargs['equipment']
         else:
-            self.equipment = 0
+            self.equipment = None
 
         self.calculate_stats()
         self._life = self.life if self.life is not None else self.maxlife
@@ -94,9 +101,9 @@ class Char(object):
             string += '\neffects: {0}'.format(self.effects.keys())
         return string
     def calculate_stats(self):
-        self.maxlife = C.LIFE_BASE + self.attributes.vit_mod*10 + self._life_bonus
-        self.maxSP = C.SP_BASE + self.attributes.int_mod
-        self.maxST = C.ST_BASE + self.attributes.vit_mod/2+self.skills.meditating/2
+        self.maxlife = C.LIFE_BASE + self.attributes.vit_mod()*10 + self._life_bonus
+        self.maxSP = C.SP_BASE + self.attributes.int_mod()
+        self.maxST = C.ST_BASE + self.attributes.vit_mod()/2+self.skills.meditating()/2
     @property
     def life(self):
         '''
@@ -211,6 +218,8 @@ class Char(object):
                 setattr(self.defenses, bonus_name+'_bonus', bonus_value)
             elif bonus_name in auxiliary.R.resists_list:
                 setattr(self.resists, bonus_name+'_bonus', bonus_value)
+            elif bonus_name in C.stats:
+                setattr(self, bonus_name+'_bonus', bonus_value)
     def run_effects(self):
         '''
         Runs the effects in the effects dict
@@ -225,17 +234,17 @@ class Char(object):
 
     @property
     def EVD(self):
-        return self.skills.reflex +self.equipment.evade +self.attributes.agi_mod
+        return self.skills.reflex() + self.attributes.agi_mod() + self._evasion_bonus
+    def attack(self,weapon):
+        return getattr(self.attributes,weapon.attk_skill)() + getattr(self.attributes,weapon.attk_attr+'_mod')()# add bonus do char
 
     @property
     def PROT(self):
-        return self.equipment.prot
+        return self._prot_bonus
 
-    def AT(self,weapon):
-        return self.equipament.attk # add bonus do char
 
-    def AE(self,atr,skill):
-        return self.equipament.attk # add bonus do char
+    def special_attack(self,attr,skill):
+        return self.special_attack_bonus + getattr(self.attributes,skill+'_mod') # add bonus do char
 
     # def CT(self):
     #     call = getattr(Power, str(self.useskill))
@@ -246,8 +255,8 @@ class Char(object):
     #     return round(b * (1-d/100),2)
 
     @property
-    def CRIT(self):
-        return C.CRIT_BASE + self.skills.anatomy + self.stats.crit
+    def crit(self):
+        return C.CRIT_BASE + self.skills.anatomy() + self.crit_bonus
 
     @property
     def RESILIENCE(self):
@@ -266,7 +275,7 @@ class Char(object):
 
     @property
     def intuition(self):
-        return self.attributes.inteligence + self.skills.tactics # + resistspells
+        return self.attributes.inteligence() + self.skills.tactics # + resistspells
 
     @property
     def cast(self):
@@ -327,7 +336,10 @@ if __name__ == '__main__':
 
     char1 = Char(name='bob', lvl=1, attributes=Attr1, skills=Skill1, defenses=Def1,
                     resists=Res1, effects=Eff1, equipment=Equ1, powers=Pow1, spells=Spell1, bonuses=Bonus1)
-
+    print char1.bonuses
+    var = vars(char1)
+    for a in var:
+        print a
     # run poison effect
     print char1, 'before poison'
     char1.run_effects()
@@ -350,9 +362,15 @@ if __name__ == '__main__':
     var = vars(char1)
     for item in var.items():
         print item
-    print '\n,\n,\n'
+    print
+    print
+    print
+    print char1.attributes.strength()
     print char1.bonuses
+    char1.bonuses['magic']['agility'] = 80
+    print char1.bonuses
+    char1._update_bonus()
     # print blank_char.attributes
     # print blank_char.attributes._vitality
     # print blank_char.attributes.vitality
-3
+    print char1.EVD

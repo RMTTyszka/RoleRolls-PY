@@ -176,6 +176,7 @@ This class contains the effects that affects the char
 
 #### Class `powers.Powers`
 This class contains the powers that the char can use
+This hold the attk and damage info of the caster, updating it right before 
 
 #### Class `spells.Spells`
 This class contains the spells that the char can use

@@ -84,7 +84,8 @@ class Weapon(Equipable):
                 'thrown':{
                         'atkskill':'archery','atkatr':'agi','danoatr':'str'},
                 'catalyst':{
-                        'atkskill':'magery','atkatr':'wis','danoatr':'wis'}}
+                        'atkskill':'magery','atkatr':'wis','danoatr':'wis'}
+                        }
     weapons = {
             'catalyst':{
                         'heavy':{

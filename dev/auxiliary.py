@@ -29,6 +29,8 @@ class Attributes(object):
             # "charisma": char charisma} - not implemented so far
         '''
         for attr in A.attributes_list:
+            self.get_attr_fn(attr)
+            self.get_attr_mod_fn(attr)
             if attr in kwargs:
                 setattr(self, '_'+attr, kwargs[attr])
                 setattr(self, '_'+attr, kwargs[attr])
@@ -38,56 +40,30 @@ class Attributes(object):
                 setattr(self, attr+'_bonus', kwargs[attr+'_bonus'])
             else:
                 setattr(self, attr+'_bonus', 0)
-
     def __repr__(self):
         string = ''
         for attr in A.attributes_list:
             string += '{0}: {1}\tbonus: {2}\n'.format(attr, getattr(self, attr), getattr(self, attr+'_bonus'))
         return string
-    def T_attr(self,attr):
-        return getattr(self,'_'+attr) + getattr(self,attr+'_bonus')
-    @property
-    def strength(self):
-        return self._strength + self.strength_bonus
-    @property
-    def agility(self):
-        return self._agility + self.agility_bonus
-    @property
-    def vitality(self):
-        return self._vitality + self.vitality_bonus
-    @property
-    def wisdom(self):
-        return self._wisdom + self.wisdom_bonus
-    @property
-    def inteligence(self):
-        return self._inteligence + self.inteligence_bonus
-    @property
-    def charisma(self):
-        return self._charisma + self.charisma_bonus
+    def get_attr_fn(self,attr):
+        def attr_fn():
+            return getattr(self,'_'+attr) + getattr(self,attr+'_bonus')
+        attr_fn.__doc__ = "docstring for ",attr
+        attr_fn.__name__ = str(attr)
+        setattr(self,attr_fn.__name__, attr_fn)
+    def get_attr_mod_fn(self,attr):
+        def attr_mod_fn(value = None):
+            value = value if value is not None else 5
+            return (getattr(self,'_'+attr) + getattr(self,attr+'_bonus'))/value
+        attr_mod_fn.__doc__ = "docstring for ",attr
+        attr_mod_fn.__name__ = str(attr)[:3]+'_mod'
+        setattr(self,attr_mod_fn.__name__, attr_mod_fn)
 
-    @property
-    def str_mod(self):
-        return int(self.strength/5)
-    @property
-    def agi_mod(self):
-        return int(self.agility/5)
-    @property
-    def vit_mod(self):
-        return int(self.vitality/5)
-    @property
-    def wis_mod(self):
-        return int(self.wisdom/5)
-    @property
-    def int_mod(self):
-        return int(self.inteligence/5)
-    @property
-    def cha_mod(self):
-        return int(self.charisma/5)
     def roll(self, attribute):
         '''
         Makes a roll of the attribute in the argument
         '''
-        return dice.roll_01(getattr(self, attribute))
+        return dice.roll_01(getattr(self, attribute)())
 
 class Defenses(object):
     ''' Base Defenses for any item in the game '''
@@ -101,6 +77,7 @@ class Defenses(object):
             "magic", magic
         '''
         for defense in D.defenses_list:
+            self.get_def_fn(defense)
             if defense in kwargs:
                 setattr(self, '_'+defense, kwargs[defense])
             else:
@@ -114,24 +91,29 @@ class Defenses(object):
         for defense in D.defenses_list:
             string += '{0}: {1}\tbonus: {2}\n'.format(defense, getattr(self, defense), getattr(self, defense+'_bonus'))
         return string
-
-    @property
-    def cutting(self):
-        return self._cutting + self.cutting_bonus
-    @property
-    def smashing(self):
-        return self._smashing + self.smashing_bonus
-    @property
-    def piercing(self):
-        return self._piercing + self.piercing_bonus
-    @property
-    def magic(self):
-        return self._magic + self.magic_bonus
+    def get_def_fn(self,defen):
+        def def_fn():
+            return getattr(self,'_'+defen) + getattr(self,defen+'_bonus')
+        def_fn.__doc__ = "docstring for ",defen
+        def_fn.__name__ = str(defen)
+        setattr(self,def_fn.__name__, def_fn)
+    #@property
+    #def cutting(self):
+    #    return self._cutting + self.cutting_bonus
+    #@property
+    #def smashing(self):
+    #    return self._smashing + self.smashing_bonus
+    #@property
+    #def piercing(self):
+    #    return self._piercing + self.piercing_bonus
+    #@property
+    #def magic(self):
+    #    return self._magic + self.magic_bonus
     def roll(self, defense):
         '''
         Makes a roll of the defense in the argument
         '''
-        return dice.roll_01(getattr(self, defense))
+        return dice.roll_01(getattr(self, defense)())
 
 class Resists(object):
     ''' Base Resists for any item in the game '''
@@ -146,6 +128,7 @@ class Resists(object):
         "curse": curse
         '''
         for resist in R.resists_list:
+            self.get_resist_fn(resist)
             if resist in kwargs:
                 setattr(self, '_'+resist, kwargs[resist])
             else:
@@ -161,28 +144,19 @@ class Resists(object):
         for resist in R.resists_list:
             string += '{0}: {1}\tbonus: {2}\n'.format(resist, getattr(self, resist), getattr(self, resist+'_bonus'))
         return string
+    def get_resist_fn(self,resist):
+        def def_fn():
+            return getattr(self,'_'+resist) + getattr(self,resist+'_bonus')
+        def_fn.__doc__ = "docstring for ",resist
+        def_fn.__name__ = str(resist)
+        setattr(self,def_fn.__name__, def_fn)
     def roll(self, resist):
         '''
         Makes a roll of the resist in the argument
         '''
-        return dice.roll_01(getattr(self, resist))
+        return dice.roll_01(getattr(self, resist)())
 
 
-    @property
-    def weakness(self):
-        return self._weakness + self.weakness_bonus
-    @property
-    def slow(self):
-        return self._slow + self.slow_bonus
-    @property
-    def stun(self):
-        return self._stun + self.stun_bonus
-    @property
-    def blind(self):
-        return self._blind + self.blind_bonus
-    @property
-    def curse(self):
-        return self._curse + self.curse_bonus
 class Equipment(object):
     ''' Base Equipment for any item in the game '''
 
@@ -218,21 +192,19 @@ class Equipment(object):
             string += '{0}: {1}\n'.format(equipment, getattr(self, equipment))
         return string
 
-    @property
-    def evade(self):
-        return sum(equipment.evade for name, equipment in self if hasattr(equipment, 'evade'))
 
-    def equip(self, item,  slot):
+    def equip(self, item,  slot = None):
         '''
         Equips the item in the slot.
         Returns the item if the slot doesn't exists or the old item if the slot is
         occupied
         '''
+        slot = item.slot if slot == None else slot
         if slot in E.equipment_list:
             old_item = self.unequip(slot)
             setattr(self, slot, item)
             return old_item
-            return item
+        return item
 
     def unequip(self, slot):
         '''
@@ -339,6 +311,8 @@ class Skills(object):
         "wrestling": wrestling
         '''
         for skill in S.skills_list:
+            self.get_skill_fn(skill)
+            self.get_skill_mod_fn(skill)
             if skill in kwargs:
                 setattr(self, '_'+skill, kwargs[skill])
             else:
@@ -353,163 +327,56 @@ class Skills(object):
         for skill in S.skills_list:
             string += '{0}: {1}\tbonus: {2}\n'.format(skill, getattr(self, skill), getattr(self, skill+'_bonus'))
             return string
+    def get_skill_fn(self,skill):
+        def def_fn():
+            return getattr(self,'_'+skill) + getattr(self,skill+'_bonus')
+        def_fn.__doc__ = "docstring for ",skill
+        def_fn.__name__ = str(skill)
+        setattr(self,def_fn.__name__, def_fn)
+    def get_skill_mod_fn(self,skill):
+        def def_fn(value = None):
+            value = value if not value == None else 5
+            return (getattr(self,'_'+skill) + getattr(self,skill+'_bonus'))/value
+        def_fn.__doc__ = "docstring for ",skill+'_mod'
+        def_fn.__name__ = str(skill)+'_mod'
+        setattr(self,def_fn.__name__, def_fn)
     def roll(self, skill):
         '''
         Makes a roll of the skill in the argument
         '''
-        return dice.roll_01(getattr(self, skill))
+        return dice.roll_01(getattr(self, skill)())
 
-    @property
-    def alchemy(self):
-        return self._alchemy + self.alchemy_bonus
 
-    @property
-    def anatomy(self):
-        return self._anatomy + self.anatomy_bonus
-
-    @property
-    def animaltaming(self):
-        return self._animaltaming + self.animaltaming_bonus
-
-    @property
-    def archery(self):
-        return self._archery + self.archery_bonus
-
-    @property
-    def armorcrafting(self):
-        return self._armorcrafting + self.armorcrafting_bonus
-
-    @property
-    def armslore(self):
-        return self._armslore + self.armslore_bonus
-
-    @property
-    def awareness(self):
-        return self._awareness + self.awareness_bonus
-
-    @property
-    def bowcrafting(self):
-        return self._bowcrafting + self.bowcrafting_bonus
-
-    @property
-    def carpentery(self):
-        return self._carpentery + self.carpentery_bonus
-
-    @property
-    def fencing(self):
-        return self._fencing + self.fencing_bonus
-
-    @property
-    def gathering(self):
-        return self._gathering + self.gathering_bonus
-
-    @property
-    def healing(self):
-        return self._healing + self.healing_bonus
-
-    @property
-    def heavyweaponship(self):
-        return self._heavyweaponship + self.heavyweaponship_bonus
-
-    @property
-    def jewelcrafting(self):
-        return self._jewelcrafting + self.jewelcrafting_bonus
-
-    @property
-    def leatherworking(self):
-        return self._leatherworking + self.leatherworking_bonus
-
-    @property
-    def lore(self):
-        return self._lore + self.lore_bonus
-
-    @property
-    def lumberjacking(self):
-        return self._lumberjacking + self.lumberjacking_bonus
-
-    @property
-    def magery(self):
-        return self._magery + self.magery_bonus
-
-    @property
-    def meditating(self):
-        return self._meditating + self.meditating_bonus
-
-    @property
-    def mercantilism(self):
-        return self._mercantilism + self.mercantilism_bonus
-
-    @property
-    def military(self):
-        return self._military + self.military_bonus
-
-    @property
-    def parry(self):
-        return self._parry + self.parry_bonus
-
-    @property
-    def reflex(self):
-        return self._reflex + self.reflex_bonus
-
-    @property
-    def resistspells(self):
-        return self._resistspells + self.resistspells_bonus
-
-    @property
-    def skinning(self):
-        return self._skinning + self.skinning_bonus
-
-    @property
-    def stealth(self):
-        return self._stealth + self.stealth_bonus
-
-    @property
-    def swordmanship(self):
-        return self._swordmanship + self.swordmanship_bonus
-
-    @property
-    def tactics(self):
-        return self._tactics + self.tactics_bonus
-
-    @property
-    def tailoring(self):
-        return self._tailoring + self.tailoring_bonus
-
-    @property
-    def wrestling(self):
-        return self._wrestling + self.wrestling_bonus
 
 if __name__ == '__main__':
     Resist1 = Resists()
-    assert type(Resist1.weakness) is int
+    assert type(Resist1.weakness()) is int
     Defense1 = Defenses()
-    assert type(Defense1.cutting) is int
+    assert type(Defense1.cutting()) is int
     Attr1 = Attributes()
     Attr1._agility = 20
-    for attr in A.attributes_list:
-        print Attr1.T_attr(attr)
-    assert type(Attr1.strength) is int
-    assert type(Attr1.str_mod) is int
+    assert type(Attr1.strength()) is int
+    assert type(Attr1.str_mod()) is int
     assert type(Attr1.strength_bonus) is int
 
-    assert type(Attr1.agility) is int
-    assert type(Attr1.agi_mod) is int
+    assert type(Attr1.agility()) is int
+    assert type(Attr1.agi_mod()) is int
     assert type(Attr1.agility_bonus) is int
 
-    assert type(Attr1.vitality) is int
-    assert type(Attr1.vit_mod) is int
+    assert type(Attr1.vitality()) is int
+    assert type(Attr1.vit_mod()) is int
     assert type(Attr1.vitality_bonus) is int
 
-    assert type(Attr1.wisdom) is int
-    assert type(Attr1.wis_mod) is int
+    assert type(Attr1.wisdom()) is int
+    assert type(Attr1.wis_mod()) is int
     assert type(Attr1.wisdom_bonus) is int
 
-    assert type(Attr1.inteligence) is int
-    assert type(Attr1.int_mod) is int
+    assert type(Attr1.inteligence()) is int
+    assert type(Attr1.int_mod()) is int
     assert type(Attr1.inteligence_bonus) is int
 
-    assert type(Attr1.charisma) is int
-    assert type(Attr1.cha_mod) is int
+    assert type(Attr1.charisma()) is int
+    assert type(Attr1.cha_mod()) is int
     assert type(Attr1.charisma_bonus) is int
 
     Equi1 = Equipment()
@@ -534,15 +401,13 @@ if __name__ == '__main__':
     assert Inv1.size == 3
 
     Skill1 = Skills()
-    teste = vars(Skill1)
-    for x in teste.items():
-        print x
-    assert type(Skill1.meditating) is int
+    print dir(Skill1)
+    assert type(Skill1.meditating()) is int
     print Attr1
     print Defense1
     print Resist1
     Attr1.str_bonus = 10
     print Attr1.strength
-    print (lambda: dice.roll_01(getattr(Attr1, 'strength')))()
+    print (lambda: dice.roll_01(getattr(Attr1, 'strength')()))
     print Attr1.roll('agility')
     print 'All tests ok!'

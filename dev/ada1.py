@@ -1,4 +1,2 @@
-macarrao = 'arroz'
-d = {macarrao: 'abacate'}
-
-print 'arroz' in d
+d = {'abacate': 1}
+print 1 in d

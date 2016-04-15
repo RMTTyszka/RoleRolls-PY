@@ -2,11 +2,116 @@
   "args_list": ["name", "lvl", "attributes", "skills", "defenses", "resists",
     "equipment", "inventory", "effects", "powers", "spells",  "bonuses",  "HP",
     "SP",  "ST"],
-  "item_cat": ["broken", "half broken", "deficient", "poor", "inferior", "moderated",
+  "item_condition": ["broken", "half broken", "deficient", "poor", "inferior", "moderated",
     "acceptable", "common", "fine", "good", "useful", "fency", "superior", "excelent",
     "admirable", "splendid", "extraordinary", "awesome", "best", "first-class"],
     "item_value": [4, 8, 12, 16, 20, 40, 60, 80, 100, 120, 220, 320, 420, 520, 620, 1120,
       1620, 2120, 2620, 3120, 5620, 8120, 10620, 13120, 15620, 28120, 40620, 53120,
       65620, 78120],
-  "default_color": "white"
+  "default_color": "white",
+  "mainhand": [], "offhand":[], "helmet":[], "neck":[], "armor":{
+                    "bonus":{
+                            "evade":1,"resil":1,"fortitude":1,"magicred":5},
+                    "resist":{
+                            "stun":2,"weakness":2,"slow":2,"blindness":2,"curse":2},
+                    "defense":{
+                            "cutting":1,"smashing":1,"piercing":1,"spell":1}}, "wrist":[],
+    "gauntlet":[], "ring1":[], "ring2":[], "belt":[], "boots":[], "extra":[],
+    "items_args": ["name","base","material","power","effect"],
+
+    "get_weapon_attr": ["attk_skill","attk_attr","damage_attr"],
+
+  "weapon_type" : {
+              "cutting":{
+                      "attk_skill":"swordmanship","attk_attr":"str","damage_attr":"str"},
+              "smashing":{
+                      "attk_skill":"heavyweaponship","attk_attr":"str","damage_attr":"str"},
+              "piercing":{
+                      "attk_skill":"fencing","attk_attr":"agi","damage_attr":"agi"},
+              "ranged":{
+                      "attk_skill":"archery","attk_attr":"agi","damage_attr":"agi"},
+              "thrown":{
+                      "attk_skill":"archery","attk_attr":"agi","damage_attr":"str"},
+              "catalyst":{
+                      "attk_skill":"magery","attk_attr":"wis","damage_attr":"wis"}
+                  },
+  "weapons" : {
+          "catalyst":{
+                      "heavy":{
+                              "staff":"normal"},
+                      "medium":{
+                              "rod":"normal"},
+                      "light":{
+                              "wand":"normal",
+                              "orb":"normal"}},
+          "cutting":{
+                      "medium":{
+                              "longsword":"normal"},
+                      "light":{
+                              "dagger":"normal"},
+                      "heavy":{
+                              "Great Axe":"normal"}},
+          "smashing":{
+                      "light":{
+                              "hammer": "normal"},
+                      "medium":{
+                              "morningstar": "normal"},
+                      "heavy":{
+                              "maul": "normal"}},
+          "piercing":{
+                      "light":{
+                              "dagger":"normal"},
+                      "medium":{
+                              "rapier":"normal"},
+                      "heavy":{
+                              "war pickaxe":"normal"}}},
+  "wep_size_info" : {
+                  "light":{
+                          "AS_base":2.5,"min_damage":8,"max_damage":18,"attk_bonus":0,
+                          "multi_damage":1.0,"attr_mult":0.5,"counter":15,"armor_penetration":0},
+                  "medium":{
+                          "AS_base":5.0,"min_damage":8,"max_damage":18,"attk_bonus":0,"multi_damage":1.5,
+                          "attr_mult":1,"counter":10,"armor_penetration":0},
+                  "heavy":{
+                          "AS_base":15.0,"min_damage":8,"max_damage":18,"attk_bonus":8,"multi_damage":2.0,
+                          "attr_mult":3,"counter":5,"armor_penetration":5}},
+    "armors_dict" : {
+              "light":{
+                  "cloth":{
+                      "weak": "smashing","strong": "piercing"},
+
+                  "robe":{
+                      "weak": "cutting","strong": "smashing"},
+
+                  "leather":{
+                      "weak": "piercing","strong": "cutting"}},
+              "medium":{
+                  "chainmail":{
+                      "weak": "smashing","strong": "piercing"},
+
+                  "studded leather":{
+                      "weak": "cutting","strong": "smashing"},
+
+                  "halfplate":{
+                      "weak": "piercing","strong": "cutting"}},
+              "heavy":{
+                  "fullplate":{
+                      "weak": "smashing","strong": "piercing"},
+
+                  "scale":{
+                      "weak": "cutting","strong": "smashing"},
+
+                  "splintmail":{
+                      "weak": "piercing","strong": "cutting"}}},
+
+                      "armor_info" : {
+                                    "None": {
+                                            "protection":0,"evasion":5},
+                                    "light": {
+                                            "protection":1,"evasion":0},
+                                    "medium":{
+                                            "protection":6,"evasion":-6},
+                                    "heavy":{
+                                            "protection":11,"evasion":-19}}
+
 }

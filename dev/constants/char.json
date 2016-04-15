@@ -2,10 +2,10 @@
   "args_list": [
                 "name", "lvl", "attributes", "skills", "defenses", "resists",
                 "equipment", "inventory", "effects", "powers", "spells",
-                "bonuses","critical","resilience","attack","special_attack",
+                "critical","resilience","attack","special_attack",
                 "evasion","SP", "life","ST","prot","fortitude","AT_damage",
                 "SA_damage","AS","CS","critical_damage","armor_penetration",
-                "intuition","moral","magic","innate"
+                "intuition","counter"
                 ],
   "LIFE_BASE": 50,
   "SP_BASE": 50,
@@ -16,5 +16,5 @@
   "bonuses": ["moral","magic","innate"],
   "stats": ["critical","resilience","attack","special_attack","evasion","SP",
             "life","ST","prot","fortitude","AT_damage","SA_damage","AS","CS",
-            "critical_damage","armor_penetration","intuition"]
+            "critical_damage","armor_penetration","intuition","counter"]
 }
