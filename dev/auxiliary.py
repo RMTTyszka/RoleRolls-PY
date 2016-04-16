@@ -33,7 +33,6 @@ class Attributes(object):
             self.get_attr_mod_fn(attr)
             if attr in kwargs:
                 setattr(self, '_'+attr, kwargs[attr])
-                setattr(self, '_'+attr, kwargs[attr])
             else:
                 setattr(self, '_'+attr, 0)
             if attr+'_bonus' in kwargs:

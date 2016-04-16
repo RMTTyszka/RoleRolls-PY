@@ -19,7 +19,7 @@ import dice
 class Char(object):
     ''' Base class for any item in the game '''
 
-    def __init__(self, name, **kwargs):
+    def __init__(self,**kwargs):
         '''
         Initializes the class.
         arguments:
@@ -56,7 +56,6 @@ class Char(object):
         #start bonuses dict
         self.bonuses = {}
         # handles positional
-        self.name = name
         # handles kwargs
         for arg_name in C.args_list:
             if arg_name in kwargs:
@@ -94,11 +93,10 @@ class Char(object):
         self._SP = self.SP if self.SP is not None else self.maxSP
         self._ST = self.ST if self.ST is not None else self.maxST
         self._update_bonus()
-
     def __repr__(self):
         string = 'char: {0}\nlife: {1} MP: {2}'.format(self.name, self.life, self.SP)
         if self.effects:
-            string += '\neffects: {0}'.format(self.effects.keys())
+            string += '\neffects: {0}\n'.format(self.effects.keys())
         return string
     def calculate_stats(self):
         self.maxlife = C.LIFE_BASE + self.attributes.vit_mod()*10 + self._life_bonus
@@ -291,7 +289,7 @@ class Char(object):
         return a + b
 
     @classmethod
-    def blank(cls, name, *args, **kwargs):
+    def blank(cls,*args, **kwargs):
         '''
         Creates a blank char with 0 in all stats
         '''
@@ -327,7 +325,7 @@ if __name__ == '__main__':
     Skill1 = auxiliary.Skills(alchemy=10)
     Def1 = auxiliary.Defenses(cutting=10)
     Res1 = auxiliary.Resists(weakness=10)
-    Armor1 = items.Equipable.Armor('red_chainmail', bonuses={'strength': 10})
+    #Armor1 = items.Equipable.Armor('red_chainmail', bonuses={'strength': 10})
     Equ1 = auxiliary.Equipment()
     Eff1 = {'poisoned': effects.Effects.poisoned}
     Pow1 = {}
@@ -344,7 +342,7 @@ if __name__ == '__main__':
     print char1, 'before poison'
     char1.run_effects()
     print char1, 'after poison'
-    blank_char = Char.blank('boris')
+    blank_char = Char.blank(name='boris')
     print blank_char
     blank_char
     print char1.attributes.roll('vitality'), 'roll vit'
@@ -355,7 +353,7 @@ if __name__ == '__main__':
     print 'Roll without bonus'
     print char1.attributes.roll('strength'), 'roll str'
     print 'Equip armor with bonus and roll again'
-    char1.equip(Armor1, 'armor')
+    #char1.equip(Armor1, 'armor')
     # print char1.equipment.armor.bonuses
     # print char1.equipment
     print char1.attributes.roll('strength'), 'roll str'
@@ -373,4 +371,5 @@ if __name__ == '__main__':
     # print blank_char.attributes
     # print blank_char.attributes._vitality
     # print blank_char.attributes.vitality
-    print char1.EVD
+    print char1.attributes.vit_mod()
+    char1.calculate_stats()

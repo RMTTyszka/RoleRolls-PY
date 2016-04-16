@@ -45,7 +45,7 @@ class Equipable(Item):
 
     def __init__(self, slot, **kwargs):
         super(Equipable, self).__init__(slot = slot, **kwargs)
-        self.bonuses = kwargs['bonuses'] if 'bonuses' in kwargs else {}
+        self.bonuses = kwargs['bonuses'] if 'bonuses' in kwargs else {'magic':{},'innate':{},'moral':{}}
         def Equip():
             pass
 
@@ -76,10 +76,12 @@ class Equipable(Item):
             armor.weak = kwargs['weak']
         else:
             armor.weak = Ci.armors_dict[armor.category][armor.base]['weak']
-        armor.bonuses['protection'] = armor.bonuses.get('protection',0) \
+
+
+        armor.bonuses['innate']['protection'] = armor.bonuses['innate'].get('protection',0) \
                                 + Ci.armor_info[armor.category]['protection'] \
                                 * armor.lvl
-        armor.bonuses['evasion'] = armor.bonuses.get('evasion',0) \
+        armor.bonuses['innate']['evasion'] = armor.bonuses['innate'].get('evasion',0) \
                                  + Ci.armor_info[armor.category]['evasion']
         return armor
     @classmethod
