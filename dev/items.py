@@ -125,5 +125,6 @@ if __name__ == '__main__':
     print item2.weak
     print item2.bonuses
     #print item2.slots
-    item3 = Equipable.Weapon(base = 'longsword',name = 'fire')
+    item3 = Equipable.Weapon(base='longsword',name='fire')
     print item3.name + ' ' + item3.base
+    item4 = Equipable.Armor(base='cloth',name ='gosma')

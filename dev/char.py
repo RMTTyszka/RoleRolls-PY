@@ -8,7 +8,6 @@ Coyright © 2016 - Ramiro Tyzkza - ramiro.tyszka@gmail.com
 '''
 from constants import char as C
 from constants import attributes as A
-import base
 import auxiliary
 import effects
 import items
@@ -19,7 +18,7 @@ import dice
 class Char(object):
     ''' Base class for any item in the game '''
 
-    def __init__(self,**kwargs):
+    def __init__(self, name, *args, **kwargs):
         '''
         Initializes the class.
         arguments:
@@ -183,12 +182,6 @@ class Char(object):
         self.equipment.equip(item, slot)
         self._update_bonus()
 
-    # def update_bonus(self, ):
-
-
-
-
-
     def _update_bonus(self):
         '''
         Method for updating all the bonuses an adding them to their current instances
@@ -202,11 +195,13 @@ class Char(object):
                     bonus_dict[bonus_name] = bonus_value
             for equipment_slot, equipment in self.equipment:
                 if equipment is not None:
-                    for bonus_name, bonus_value in equipment.bonuses.items():
-                        if bonus_name in bonus_dict:
-                            bonus_dict[bonus_name] += bonus_value
-                        else:
-                            bonus_dict[bonus_name] = bonus_value
+                    for bonus_type, bonus_type_value in equipment.bonuses.items():
+                        for bonus_name, bonus_value in bonus_type_value.items():
+                            if bonus_name in bonus_dict:
+                                print(bonus_name)
+                                bonus_dict[bonus_name] += bonus_value
+                            else:
+                                bonus_dict[bonus_name] = bonus_value
         for bonus_name, bonus_value in bonus_dict.items():
             if bonus_name in auxiliary.A.attributes_list:
                 setattr(self.attributes, bonus_name+'_bonus', bonus_value)
@@ -218,6 +213,7 @@ class Char(object):
                 setattr(self.resists, bonus_name+'_bonus', bonus_value)
             elif bonus_name in C.stats:
                 setattr(self, bonus_name+'_bonus', bonus_value)
+
     def run_effects(self):
         '''
         Runs the effects in the effects dict
@@ -289,7 +285,7 @@ class Char(object):
         return a + b
 
     @classmethod
-    def blank(cls,*args, **kwargs):
+    def blank(cls, name, *args, **kwargs):
         '''
         Creates a blank char with 0 in all stats
         '''
@@ -308,7 +304,7 @@ class Char(object):
             'life': 0,
             'SP': 0,
             'ST': 0}
-        for key, value in kwargs:
+        for key, value in kwargs.items():
             if key in blank:
                 blank[key] = value
         return cls(name, *args, **blank)
