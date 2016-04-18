@@ -61,6 +61,9 @@ else:
             attackers.append(char)
         for z in range(3):
             for y in range(3):
-                attacker[x]
+                dam = attackers[z].main_attack(defenders[y])
+                attackers[z].damage_done.append(dam)
+                defenders[y].damage_taken.append(dam)
+
     #for d in defenders:
         #print d.name

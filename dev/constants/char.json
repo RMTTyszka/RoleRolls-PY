@@ -3,8 +3,8 @@
                 "name", "lvl", "attributes", "skills", "defenses", "resists",
                 "equipment", "inventory", "effects", "powers", "spells",
                 "critical","resilience","attack","special_attack",
-                "evasion","SP", "life","ST","prot","fortitude","AT_damage",
-                "SA_damage","AS","CS","critical_damage","armor_penetration",
+                "evasion","sp", "life","st","prot","fortitude","at_damage",
+                "sa_damage","as","cs","critical_damage","armor_penetration",
                 "intuition","counter"
                 ],
   "LIFE_BASE": 50,
@@ -14,7 +14,7 @@
   "RESILIENCE_BASE": 5,
   "properties": ["life", "SP",  "ST"],
   "bonuses": ["moral","magic","innate"],
-  "stats": ["critical","resilience","attack","special_attack","evasion","SP",
-            "life","ST","prot","fortitude","AT_damage","SA_damage","AS","CS",
+  "stats": ["critical","resilience","attack","special_attack","evasion","sp",
+            "life","st","prot","fortitude","at_damage","sa_damage","as","cs",
             "critical_damage","armor_penetration","intuition","counter"]
 }

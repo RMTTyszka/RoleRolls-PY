@@ -170,10 +170,19 @@ class Char(object):
         self.ST = int(round(value*self.maxST))
 
 
-    def attack(self, enemy):
+    def attack(self, target=None, hand = 'mainhand'):
         '''
         Attacks the enemy, returning the damage and any other penalty
         '''
+        #cod if target == None
+
+        #get vars
+        attk_sk =
+        attk_attr =
+        attk_bon =
+
+        #get target vars
+        evade = target.evade
         pass
 
     def equip(self, item, slot):
@@ -231,10 +240,25 @@ class Char(object):
         '''
 
     @property
-    def EVD(self):
+    def evade(self):
         return self.skills.reflex() + self.attributes.agi_mod() + self._evasion_bonus
-    def attack(self,weapon):
-        return getattr(self.attributes,weapon.attk_skill)() + getattr(self.attributes,weapon.attk_attr+'_mod')()# add bonus do char
+    def attack(self, target = None, weapon = None):
+        '''
+        Attacks the enemy, returning the damage and any other penalty
+        '''
+        #cod if target == None
+
+        #get vars
+        attk_sk = getattr(self.skills,weapon.attk_skill)()
+        attk_attr = getattr(self.attributes,weapon.attk_attr+'_mod')()
+        attk_bon = self.attack_bon
+
+        #get target vars
+        evade = target.evade
+        roll = random.randint(1,100)+ attk_sk + attk_attr + attk_bon - evade - 50
+        if roll => 0:
+            self.damage(weapon,target)
+        return  + # add bonus do char
 
     @property
     def PROT(self):
@@ -261,8 +285,8 @@ class Char(object):
         return C.RESILIENCE_BASE + self.skills.parry #mod resilience? +
 
     @property
-    def DAMAGE_AT(self):
-        return self.skills.armslore # + where is the damage?
+    def at_damage_mod(self):
+        return self.skills.armslore_mod() + self.at_damage_bonus # + where is the damage?
 
     @property
     def FORTITUDE(self):
