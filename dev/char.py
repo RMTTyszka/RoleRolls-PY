@@ -92,15 +92,18 @@ class Char(object):
         self._SP = self.SP if self.SP is not None else self.maxSP
         self._ST = self.ST if self.ST is not None else self.maxST
         self._update_bonus()
+
     def __repr__(self):
         string = 'char: {0}\nlife: {1} MP: {2}'.format(self.name, self.life, self.SP)
         if self.effects:
             string += '\neffects: {0}\n'.format(self.effects.keys())
         return string
+
     def calculate_stats(self):
         self.maxlife = C.LIFE_BASE + self.attributes.vit_mod()*10 + self._life_bonus
         self.maxSP = C.SP_BASE + self.attributes.int_mod()
         self.maxST = C.ST_BASE + self.attributes.vit_mod()/2+self.skills.meditating()/2
+
     @property
     def life(self):
         '''

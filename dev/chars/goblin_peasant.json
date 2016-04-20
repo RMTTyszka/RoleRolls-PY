@@ -1,0 +1,11 @@
+{
+  "attributes": {
+    "strength": "10",
+    "agility": "lvl+10",
+    "inteligence": "lvl*2"
+  },
+  "skills": {
+    "alchemy": "10",
+    "jewelcrafting": "lvl*5"
+  }
+}
