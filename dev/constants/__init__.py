@@ -26,8 +26,8 @@ DEFAULT_ITEMS = FOLDER_PATH+'items.json'
 class AttributeDict(dict):
     def __getattr__(self, attr):
         return self[attr]
-        def __setattr__(self, attr, value):
-            self[attr] = value
+    def __setattr__(self, attr, value):
+        self[attr] = value
 
 with open(DEFAULT_BASE, 'r') as text:
     base = AttributeDict(json.loads(text.read()))

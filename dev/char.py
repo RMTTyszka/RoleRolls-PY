@@ -8,7 +8,6 @@ Coyright © 2016 - Ramiro Tyzkza - ramiro.tyszka@gmail.com
 '''
 from constants import char as C
 from constants import attributes as A
-import base
 import auxiliary
 import effects
 import items
@@ -19,7 +18,7 @@ import dice
 class Char(object):
     ''' Base class for any item in the game '''
 
-    def __init__(self,**kwargs):
+    def __init__(self,*args, **kwargs):
         '''
         Initializes the class.
         arguments:
@@ -90,18 +89,18 @@ class Char(object):
 
         self.calculate_stats()
         self._life = self.life if self.life is not None else self.maxlife
-        self._SP = self.SP if self.SP is not None else self.maxSP
-        self._ST = self.ST if self.ST is not None else self.maxST
+        self._sp = self.sp if self.sp is not None else self.maxSP
+        self._st = self.st if self.st is not None else self.maxST
         self._update_bonus()
     def __repr__(self):
-        string = 'char: {0}\nlife: {1} MP: {2}'.format(self.name, self.life, self.SP)
+        string = 'char: {0}\nlife: {1} MP: {2}'.format(self.name, self.life, self.sp)
         if self.effects:
             string += '\neffects: {0}\n'.format(self.effects.keys())
         return string
     def calculate_stats(self):
-        self.maxlife = C.LIFE_BASE + self.attributes.vit_mod()*10 + self._life_bonus
-        self.maxSP = C.SP_BASE + self.attributes.int_mod()
-        self.maxST = C.ST_BASE + self.attributes.vit_mod()/2+self.skills.meditating()/2
+        self.maxlife = C.LIFE_BASE + self.attributes.vitality_mod()*10 + self._life_bonus
+        self.maxSP = C.SP_BASE + self.attributes.inteligence_mod()
+        self.maxST = C.ST_BASE + self.attributes.vitality_mod()/2+self.skills.meditating()/2
     @property
     def life(self):
         '''
@@ -110,8 +109,10 @@ class Char(object):
         return self._life
     @life.setter
     def life(self, value):
-        value = self.maxlife if (value+self._life) > self.maxlife else value
         self._life = value
+        if self._life > self.maxlife:
+            self._life = self.maxlife
+        self._life = 0 if self._life < 0 else self._life
         self._alive = True if self._life > 0 else False
     @property
     def life_percent(self):
@@ -127,63 +128,49 @@ class Char(object):
 
     # SP property
     @property
-    def SP(self):
+    def sp(self):
         '''
         base SP
         '''
-        return self._SP
-    @SP.setter
-    def SP(self, value):
+        return self._sp
+    @sp.setter
+    def sp(self, value):
         value = self.maxSP if value > self.maxSP else value
-        self._SP = value
+        self._sp = value
     @property
-    def SP_percent(self):
+    def sp_percent(self):
         '''
         base SP in percentage
         interval: 0 - 1
         '''
-        return self._SP/self.maxSP if self.maxSP > 0 else 0
-    @SP_percent.setter
-    def SP_percent(self, value):
-        self.SP = int(round(value*self.maxSP))
+        return self._sp/self.maxSP if self.maxSP > 0 else 0
+    @sp_percent.setter
+    def sp_percent(self, value):
+        self._sp = int(round(value*self.maxSP))
 
     # ST property
     @property
-    def ST(self):
+    def st(self):
         '''
         base ST
         '''
-        return self._ST
-    @ST.setter
-    def ST(self, value):
+        return self._st
+    @st.setter
+    def st(self, value):
         value = self.maxST if value > self.maxST else value
-        self._ST = value
+        self._st = value
     @property
-    def ST_percent(self):
+    def st_percent(self):
         '''
         base ST in percentage
         interval: 0 - 1
         '''
-        return self._ST/self.maxST if self.maxST > 0 else 0
-    @ST_percent.setter
-    def ST_percent(self, value):
-        self.ST = int(round(value*self.maxST))
+        return self._st/self.maxST if self.maxST > 0 else 0
+    @st_percent.setter
+    def st_percent(self, value):
+        self._st = int(round(value*self.maxST))
 
 
-    def attack(self, target=None, hand = 'mainhand'):
-        '''
-        Attacks the enemy, returning the damage and any other penalty
-        '''
-        #cod if target == None
-
-        #get vars
-        attk_sk =
-        attk_attr =
-        attk_bon =
-
-        #get target vars
-        evade = target.evade
-        pass
 
     def equip(self, item, slot):
         '''
@@ -191,12 +178,6 @@ class Char(object):
         '''
         self.equipment.equip(item, slot)
         self._update_bonus()
-
-    # def update_bonus(self, ):
-
-
-
-
 
     def _update_bonus(self):
         '''
@@ -211,22 +192,24 @@ class Char(object):
                     bonus_dict[bonus_name] = bonus_value
             for equipment_slot, equipment in self.equipment:
                 if equipment is not None:
-                    for bonus_name, bonus_value in equipment.bonuses.items():
-                        if bonus_name in bonus_dict:
-                            bonus_dict[bonus_name] += bonus_value
-                        else:
-                            bonus_dict[bonus_name] = bonus_value
+                    for bonus_type, bonus_type_value in equipment.bonuses.items():
+                        for bonus_name, bonus_value in bonus_type_value.items():
+                            if bonus_name in bonus_dict:
+                                bonus_dict[bonus_name] += bonus_value
+                            else:
+                                bonus_dict[bonus_name] = bonus_value
         for bonus_name, bonus_value in bonus_dict.items():
             if bonus_name in auxiliary.A.attributes_list:
-                setattr(self.attributes, bonus_name+'_bonus', bonus_value)
+                setattr(self.attributes, '_'+bonus_name+'_bonus', bonus_value)
             elif bonus_name in auxiliary.S.skills_list:
-                setattr(self.skills, bonus_name+'_bonus', bonus_value)
+                setattr(self.skills, '_'+bonus_name+'_bonus', bonus_value)
             elif bonus_name in auxiliary.D.defenses_list:
-                setattr(self.defenses, bonus_name+'_bonus', bonus_value)
+                setattr(self.defenses, '_'+bonus_name+'_bonus', bonus_value)
             elif bonus_name in auxiliary.R.resists_list:
-                setattr(self.resists, bonus_name+'_bonus', bonus_value)
+                setattr(self.resists, '_'+bonus_name+'_bonus', bonus_value)
             elif bonus_name in C.stats:
-                setattr(self, bonus_name+'_bonus', bonus_value)
+                setattr(self, '_'+bonus_name+'_bonus', bonus_value)
+
     def run_effects(self):
         '''
         Runs the effects in the effects dict
@@ -241,29 +224,17 @@ class Char(object):
 
     @property
     def evade(self):
-        return self.skills.reflex() + self.attributes.agi_mod() + self._evasion_bonus
-    def attack(self, target = None, weapon = None):
-        '''
-        Attacks the enemy, returning the damage and any other penalty
-        '''
-        #cod if target == None
-
-        #get vars
+        return self.skills.reflex() + self.attributes.agility() + self._evasion_bonus
+    def attack(self,weapon=None):
         attk_sk = getattr(self.skills,weapon.attk_skill)()
-        attk_attr = getattr(self.attributes,weapon.attk_attr+'_mod')()
-        attk_bon = self.attack_bon
-
-        #get target vars
-        evade = target.evade
-        roll = random.randint(1,100)+ attk_sk + attk_attr + attk_bon - evade - 50
-        if roll => 0:
-            self.damage(weapon,target)
-        return  + # add bonus do char
-
+        attk_attr = getattr(self.attributes,weapon.attk_attr)()
+        attk_bon = self._attack_bonus
+        return attk_sk + attk_attr + attk_bon
     @property
-    def PROT(self):
+    def prot(self):
         return self._prot_bonus
-
+    def armor_penetration(self,weapon):
+        return weapon.armor_penetration + self._armor_penetration_bonus
 
     def special_attack(self,attr,skill):
         return self.special_attack_bonus + getattr(self.attributes,skill+'_mod') # add bonus do char
@@ -277,23 +248,25 @@ class Char(object):
     #     return round(b * (1-d/100),2)
 
     @property
-    def crit(self):
-        return C.CRIT_BASE + self.skills.anatomy() + self.crit_bonus
-
+    def critical(self):
+        return C.CRIT_BASE + self.skills.anatomy_mod() + self._critical_bonus
+    @property
+    def critical_damage(self):
+        return (self._critical_damage_bonus+100.0)/100.0
     @property
     def RESILIENCE(self):
-        return C.RESILIENCE_BASE + self.skills.parry #mod resilience? +
+        return C.RESILIENCE_BASE + self.skills.parry_mod() + self._resilience_bonus
 
     @property
     def at_damage_mod(self):
-        return self.skills.armslore_mod() + self.at_damage_bonus # + where is the damage?
+        return self.skills.armslore_mod() + self._at_damage_bonus
 
     @property
-    def FORTITUDE(self):
-        return self.skills.parry + self.attributes.vitality + self.equipment.fortitude
+    def fortitude(self):
+        return self.skills.parry() + self.attributes.vitality() + self._fortitude_bonus
 
-    def DAMAGE_AE(self, atr):
-        return self.skills.lore # what is atr?+
+    def sa_damage_mod(self, attr):
+        return self.skills.lore() + getattr(self.attributes,attr)() # what is atr?+
 
     @property
     def intuition(self):
@@ -305,15 +278,15 @@ class Char(object):
         call(self, self.AE_target).use()
 
     @property
-    def COUNTER_RATING(self):
-
-        a = self.equipament['mainhand'].wep_atr['counterrating']
+    def counter(self):
+        return 0
+        a = self.equipment['mainhand'].wep_atr['counterrating']
         b = self.mod('counterrating')
         #parry?
         return a + b
 
     @classmethod
-    def blank(cls,*args, **kwargs):
+    def blank(cls, name, *args, **kwargs):
         '''
         Creates a blank char with 0 in all stats
         '''
@@ -332,7 +305,7 @@ class Char(object):
             'life': 0,
             'SP': 0,
             'ST': 0}
-        for key, value in kwargs:
+        for key, value in kwargs.items():
             if key in blank:
                 blank[key] = value
         return cls(name, *args, **blank)
@@ -396,4 +369,9 @@ if __name__ == '__main__':
     # print blank_char.attributes._vitality
     # print blank_char.attributes.vitality
     print char1.attributes.vit_mod()
+    print char1.maxlife
+    print char1.life
+    char1.life +=1000
+    print char1.life
+
     char1.calculate_stats()

@@ -15,6 +15,7 @@ from constants import equipment as E
 from constants import inventory as I
 from constants import skills as S
 import dice
+
 class Attributes(object):
     ''' Base Atributes for any item in the game '''
 
@@ -39,23 +40,26 @@ class Attributes(object):
                 setattr(self, attr+'_bonus', kwargs[attr+'_bonus'])
             else:
                 setattr(self, attr+'_bonus', 0)
+
     def __repr__(self):
         string = ''
         for attr in A.attributes_list:
-            string += '{0}: {1}\tbonus: {2}\n'.format(attr, getattr(self, attr), getattr(self, attr+'_bonus'))
+            string += '{0}: {1}\tbonus: {2}\n'.format(attr, getattr(self, attr)(), getattr(self, attr+'_bonus'))
         return string
-    def get_attr_fn(self,attr):
+
+    def get_attr_fn(self, attr):
         def attr_fn():
             return getattr(self,'_'+attr) + getattr(self,attr+'_bonus')
         attr_fn.__doc__ = "docstring for ",attr
         attr_fn.__name__ = str(attr)
         setattr(self,attr_fn.__name__, attr_fn)
-    def get_attr_mod_fn(self,attr):
+
+    def get_attr_mod_fn(self, attr):
         def attr_mod_fn(value = None):
             value = value if value is not None else 5
             return (getattr(self,'_'+attr) + getattr(self,attr+'_bonus'))/value
         attr_mod_fn.__doc__ = "docstring for ",attr
-        attr_mod_fn.__name__ = str(attr)[:3]+'_mod'
+        attr_mod_fn.__name__ = str(attr)+'_mod'
         setattr(self,attr_mod_fn.__name__, attr_mod_fn)
 
     def roll(self, attribute):
@@ -405,8 +409,8 @@ if __name__ == '__main__':
     print Attr1
     print Defense1
     print Resist1
+    print Attr1.strength
+    print Attr1.roll('agility')
     Attr1.str_bonus = 10
     print Attr1.strength
-    print (lambda: dice.roll_01(getattr(Attr1, 'strength')()))
-    print Attr1.roll('agility')
     print 'All tests ok!'

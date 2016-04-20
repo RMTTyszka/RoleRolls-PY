@@ -93,7 +93,7 @@ class Equipable(Item):
         - size
         - and attributes and skills used for attack
         '''
-        weapon = cls(['maindhand','offhand'], **kwargs)
+        weapon = cls(['mainhand','offhand'], **kwargs)
 
         if 'category' in kwargs:
             weapon.category = kwargs['category']
@@ -107,6 +107,8 @@ class Equipable(Item):
                         if Ci.weapons[weapon.category][size].has_key(weapon.base)][0]
         for arg in Ci.get_weapon_attr:
             setattr(weapon,arg,Ci.weapon_type[weapon.category][arg])
+        for arg in Ci.wep_size_info[weapon.size]:
+            setattr(weapon,arg,Ci.wep_size_info[weapon.size][arg])
         return weapon
 
     @classmethod
@@ -125,5 +127,8 @@ if __name__ == '__main__':
     print item2.weak
     print item2.bonuses
     #print item2.slots
-    item3 = Equipable.Weapon(base = 'longsword',name = 'fire')
+    item3 = Equipable.Weapon(base='longsword',name='fire')
     print item3.name + ' ' + item3.base
+    for var in vars(item3):
+        print var
+    item4 = Equipable.Armor(base='cloth',name ='gosma')

@@ -12,7 +12,7 @@
   "ST_BASE": 25,
   "CRIT_BASE": 15,
   "RESILIENCE_BASE": 5,
-  "properties": ["life", "SP",  "ST"],
+  "properties": ["life", "sp",  "st"],
   "bonuses": ["moral","magic","innate"],
   "stats": ["critical","resilience","attack","special_attack","evasion","sp",
             "life","st","prot","fortitude","at_damage","sa_damage","as","cs",

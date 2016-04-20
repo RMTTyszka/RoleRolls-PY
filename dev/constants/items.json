@@ -23,17 +23,17 @@
 
   "weapon_type" : {
               "cutting":{
-                      "attk_skill":"swordmanship","attk_attr":"str","damage_attr":"str"},
+                      "attk_skill":"swordmanship","attk_attr":"strength","damage_attr":"strength"},
               "smashing":{
-                      "attk_skill":"heavyweaponship","attk_attr":"str","damage_attr":"str"},
+                      "attk_skill":"heavyweaponship","attk_attr":"strength","damage_attr":"strength"},
               "piercing":{
-                      "attk_skill":"fencing","attk_attr":"agi","damage_attr":"agi"},
+                      "attk_skill":"fencing","attk_attr":"agility","damage_attr":"agility"},
               "ranged":{
-                      "attk_skill":"archery","attk_attr":"agi","damage_attr":"agi"},
+                      "attk_skill":"archery","attk_attr":"agility","damage_attr":"agility"},
               "thrown":{
-                      "attk_skill":"archery","attk_attr":"agi","damage_attr":"str"},
+                      "attk_skill":"archery","attk_attr":"agility","damage_attr":"strength"},
               "catalyst":{
-                      "attk_skill":"magery","attk_attr":"wis","damage_attr":"wis"}
+                      "attk_skill":"magery","attk_attr":"wisdom","damage_attr":"wisdom"}
                   },
   "weapons" : {
           "catalyst":{
@@ -68,13 +68,13 @@
   "wep_size_info" : {
                   "light":{
                           "AS_base":2.5,"min_damage":8,"max_damage":18,"attk_bonus":0,
-                          "multi_damage":1.0,"attr_mult":0.5,"counter":15,"armor_penetration":0},
+                          "mult_damage":1.0,"mult_attr":0.5,"counter":15,"armor_penetration":0},
                   "medium":{
-                          "AS_base":5.0,"min_damage":8,"max_damage":18,"attk_bonus":0,"multi_damage":1.5,
-                          "attr_mult":1,"counter":10,"armor_penetration":0},
+                          "AS_base":5.0,"min_damage":8,"max_damage":18,"attk_bonus":0,"mult_damage":1.5,
+                          "mult_attr":1,"counter":10,"armor_penetration":0},
                   "heavy":{
-                          "AS_base":15.0,"min_damage":8,"max_damage":18,"attk_bonus":8,"multi_damage":2.0,
-                          "attr_mult":3,"counter":5,"armor_penetration":5}},
+                          "AS_base":15.0,"min_damage":8,"max_damage":18,"attk_bonus":8,"mult_damage":2.0,
+                          "mult_attr":3,"counter":5,"armor_penetration":5}},
     "armors_dict" : {
               "light":{
                   "cloth":{
