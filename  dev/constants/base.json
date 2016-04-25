@@ -1,0 +1,6 @@
+{
+  "args_list": ["name", "lvl", "attributes", "skills", "defenses", "resists",
+    "equipment", "inventory", "effects", "powers", "spells",  "bonuses",  "HP",
+    "SP",  "ST"],
+  "properties": ["HP", "SP",  "ST"]
+}

@@ -51,17 +51,14 @@ def from_file(name, filename, lvl=1):
     file_char = char.Char.blank(name, lvl=lvl)
     if 'attributes' in char_data:
         for attr, value in char_data['attributes'].items():
-            setattr(file_char.attributes, '_'+attr, value)
+            setattr(file_char.attributes, attr, value)
     if 'skills' in char_data:
         for skill, value in char_data['skills'].items():
-            setattr(file_char.skills, '_'+skill, value)
+            setattr(file_char.skills, attr, value)
     # fill the rest here
-    
+
     return file_char
 
 if __name__ == '__main__':
     random_char = random('boris')
-    print random_char
     file_char = from_file('dudu', 'chars/goblin_peasant.json')
-    for var in vars(file_char):
-        print var,getattr(file_char,var)

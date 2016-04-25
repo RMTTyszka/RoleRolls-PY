@@ -338,7 +338,7 @@ class Char(pygame.sprite.Sprite):
 
 class Testchar(Char):
     def __init__(self,nv,sizeweapon,armortype, weapontype = None):
-        Char.__init__(self,nv)
+        Char.__init__(self,nv,RED)
         self.nv = nv
         for atr in C.atr_list:
             self.mod(atr,5*self.nv)

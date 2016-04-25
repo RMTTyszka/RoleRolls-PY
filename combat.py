@@ -190,7 +190,7 @@ class Battle():
                     creature._attack_spec_order += creature.defpower
 '''roda um teste, para verificar a igualdade entre as armas e armaduras'''
 if __name__ == "__main__":
-    yes = 'no'
+    yes = 'yes'
     if yes == 'yes':
         change = ['light','medium','heavy']
         t1 = {}

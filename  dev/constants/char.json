@@ -5,7 +5,7 @@
                 "critical","resilience","attack","special_attack",
                 "evasion","sp", "life","st","protection","fortitude","at_damage",
                 "sa_damage","as","cs","critical_damage","armor_penetration",
-                "reaction","counter","bonuses"
+                "intuition","counter","bonuses"
                 ],
   "LIFE_BASE": 50,
   "SP_BASE": 50,
@@ -17,5 +17,5 @@
   "bonuses": ["moral","magic","innate"],
   "stats": ["critical","resilience","attack","special_attack","evasion","sp",
             "life","st","protection","fortitude","at_damage","sa_damage","as","cs",
-            "critical_damage","armor_penetration","reaction","counter"]
+            "critical_damage","armor_penetration","intuition","counter"]
 }

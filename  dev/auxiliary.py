@@ -26,7 +26,7 @@ class Attributes(object):
             "agility": char agility,
             "vitality": char vitality,
             "wisdom": char wisdom,
-            "intuition": char intuition}
+            "inteligence": char inteligence}
             # "charisma": char charisma} - not implemented so far
         '''
         for attr in A.attributes_list:
@@ -44,7 +44,7 @@ class Attributes(object):
     def __repr__(self):
         string = ''
         for attr in A.attributes_list:
-            string += '{0}: {1}\tbonus: {2}\n'.format(attr, getattr(self, attr), getattr(self, attr+'_bonus'))
+            string += '{0}: {1}\tbonus: {2}\n'.format(attr, getattr(self, attr)(), getattr(self, attr+'_bonus'))
         return string
 
     def get_attr_fn(self, attr):

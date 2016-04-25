@@ -102,7 +102,7 @@ class Char(object):
     def calculate_stats(self):
 
         self.maxlife = C.LIFE_BASE + self.attributes.vitality_mod()*10 + self._life_bonus
-        self.maxSP = C.SP_BASE + self.attributes.intuition_mod()
+        self.maxSP = C.SP_BASE + self.attributes.inteligence_mod()
         self.maxST = C.ST_BASE + self.attributes.vitality_mod()/2+self.skills.meditating()/2
 
     @property

@@ -80,6 +80,7 @@ def autoattack(attacker, target=None):
 def t_autoattack(AT,DEF):
     a = random.randint(1,100)
     t = a + AT.AT(AT.equipament['mainhand']) - DEF.EVD
+    print a+AT.AT(AT.equipament['mainhand']), DEF.EVD
     if t >= 50:
         return AT.main_damage(DEF)
     else:
