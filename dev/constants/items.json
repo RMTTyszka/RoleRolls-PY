@@ -85,6 +85,7 @@
                   "2medium":{
                           "AS_base":2.5,"min_damage":8,"max_damage":18,"attk_bonus":-10,
                           "mult_damage":1.0,"mult_attr":0.9,"counter":10,"armor_penetration":1}},
+    "armor_args": ["strong", "weak"],
     "armors_dict" : {
               "none":{
                   "none":{

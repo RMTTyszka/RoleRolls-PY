@@ -1,4 +1,6 @@
 {
+  "role": "minion",
+  "race": "goblin",
   "attributes": {
     "strength": "10",
     "agility": "lvl+10",
@@ -7,5 +9,6 @@
   "skills": {
     "alchemy": "10",
     "jewelcrafting": "lvl*5"
-  }
+  },
+  "powers": ["goblin_punch","steal","escape"]
 }

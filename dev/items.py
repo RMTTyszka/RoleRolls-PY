@@ -69,18 +69,24 @@ class Equipable(Item):
                               in Ci.armors_dict.items()
                               if armor.base
                               in base.keys()][0]
-        if 'strong' in kwargs:
-            armor.strong = kwargs['strong']
-        else:
-            armor.strong = Ci.armors_dict[armor.category][armor.base]['strong']
-        if 'weak' in kwargs:
-            armor.weak = kwargs['weak']
-        else:
-            armor.weak = Ci.armors_dict[armor.category][armor.base]['weak']
-        if 'prot_mod' in kwargs:
-            armor.prot_mod = kwargs['prot_mod']
-        else:
-            armor.prot_mod = Ci.armors_dict[armor.category][armor.base]['prot_mod']
+        for arg in Ci.armor_args:
+            if arg in kwargs:
+                setattr(armor,arg,kwargs[arg])
+            else:
+                setattr(armor,arg,Ci.armors_dict[armor.category][armor.base][arg])
+
+        #if 'strong' in kwargs:
+        #    armor.strong = kwargs['strong']
+        #else:
+        #    armor.strong = Ci.armors_dict[armor.category][armor.base]['strong']
+        #if 'weak' in kwargs:
+        #    armor.weak = kwargs['weak']
+        #else:
+        #    armor.weak = Ci.armors_dict[armor.category][armor.base]['weak']
+        #if 'prot_mod' in kwargs:
+        #    armor.prot_mod = kwargs['prot_mod']
+        #else:
+        #    armor.prot_mod = Ci.armors_dict[armor.category][armor.base]['prot_mod']
 
         armor.bonuses['innate']['protection'] = armor.bonuses['innate'].get('protection',0) \
                                 + Ci.armor_info[armor.category]['protection'] \
@@ -136,6 +142,6 @@ if __name__ == '__main__':
     item3 = Equipable.Weapon(base='longsword',name='fire')
     print item3.name + ' ' + item3.base
     for var in vars(item3):
-        print var
+        print var, getattr(item3,var)
     item4 = Equipable.Armor(base='fullplate',name ='gosma',lvl=5)
     print item4.bonuses
