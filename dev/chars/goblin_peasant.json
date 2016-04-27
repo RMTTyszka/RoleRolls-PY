@@ -1,14 +1,14 @@
 {
-  "role": "minion",
+  "role": "soldier",
   "race": "goblin",
   "attributes": {
     "strength": "10",
-    "agility": "lvl+10",
-    "intuition": "lvl*2"
+    "agility": "11",
+    "intuition": "2"
   },
   "skills": {
     "alchemy": "10",
-    "jewelcrafting": "lvl*5"
+    "jewelcrafting": "5"
   },
   "powers": ["goblin_punch","steal","escape"]
 }

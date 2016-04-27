@@ -46,27 +46,30 @@ def from_file(name, filename, lvl=1, ):
     '''
     with open(ROOT_FOLDER+'chars/'+filename, 'r') as char_file:
         char_data = json.loads(char_file.read())
-    print char_data,'\n'
+        char_bonus = {'innate': {}}
+        char_role = char_data['role']
     # update dict with real values
-    for value in char_data.values():
-        print type(value)
-        print type(value) == 'dict'
-        if type(value) == 'dict':
-            for key0, value0 in value.items():
-                for key1, value1 in value0.items():
-                    if 'lvl' in value1:
-                        operator = value1.strip('lvl')[0]
-                        operand = value1.strip('lvl')[1:]
-                        #char_data[key0][key1] = eval(str(lvl)+operator+operand)
-                        char_data[key0][key1] = ops[operator](lvl,int(operand))
-
-    print char_data,'\n'
-
+    for key0, value0 in char_data.items():
+        if (key0 == 'skills' or
+            key0 == 'attributes' or
+            key0 == 'defenses' or
+            key0 == 'resists' or
+            key0 == 'status'):
+            for key1, value1 in value0.items():
+                char_bonus['innate'][key1] = char_bonus['innate'].get(key1,0)+ int(value1)
+        try:
+            for key1, value1 in value0.items():
+                if 'lvl' in value1:
+                    operator = value1.strip('lvl')[0]
+                    operand = value1.strip('lvl')[1:]
+                    #char_data[key0][key1] = eval(str(lvl)+operator+operand)
+                    char_data[key0][key1] = ops[operator](lvl,int(operand))
+        except:
+            continue
+    with open(ROOT_FOLDER+'roles/'+char_role, 'r') as char_file:
+        char_data = json.loads(char_file.read())
     # fill char
-    if 'role' in char_data:
-        file_char = getattr(char.Char,'blank')(name, lvl=lvl)
-    else:
-        file_char = char.Char.blank(name, lvl=lvl)
+    file_char = char.Char.blank(name, lvl=lvl)
     if 'attributes' in char_data:
         for attr, value in char_data['attributes'].items():
             setattr(file_char.attributes, '_'+attr, value)
