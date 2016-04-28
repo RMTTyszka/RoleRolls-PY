@@ -1,0 +1,17 @@
+{
+  "category": "common",
+  "role": "soldier",
+  "race": "goblin",
+  "attributes": {
+        "strength": "10",
+         "agility": "10",
+         "vitality": "20",
+         "wisdom": "0",
+         "intuition": "10",
+         "charisma": "0"},
+  "skills": {
+    "alchemy": "10",
+    "jewelcrafting": "5"},
+  "powers": ["power_attack","cover"],
+  "drop": ["food","tool"]
+}

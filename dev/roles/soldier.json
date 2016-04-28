@@ -1,16 +1,21 @@
 {
   "attributes": {
-          "strength": "0",
-           "agility": "0",
-           "vitality": "0",
+          "strength": "10",
+           "agility": "10",
+           "vitality": "20",
            "wisdom": "0",
-           "intuition": "0",
+           "intuition": "10",
            "charisma": "0"},
    "skills": {
-         "fencing": "0",
-          "heavyweaponship": "0",
-          "swordmanship": "0",
-          "reflex": "0",
-          "tactics": "0",
-          "parry": "0"}
+         "fencing": "20",
+          "heavyweaponship": "20",
+          "swordmanship": "20",
+          "reflex": "20",
+          "tactics": "10",
+          "parry": "20"},
+    "equipment": {
+          "armor": "heavy",
+          "weapon": "medium",
+          "offhand": "shield"}
+
     }

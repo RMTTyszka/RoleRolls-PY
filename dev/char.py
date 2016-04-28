@@ -188,8 +188,8 @@ class Char(object):
         Method for updating all the bonuses an adding them to their current instances
         '''
         bonus_dict = {}
-        for bonus in self.bonuses.values():
-            for bonus_name, bonus_value in bonus.items():
+        for bonus_cat in self.bonuses.values():
+            for bonus_name, bonus_value in bonus_cat.items():
                 if bonus_name in bonus_dict:
                     bonus_dict[bonus_name] += bonus_value
                 else:
@@ -229,7 +229,8 @@ class Char(object):
     @property
     def evade(self):
         return (C.EVASION_BASE + self.skills.reflex() +
-                self.attributes.agility() + self._evasion_bonus)
+                self.attributes.agility() + self._evasion_bonus +
+                self.equipment.armor.evasion)
     def attack(self,weapon=None):
         attk_sk = getattr(self.skills,weapon.attk_skill)()
         attk_attr = getattr(self.attributes,weapon.attk_attr)()
@@ -337,7 +338,6 @@ if __name__ == '__main__':
     char1 = Char(name='bob', lvl=1, attributes=Attr1, skills=Skill1, defenses=Def1,
                     resists=Res1, effects=Eff1, equipment=Equ1, powers=Pow1, spells=Spell1, bonuses=Bonus1)
     print char1.bonuses
-    quit()
     var = vars(char1)
     for a in var:
         print a
@@ -366,11 +366,16 @@ if __name__ == '__main__':
     print
     print
     print
-    print char1.attributes.strength()
+    char1.attributes._agility = 10
+    char1.attributes.agility_bonus = 10
+    print char1.attributes.agility()
+    print char1.attributes._agility
     print char1.bonuses
     char1.bonuses['magic']['agility'] = 80
     print char1.bonuses
     char1._update_bonus()
+    print char1.attributes.agility()
+    quit()
     # print blank_char.attributes
     # print blank_char.attributes._vitality
     # print blank_char.attributes.vitality

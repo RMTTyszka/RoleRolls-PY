@@ -24,7 +24,7 @@ class Item(object):
         self.color = kwargs['color'] if 'color' in kwargs else Ci.default_color
 
     @classmethod
-    def blank(cls, name, *args, **kwargs):
+    def blank(cls,*args, **kwargs):
         '''
         Creates a blank char with 0 in all stats
         '''
@@ -38,7 +38,7 @@ class Item(object):
         for key, value in kwargs.items():
             if key in blank:
                 blank[key] = value
-        return cls(name, *args, **blank)
+        return cls(*args, **blank)
 
 class Equipable(Item):
     ''' Base class for any equipable in the game '''
@@ -46,9 +46,9 @@ class Equipable(Item):
     def __init__(self, slot, **kwargs):
         super(Equipable, self).__init__(slot = slot, **kwargs)
         self.bonuses = kwargs['bonuses'] if 'bonuses' in kwargs else {'magic':{},'innate':{},'moral':{}}
-        def Equip():
+        def Equip(self):
             pass
-        def _update_bonus():
+        def _update_bonus(self,newlvl):
             pass
 
     @classmethod
@@ -75,23 +75,11 @@ class Equipable(Item):
             else:
                 setattr(armor,arg,Ci.armors_dict[armor.category][armor.base][arg])
 
-        #if 'strong' in kwargs:
-        #    armor.strong = kwargs['strong']
-        #else:
-        #    armor.strong = Ci.armors_dict[armor.category][armor.base]['strong']
-        #if 'weak' in kwargs:
-        #    armor.weak = kwargs['weak']
-        #else:
-        #    armor.weak = Ci.armors_dict[armor.category][armor.base]['weak']
-        #if 'prot_mod' in kwargs:
-        #    armor.prot_mod = kwargs['prot_mod']
-        #else:
-        #    armor.prot_mod = Ci.armors_dict[armor.category][armor.base]['prot_mod']
 
-        armor.bonuses['innate']['protection'] = armor.bonuses['innate'].get('protection',0) \
+        armor.protect = armor.bonuses['innate'].get('protection',0) \
                                 + Ci.armor_info[armor.category]['protection'] \
                                 * armor.lvl
-        armor.bonuses['innate']['evasion'] = armor.bonuses['innate'].get('evasion',0) \
+        armor.evasion = armor.bonuses['innate'].get('evasion',0) \
                                  + Ci.armor_info[armor.category]['evasion']
         return armor
     @classmethod

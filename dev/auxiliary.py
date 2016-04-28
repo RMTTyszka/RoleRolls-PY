@@ -37,9 +37,9 @@ class Attributes(object):
             else:
                 setattr(self, '_'+attr, 0)
             if attr+'_bonus' in kwargs:
-                setattr(self, attr+'_bonus', kwargs[attr+'_bonus'])
+                setattr(self,'_'+ attr+'_bonus', kwargs[attr+'_bonus'])
             else:
-                setattr(self, attr+'_bonus', 0)
+                setattr(self, '_'+attr+'_bonus', 0)
 
     def __repr__(self):
         string = ''
@@ -49,7 +49,7 @@ class Attributes(object):
 
     def get_attr_fn(self, attr):
         def attr_fn():
-            return getattr(self,'_'+attr) + getattr(self,attr+'_bonus')
+            return getattr(self,'_'+attr) + getattr(self,'_'+attr+'_bonus')
         attr_fn.__doc__ = "docstring for ",attr
         attr_fn.__name__ = str(attr)
         setattr(self,attr_fn.__name__, attr_fn)
@@ -57,7 +57,7 @@ class Attributes(object):
     def get_attr_mod_fn(self, attr):
         def attr_mod_fn(value = None):
             value = value if value is not None else 5
-            return (getattr(self,'_'+attr) + getattr(self,attr+'_bonus'))/value
+            return (getattr(self,'_'+attr) + getattr(self,'_'+attr+'_bonus'))/value
         attr_mod_fn.__doc__ = "docstring for ",attr
         attr_mod_fn.__name__ = str(attr)+'_mod'
         setattr(self,attr_mod_fn.__name__, attr_mod_fn)
@@ -86,9 +86,9 @@ class Defenses(object):
             else:
                 setattr(self, '_'+defense, 0)
             if defense+'_bonus' in kwargs:
-                setattr(self, defense+'_bonus', kwargs[defense+'_bonus'])
+                setattr(self, '_'+defense+'_bonus', kwargs[defense+'_bonus'])
             else:
-                setattr(self, defense+'_bonus', 0)
+                setattr(self, '_'+defense+'_bonus', 0)
     def __repr__(self):
         string = ''
         for defense in D.defenses_list:
@@ -96,7 +96,7 @@ class Defenses(object):
         return string
     def get_def_fn(self,defen):
         def def_fn():
-            return getattr(self,'_'+defen) + getattr(self,defen+'_bonus')
+            return getattr(self,'_'+defen) + getattr(self,'_'+defen+'_bonus')
         def_fn.__doc__ = "docstring for ",defen
         def_fn.__name__ = str(defen)
         setattr(self,def_fn.__name__, def_fn)
@@ -137,9 +137,9 @@ class Resists(object):
             else:
                 setattr(self, '_'+resist, 0)
             if resist+'_bonus' in kwargs:
-                setattr(self, resist+'_bonus', kwargs[resist+'_bonus'])
+                setattr(self, '_'+resist+'_bonus', kwargs[resist+'_bonus'])
             else:
-                setattr(self, resist+'_bonus', 0)
+                setattr(self, '_'+resist+'_bonus', 0)
 
 
     def __repr__(self):
@@ -149,7 +149,7 @@ class Resists(object):
         return string
     def get_resist_fn(self,resist):
         def def_fn():
-            return getattr(self,'_'+resist) + getattr(self,resist+'_bonus')
+            return getattr(self,'_'+resist) + getattr(self,'_'+resist+'_bonus')
         def_fn.__doc__ = "docstring for ",resist
         def_fn.__name__ = str(resist)
         setattr(self,def_fn.__name__, def_fn)
@@ -321,9 +321,9 @@ class Skills(object):
             else:
                 setattr(self, '_'+skill, 0)
             if skill+'_bonus' in kwargs:
-                setattr(self, skill+'_bonus', kwargs[skill+'_bonus'])
+                setattr(self, '_'+skill+'_bonus', kwargs[skill+'_bonus'])
             else:
-                setattr(self, skill+'_bonus', 0)
+                setattr(self, '_'+skill+'_bonus', 0)
 
     def __repr__(self):
         string = ''
@@ -332,14 +332,14 @@ class Skills(object):
             return string
     def get_skill_fn(self,skill):
         def def_fn():
-            return getattr(self,'_'+skill) + getattr(self,skill+'_bonus')
+            return getattr(self,'_'+skill) + getattr(self,'_'+skill+'_bonus')
         def_fn.__doc__ = "docstring for ",skill
         def_fn.__name__ = str(skill)
         setattr(self,def_fn.__name__, def_fn)
     def get_skill_mod_fn(self,skill):
         def def_fn(value = None):
             value = value if not value == None else 5
-            return (getattr(self,'_'+skill) + getattr(self,skill+'_bonus'))/value
+            return (getattr(self,'_'+skill) + getattr(self,'_'+skill+'_bonus'))/value
         def_fn.__doc__ = "docstring for ",skill+'_mod'
         def_fn.__name__ = str(skill)+'_mod'
         setattr(self,def_fn.__name__, def_fn)
