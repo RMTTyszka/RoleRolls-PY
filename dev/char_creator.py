@@ -15,11 +15,12 @@ import items
 import powers
 import spells
 import dice
+from constants import items as Ci
+from constants import equipment as Ce
 import json
 import operator as op
 import random
 from os.path import dirname, abspath
-
 
 ROOT_FOLDER = dirname(abspath(__file__))+'/'
 
@@ -31,42 +32,52 @@ ops = {
         '%' : op.mod,
         '^' : op.xor
         }
-def create_armor(lvl,category = None,base = None, material = None, enchantment = None):
+def create_armor(lvl, base = None, name=None, category = None, material = None, power = None, effect=None, bonuses = None):
     '''
-    create a random armor of a determined category if
-    it's given, else it will create a armor of any category.
-    a base, the material and an enchant can be passed as arg too
+    create a dict to pass as argument to an item.equipable.armor class
+    a_dict = {'base':
+              'category':
+              'material':
+              'enchant'}
     '''
+    #create a_dict
+    a_dict = {}
     #run code if base is none
-    if base == None:
-        base = 'fullplate'
+    a_dict['lvl'] = lvl
+    if base != None:
+        a_dict['base'] = base
+        a_dict['category'] = [cat for cat, base
+                          in Ci.armors_dict.items()
+                          if a_dict['base']
+                          in base.keys()][0]
     else:
-        base = 'fullplate'
-    #run code if category is none
-    if category == None:
-        category = 'heavy'
-    else:
-        category = 'heavy'
-    #run code if material is none
-    
-    #run code if enchantment is none
+        a_dict['category'] = category
+        a_dict['base'] = random.choice(Ci.armors_dict[a_dict['category']].keys())
+    a_dict['name'] = str(name)+' '+str(a_dict['base']) if name != None else a_dict['base']
+    a_dict['material'] = material if material != None else 'common'
+    a_dict['power'] = [power]
+    a_dict['effect'] = effect
+    a_dict['bonuses'] = bonuses if bonuses != None else {'magic':{},
+                                                         'innate':{},
+                                                         'moral':{}}
+
 
     #create armor
-    armor = items.Equipable.Armor(category=category,base=base )
+    print a_dict
+    armor = items.Equipable.Armor(**a_dict)
     #get positionals
-    armor.lvl = lvl
     return armor
-def random(name, **kwargs):
-    '''
+#def random(name, **kwargs):
+#    '''
+#
+#    Generates a new randomized char
+#    Passing kwargs will fix it's stats
+#    '''
+#    random_char = char.Char.blank(name)
+#    # setar random coisas (attr, skills, items ...)
+#    return random_char
 
-    Generates a new randomized char
-    Passing kwargs will fix it's stats
-    '''
-    random_char = char.Char.blank(name)
-    # setar random coisas (attr, skills, items ...)
-    return random_char
-
-def from_file(name, filename, lvl=1, ):
+def from_file(name, filename, lvl=1 ):
     '''
     Creates a char from a json file the configuration
     '''
@@ -119,7 +130,7 @@ def from_file(name, filename, lvl=1, ):
                 char_bonus[key1] = char_bonus.get(key1,0) + int(value1)
     # get equips
         if key0 == 'equipment':
-            armor = create_armor(value0)
+            armor = create_armor(lvl, category=value0['armor'])
 
     # fill char
     file_char = char.Char.blank(name, lvl=lvl)
@@ -136,7 +147,9 @@ def from_file(name, filename, lvl=1, ):
 if __name__ == '__main__':
     #random_char = random('boris')
     #print random_char
-    file_char = from_file('dudu', 'goblin_warrior.json')
+    file_char = from_file('dudu', 'goblin_warrior.json', lvl=12)
+    
     #for var in vars(file_char):
         #print var,getattr(file_char,var)
-    print file_char.equipment.armor.category
+    for var in vars(file_char.attributes):
+        print var, getattr(file_char.attributes,var)

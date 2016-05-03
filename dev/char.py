@@ -239,7 +239,7 @@ class Char(object):
         return attk_sk + attk_attr + attk_bon + attk_wep
     @property
     def protection(self):
-        return self._protection_bonus #*(1+( self.equipment.armor.prot_mod*self.attributes.vitality_mod()/100.0))
+        return self._protection_bonus + self.equipment.armor.protection  #*(1+( self.equipment.armor.prot_mod*self.attributes.vitality_mod()/100.0))
     def armor_penetration(self,weapon):
         return weapon.armor_penetration + self._armor_penetration_bonus
 

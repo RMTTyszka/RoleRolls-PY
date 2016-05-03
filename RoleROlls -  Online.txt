@@ -3,7 +3,7 @@ IMPORTANTE
 ************
 TK inter
 SKILL que faz algo com o ultimo dano ou cura que o alvo recebeu, coisa do tipo cancelar o dano ou repetir, cancelar o hbeal, roubar o heal, transferir o dano para outra criatura.
-
+Skill que encanta armor, faz que algo aconteça quando se esquiva ou quando leva porrada
 PVP, existe algo chamado interrupt,  que precisa usar a skill certa contra a skill certa! Gata pouca stamina, e precisa escolher o personagem certo rapido e escolher o alvo que esta castando rápido
 Skill que usam stamina tem casting time curto, 5 segundos +-. da tempo de interrupt. Alguns monstros dao interrupt e precisam de CC pra vencer!!!! (UHUULLLL)
 
